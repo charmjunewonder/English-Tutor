@@ -13,152 +13,146 @@ import javax.swing.SwingConstants;
 
 import org.apache.commons.io.FilenameUtils;
 
-public class EnsureFrame extends AbstractFrame{
-    public static final int CANCEL_OPTION = 23947; 
-    public static final int YES_OPTION = 79237; 
-    public static final int NO_OPTION = 83874; 
+public class EnsureFrame extends AbstractFrame {
+	public static final int CANCEL_OPTION = 23947;
+	public static final int YES_OPTION = 79237;
+	public static final int NO_OPTION = 83874;
 
-    private JButton firstButton,secondButton,thirdButton;
-    private JLabel statementLabel;
-    private JPanel buttonPanel;
+	private JButton firstButton, secondButton, thirdButton;
+	private JLabel statementLabel;
+	private JPanel buttonPanel;
 
-    private static int optionValue;
-    private static boolean isClicked;
+	private static int optionValue;
+	private static boolean isClicked;
 
-    private static EnsureFrame frame;
+	private static EnsureFrame frame;
 
-    public EnsureFrame(){
-	super(FilenameUtils.separatorsToSystem("resource/EnsureFrame2.png"));
-	initTextLabel();
-	initButtonPanel();
-	//exitButton.setBounds(600, 250, 30, 30);
-	//shrinkButton.setBounds(550, 255, 50, 20);
-	//exitButton.setEnabled(false);
-	removeExitAndShrinkButton();
-    }
-
-    public static EnsureFrame getEnsureFrame(){
-	//TODO
-	if(frame == null){
-	    frame = new EnsureFrame(); 
+	public EnsureFrame() {
+		super(FilenameUtils.separatorsToSystem("resource/EnsureFrame2.png"));
+		initTextLabel();
+		initButtonPanel();
+		removeExitAndShrinkButton();
 	}
-	return frame;
-    }
 
-    public static void showMessageDialog(String message){
-	final EnsureFrame ensure = EnsureFrame.getEnsureFrame();
-	ensure.getThirdButton().setText("OK");
-	ensure.getSecondButton().setText("");
-	ensure.getFirstButton().setText("");
-	ensure.getStatementLabel().setText(message);	
-	ensure.setVisible(true);
-	ensure.getThirdButton().addActionListener(new ActionListener(){
-	    public void actionPerformed(ActionEvent e){
-		ensure.setVisible(false);
-		ensure.dispose();
-	    }
-	});
-    }
+	public static EnsureFrame getEnsureFrame() {
+		// TODO
+		if (frame == null) {
+			frame = new EnsureFrame();
+		}
+		return frame;
+	}
 
-    public static int showConfirmDialog(String message){
-	final EnsureFrame ensure = EnsureFrame.getEnsureFrame();
-	ensure.getThirdButton().setText("Save");
-	ensure.getSecondButton().setText("Cancel");
-	ensure.getFirstButton().setText("Don't save");
-	ensure.getStatementLabel().setText(message);	
-	EventQueue.invokeLater(new Runnable() {
-	    public void run() {
+	public static void showMessageDialog(String message) {
+		final EnsureFrame ensure = EnsureFrame.getEnsureFrame();
+		ensure.getThirdButton().setText("OK");
+		ensure.getSecondButton().setText("");
+		ensure.getFirstButton().setText("");
+		ensure.getStatementLabel().setText(message);
 		ensure.setVisible(true);
-	    }
-	});
-	ensure.setVisible(true);
-	ensure.getThirdButton().addActionListener(new ActionListener(){
-	    public void actionPerformed(ActionEvent e){
-		optionValue = YES_OPTION;
-		isClicked = true;
-		ensure.setVisible(false);
-		ensure.dispose();
-	    }
-	});
-	ensure.getSecondButton().addActionListener(new ActionListener(){
-	    public void actionPerformed(ActionEvent e){
-		optionValue = CANCEL_OPTION;
-		isClicked = true;
-		ensure.setVisible(false);
-		ensure.dispose();
-	    }
-	});
-	ensure.getFirstButton().addActionListener(new ActionListener(){
-	    public void actionPerformed(ActionEvent e){
-		optionValue = NO_OPTION;
-		isClicked = true;
-		ensure.setVisible(false);
-		ensure.dispose();
-	    }
-	});
-	while (!isClicked) {
-	    try{
-		Thread.sleep(100);
-	    }catch(InterruptedException e){
-
-	    }
+		ensure.getThirdButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ensure.setVisible(false);
+				ensure.dispose();
+			}
+		});
 	}
-	return optionValue;
-    }
 
-    private void initTextLabel(){
-	statementLabel = new JLabel();
-	statementLabel.setOpaque(false);
-	statementLabel.setBounds(300, 315, 360, 40);
-	//statementLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
-	statementLabel.setHorizontalAlignment(SwingConstants.CENTER);
-	getContentPane().add(statementLabel);
-    }
+	public static int showConfirmDialog(String message) {
+		final EnsureFrame ensure = EnsureFrame.getEnsureFrame();
+		ensure.getThirdButton().setText("Save");
+		ensure.getSecondButton().setText("Cancel");
+		ensure.getFirstButton().setText("Don't save");
+		ensure.getStatementLabel().setText(message);
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				ensure.setVisible(true);
+			}
+		});
+		ensure.setVisible(true);
+		ensure.getThirdButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				optionValue = YES_OPTION;
+				isClicked = true;
+				ensure.setVisible(false);
+				ensure.dispose();
+			}
+		});
+		ensure.getSecondButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				optionValue = CANCEL_OPTION;
+				isClicked = true;
+				ensure.setVisible(false);
+				ensure.dispose();
+			}
+		});
+		ensure.getFirstButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				optionValue = NO_OPTION;
+				isClicked = true;
+				ensure.setVisible(false);
+				ensure.dispose();
+			}
+		});
+		while (!isClicked) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
 
-    private void initButtonPanel(){
-	buttonPanel = new JPanel();
-	buttonPanel.setOpaque(false);
+			}
+		}
+		return optionValue;
+	}
 
-	firstButton = new JButton();
-	secondButton = new JButton();
-	thirdButton = new JButton();
+	private void initTextLabel() {
+		statementLabel = new JLabel();
+		statementLabel.setOpaque(false);
+		statementLabel.setBounds(300, 315, 360, 40);
+		statementLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		getContentPane().add(statementLabel);
+	}
 
-	firstButton.setBorderPainted(false);
-	secondButton.setBorderPainted(false);
-	thirdButton.setBorderPainted(false);
-	firstButton.setContentAreaFilled(false);
-	secondButton.setContentAreaFilled(false);
-	thirdButton.setContentAreaFilled(false);
+	private void initButtonPanel() {
+		buttonPanel = new JPanel();
+		buttonPanel.setOpaque(false);
 
-	//buttonPanel.setLayout(new FlowLayout());
-	buttonPanel.add(firstButton);
-	buttonPanel.add(secondButton);
-	buttonPanel.add(thirdButton);
+		firstButton = new JButton();
+		secondButton = new JButton();
+		thirdButton = new JButton();
 
-	buttonPanel.setBounds(270, 400, 400, 150);
-	getContentPane().add(buttonPanel);
-    }
+		firstButton.setBorderPainted(false);
+		secondButton.setBorderPainted(false);
+		thirdButton.setBorderPainted(false);
+		firstButton.setContentAreaFilled(false);
+		secondButton.setContentAreaFilled(false);
+		thirdButton.setContentAreaFilled(false);
 
-    private JLabel getStatementLabel(){
-	return statementLabel;
-    }
+		buttonPanel.add(firstButton);
+		buttonPanel.add(secondButton);
+		buttonPanel.add(thirdButton);
 
-    private JButton getFirstButton(){
-	return firstButton;
-    }
+		buttonPanel.setBounds(270, 400, 400, 150);
+		getContentPane().add(buttonPanel);
+	}
 
-    private JButton getSecondButton(){
-	return secondButton;
-    }
+	private JLabel getStatementLabel() {
+		return statementLabel;
+	}
 
-    private JButton getThirdButton(){
-	return thirdButton;
-    }
+	private JButton getFirstButton() {
+		return firstButton;
+	}
 
-    public static void main(String args[]){
-	//EnsureFrame test = new EnsureFrame();
-	//test.setVisible(true);
-	int a = EnsureFrame.showConfirmDialog("Do you want to save the changes ?");
-	System.out.println(a);
-    }
+	private JButton getSecondButton() {
+		return secondButton;
+	}
+
+	private JButton getThirdButton() {
+		return thirdButton;
+	}
+
+	public static void main(String args[]) {
+		int a = EnsureFrame
+				.showConfirmDialog("Do you want to save the changes ?");
+		System.out.println(a);
+	}
 }
