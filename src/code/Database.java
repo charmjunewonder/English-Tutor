@@ -22,6 +22,7 @@ public class Database {
 
     private Account selectedAccount;
     private Connection connection;
+    private ArrayList<String> accountNames;
 
     public Database(){
 	try{
@@ -30,6 +31,7 @@ public class Database {
 		    FilenameUtils.separatorsToSystem("jdbc:sqlite:data/account_names.db"));
 	    Statement statement = connection.createStatement();
 	    statement.executeUpdate("CREATE TABLE IF NOT EXISTS account_names (Name UNIQUE);");
+	    accountNames = new ArrayList<String>();
 	    /* account names
 	    ResultSet rs = statement.executeQuery("SELECT * FROM account_names;");
 	    while(rs.next()){
@@ -57,23 +59,38 @@ public class Database {
 	    throws SQLException, InvalidFileNameException{
 	//Statement statement = connection.createStatement();
 	Account a = new Account(name);
-	PreparedStatement prep = connection.prepareStatement("INSERT INTO account_names VALUES (?)");
+	PreparedStatement prep = connection.prepareStatement("INSERT INTO account_names VALUES (?);");
 	prep.setString(1, name);
 	prep.executeUpdate();
-
+	accountNames.add(name);
 	return a;
     }
 
+    /**
+     * @param index
+     */
     public void deleteAccount(int index){
 	try{
 	    Statement statement = connection.createStatement();
-	    ResultSet result = statement.executeQuery(
-		    "SELECT * FROM account_names LIMIT 1 OFFSET "+index+";");
-	    String name = result.getString("Name");
-	    Account a = new Account(name);
-	    a.deleteSelf();
-	    statement.executeUpdate("DELETE FROM account_names WHERE Name = " + name + ";");
-
+	    //ResultSet result = statement.executeQuery(
+		//    "SELECT * FROM account_names LIMIT 1 OFFSET "+index+";");
+	    //String name = result.getString("Name");
+	    
+	    //statement.executeUpdate("DELETE FROM account_names WHERE Name = " + name + ";");
+	    //statement.executeUpdate("DELETE FROM account_names LIMIT 1 OFFSET "+index+";");
+	    accountNames.remove(index);
+	    connection.createStatement().executeUpdate("drop table account_names;");
+	    connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS account_names (Name UNIQUE);");
+	    PreparedStatement prep = connection.prepareStatement("INSERT INTO account_names VALUES (?);");
+	    int count = accountNames.size();
+	    for(int i = 0; i < count; ++i){
+		prep.setString(1, accountNames.get(i));
+		prep.addBatch();
+	    }
+	    connection.setAutoCommit(false);
+	    prep.executeBatch();
+	    connection.commit();
+	    
 	}catch(Exception e){
 	    e.printStackTrace();
 	}
@@ -81,7 +98,7 @@ public class Database {
 
     // just query a small amount of date, do not need a field to store the names;
     public ArrayList<String> getAllAccountNames(){
-	ArrayList<String> accountNames = new ArrayList<String>();
+	accountNames.clear();
 	try{
 	    Statement statement = connection.createStatement();
 	    ResultSet result = statement.executeQuery("SELECT * FROM account_names ;");
