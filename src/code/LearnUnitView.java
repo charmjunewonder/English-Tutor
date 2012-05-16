@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
@@ -23,26 +24,27 @@ import java.awt.Color;
 import javax.swing.JTextField;
 
 import java.util.ArrayList;
+import javax.swing.JScrollPane;
+import javax.swing.JScrollBar;
+import java.awt.GridBagLayout;
+
+import java.util.ArrayList;
 
 public class LearnUnitView extends JFrame {
 
 	private JPanel contentPane;
-	private JLabel englishLabel;
-	private JLabel chineseLabel;
-	private JButton nextButton;
-	private JButton previousButton;
-	private JButton soundButton;
+	private ArrayList<JLabel> englishLabels;
+	private ArrayList<JLabel> chineseLabels;
+	private ArrayList<JButton> soundButtons;
 	
-	private SoundEngine soundEngine;
-
 	/**
 	 * Launch the application.
-	 *
+	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LearnUnitView frame = new LearnUnitView();
+					LearnUnitView frame = new LearnUnitView(10);
 					frame.setVisible(true);
 				}
 				catch (Exception e) {
@@ -50,94 +52,54 @@ public class LearnUnitView extends JFrame {
 				}
 			}
 		});
-	}/
+	}
 
 	/**
 	 * Create the frame.
 	 */
-	public LearnUnitView() {
-		soundEngine = new SoundEngine();
+	public LearnUnitView(int numOfColumn) {		
+		
+		chineseLabels = new ArrayList<JLabel>();	
+		englishLabels = new ArrayList<JLabel>();	
+		soundButtons = new ArrayList<JButton>();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 442);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		SpringLayout sl_contentPane = new SpringLayout();
 		contentPane.setLayout(sl_contentPane);
 		
-		nextButton = new JButton("Next");
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, nextButton, -10, SpringLayout.SOUTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, nextButton, -10, SpringLayout.EAST, contentPane);
-		contentPane.add(nextButton);
+		JScrollPane scrollPane = new JScrollPane();
+		sl_contentPane.putConstraint(SpringLayout.NORTH, scrollPane, 22, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, scrollPane, 43, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, scrollPane, -26, SpringLayout.SOUTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, scrollPane, -31, SpringLayout.EAST, contentPane);
+		contentPane.add(scrollPane);
 		
-		previousButton = new JButton("Nothing");
-		sl_contentPane.putConstraint(SpringLayout.WEST, previousButton, 10, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, previousButton, 0, SpringLayout.SOUTH, nextButton);
-		contentPane.add(previousButton);
+		JPanel panel = new JPanel();
+		//panel.setBounds(0, 0, 450, 500);
+		scrollPane.setViewportView(panel);
+		panel.setLayout(null);
 		
-		soundButton = new JButton("Sound");
-		sl_contentPane.putConstraint(SpringLayout.NORTH, soundButton, 38, SpringLayout.NORTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, soundButton, 0, SpringLayout.EAST, nextButton);
-		contentPane.add(soundButton);
-		
-		englishLabel = new JLabel("English");
-		englishLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		sl_contentPane.putConstraint(SpringLayout.NORTH, englishLabel, 0, SpringLayout.NORTH, soundButton);
-		sl_contentPane.putConstraint(SpringLayout.WEST, englishLabel, 186, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, englishLabel, -81, SpringLayout.WEST, soundButton);
-		contentPane.add(englishLabel);
-		
-		chineseLabel = new JLabel("Chinese");
-		chineseLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		sl_contentPane.putConstraint(SpringLayout.NORTH, chineseLabel, 84, SpringLayout.SOUTH, englishLabel);
-		sl_contentPane.putConstraint(SpringLayout.WEST, chineseLabel, 186, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, chineseLabel, -204, SpringLayout.EAST, contentPane);
-		contentPane.add(chineseLabel);
+		for(int i = 0; i < numOfColumn; ++i){
+			JLabel chineseLabel = new JLabel("New label");
+			chineseLabel.setBounds(25, 25*i, 61, 16);
+			panel.add(chineseLabel);
+			chineseLabels.add(chineseLabel);
+			
+			JLabel englishLabel = new JLabel("New label");
+			englishLabel.setBounds(123, 25*i, 61, 16);
+			panel.add(englishLabel);
+			englishLabels.add(englishLabel);
+			
+			JButton soundButton = new JButton("Sound");
+			soundButton.setBounds(197, 25*i, 117, 29);
+			panel.add(soundButton);
+			soundButtons.add(soundButton);
+		}
+
 	}
 	
-	public void updatePhrase(Phrase p){
-		chineseLabel.setText(p.chinese);
-		englishLabel.setText(p.english);
-		playSound(p);
-	}
-	
-	public void playSound(Phrase p){
-		soundEngine.playSound(p.audio);
-	}
-	
-	/**
-	 * @return the englishLabel
-	 */
-	public JLabel getEnglishLabel() {
-		return englishLabel;
-	}
-
-	/**
-	 * @return the chineseLabel
-	 */
-	public JLabel getChineseLabel() {
-		return chineseLabel;
-	}
-
-	/**
-	 * @return the nextButton
-	 */
-	public JButton getNextButton() {
-		return nextButton;
-	}
-
-	/**
-	 * @return the previousButton
-	 */
-	public JButton getPreviousButton() {
-		return previousButton;
-	}
-
-	/**
-	 * @return the soundButton
-	 */
-	public JButton getSoundButton() {
-		return soundButton;
-	}
 }

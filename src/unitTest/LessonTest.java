@@ -67,14 +67,14 @@ public class LessonTest {
 	}
 
 	/**
-	 * Test method for {@link Lesson#addPharse(java.lang.String, java.lang.String, java.lang.String)}
+	 * Test method for {@link Lesson#addPharse(java.lang.String, java.lang.String, java.lang.String, boolean)}
 	 * and {@link Lesson#getPhrase(int)}.
 	 */
 	@Test
 	public void testAddAndGetPharse() {
 		Lesson l = new Lesson("Eric", conn, "Lesson_1");
-		l.addPharse("你好", "Hello", null);
-		l.addPharse("好梦", "Nice Dream", null);
+		l.addPharse("你好", "Hello", null, false);
+		l.addPharse("好梦", "Nice Dream", null, false);
 		Phrase p = l.getPhrase(2);
 		assertEquals("check Chinese of the second phrase", p.chinese, "好梦");	
 		assertEquals("check English of the second phrase", p.english, "Nice Dream");	

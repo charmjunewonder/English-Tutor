@@ -10,6 +10,7 @@ public class LearnEnglishSystem {
 	}
 
 	private void addAccount(Account a){
+		accounts.add(a);
 	}
 
 	public void createNewAccount(String accountName){

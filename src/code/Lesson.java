@@ -13,6 +13,8 @@ public class Lesson {
 	private String accountName;
 	private String lessonName;
 	private int phraseCount;
+	private boolean isLearnComplete;
+	private boolean isTested;
 	
 	public Lesson(String accountName, Connection connection, String lessonName){
 		try{
@@ -22,8 +24,8 @@ public class Lesson {
 			this.accountName = accountName;
 			statement = connection.createStatement();
 			statement.executeUpdate("drop table if exists "+accountName+"_"+lessonName+";");
-			statement.executeUpdate("create table "+accountName+"_"+lessonName+" (Chinese, English, Audio);");
-			prep = connection.prepareStatement( "insert into "+accountName+"_"+lessonName+" values (?, ?, ?);");
+			statement.executeUpdate("create table "+accountName+"_"+lessonName+" (Chinese, English, Audio, isLearned);");
+			prep = connection.prepareStatement( "insert into "+accountName+"_"+lessonName+" values (?, ?, ?, ?);");
 		}
 		catch(Exception e){
 			System.out.println(e.toString());
@@ -63,11 +65,30 @@ public class Lesson {
 		return randomNums;
 	}
 	
-	public void addPharse(String chinese, String english, String audio){
+	public void addPharse(String chinese, String english, String audio, boolean isLearned){
 		try{
 			prep.setString(1, chinese);
 			prep.setString(2, english);
 			prep.setString(3, audio);
+			prep.setBoolean(4, isLearned);
+			prep.addBatch();
+			connection.setAutoCommit(false);
+			prep.executeBatch();
+			connection.setAutoCommit(true);
+
+			phraseCount++;
+		}
+		catch(Exception e){
+			System.out.println(e.toString());
+		}
+	}
+	
+	public void addPhrase(Phrase p){
+		try{
+			prep.setString(1, p.chinese);
+			prep.setString(2, p.english);
+			prep.setString(3, p.audio);
+			prep.setBoolean(4, p.isLearned);
 			prep.addBatch();
 			connection.setAutoCommit(false);
 			prep.executeBatch();

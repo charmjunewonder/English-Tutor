@@ -12,6 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
+import java.awt.Color;
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import java.awt.Component;
 
 public class TestUnitView extends JFrame {
 
@@ -21,6 +24,8 @@ public class TestUnitView extends JFrame {
 	private JButton nextButton;
 	private JButton soundButton;
 	private JLabel questionLabel;
+	private JLabel correctAnswerLabel;
+
 
 	/**
 	 * Launch the application.
@@ -51,7 +56,7 @@ public class TestUnitView extends JFrame {
 		SpringLayout sl_contentPane = new SpringLayout();
 		contentPane.setLayout(sl_contentPane);
 		
-		questionLabel = new JLabel("Test");
+		questionLabel = new JLabel("");
 		questionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, questionLabel, 51, SpringLayout.NORTH, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.WEST, questionLabel, 50, SpringLayout.WEST, contentPane);
@@ -70,7 +75,7 @@ public class TestUnitView extends JFrame {
 		contentPane.add(answerTextField);
 		answerTextField.setColumns(10);
 		
-		nextButton = new JButton("Next");
+		nextButton = new JButton("Verify");
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, nextButton, -10, SpringLayout.SOUTH, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.EAST, nextButton, 0, SpringLayout.EAST, soundButton);
 		contentPane.add(nextButton);
@@ -79,8 +84,16 @@ public class TestUnitView extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, progressBar, 0, SpringLayout.SOUTH, nextButton);
 		sl_contentPane.putConstraint(SpringLayout.EAST, progressBar, -84, SpringLayout.WEST, nextButton);
 		contentPane.add(progressBar);
+		
+		correctAnswerLabel = new JLabel("");
+		correctAnswerLabel.setForeground(Color.RED);
+		sl_contentPane.putConstraint(SpringLayout.WEST, correctAnswerLabel, 15, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, correctAnswerLabel, -27, SpringLayout.NORTH, progressBar);
+		sl_contentPane.putConstraint(SpringLayout.EAST, correctAnswerLabel, 161, SpringLayout.WEST, contentPane);
+		contentPane.add(correctAnswerLabel);
+		contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{nextButton, answerTextField, progressBar, soundButton, questionLabel, correctAnswerLabel}));
 	}
-
+	
 	/**
 	 * @return the contentPane
 	 */
@@ -121,5 +134,12 @@ public class TestUnitView extends JFrame {
 	 */
 	public JLabel getQuestionLabel() {
 		return questionLabel;
+	}
+
+	/**
+	 * @return the correctAnswerLabel
+	 */
+	public JLabel getCorrectAnswerLabel() {
+		return correctAnswerLabel;
 	}
 }
