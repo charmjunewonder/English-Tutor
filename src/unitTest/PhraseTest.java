@@ -19,44 +19,44 @@ import code.Phrase;
  */
 public class PhraseTest {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
+    /**
+     * @throws java.lang.Exception
+     */
+    @BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
+    /**
+     * @throws java.lang.Exception
+     */
+    @AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
+    /**
+     * @throws java.lang.Exception
+     */
+    @Before
 	public void setUp() throws Exception {
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
+    /**
+     * @throws java.lang.Exception
+     */
+    @After
 	public void tearDown() throws Exception {
 	}
 
-	@Test
+    @Test
 	public void accuracyTest() {
-		Phrase p = new Phrase("你好", "Hello", null);
-		assertEquals("default accuracy should be 0", 0, p.getAccuracy());
-		p.increaseAccuracy();
-		assertEquals("after increasing accuracy", 100, p.getAccuracy());
-		p.decreaseAccuracy();
-		assertEquals("after decreasing accuracy", 50, p.getAccuracy());
-		p.decreaseAccuracy();
-		assertEquals("after decreasing accuracy", 33, p.getAccuracy());
+	    Phrase p = new Phrase("你好", "Hello", null);
+	    assertEquals("default accuracy should be 0", 0, p.getAccuracy());
+	    p.increaseAccuracy();
+	    assertEquals("after increasing accuracy", 100, p.getAccuracy());
+	    p.decreaseAccuracy();
+	    assertEquals("after decreasing accuracy", 50, p.getAccuracy());
+	    p.decreaseAccuracy();
+	    assertEquals("after decreasing accuracy", 33, p.getAccuracy());
 	}
 
 }

@@ -3,23 +3,23 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class LearnEnglishSystem {
-	private ArrayList<Account> accounts;
-	private Set<String> accountNames;
+    private ArrayList<Account> accounts;
+    private Set<String> accountNames;
 
-	public LearnEnglishSystem(){
-	}
+    public LearnEnglishSystem(){
+    }
 
-	private void addAccount(Account a){
-		accounts.add(a);
-	}
+    private void addAccount(Account a){
+	accounts.add(a);
+    }
 
-	public void createNewAccount(String accountName){
-		if (accountNames.add(accountName)){
-			Account a = new Account(accountName);
-			accounts.add(a);
-		}
+    public void createNewAccount(String accountName){
+	if (accountNames.add(accountName)){
+	    Account a = new Account(accountName);
+	    accounts.add(a);
 	}
-	public static void main(String[] args) {
-		
-	}
+    }
+    public static void main(String[] args) {
+
+    }
 }

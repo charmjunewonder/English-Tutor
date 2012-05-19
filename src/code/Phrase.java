@@ -1,95 +1,94 @@
 package code;
 
 public class Phrase {
-	private String chinese;
-	private String english;
-	private String audio;
-	private String lastReviewTime;
-	private int accuracy;
-	private int testCount;
-	private int rightCount;
-	public Phrase(String english, String chinese, String audio){
-		this.chinese = chinese;
-		this.english = english;
-		this.audio = audio;
-	}
-	
-	public Phrase(Phrase p){
-		chinese = p.chinese;
-		english = p.english;
-		audio = p.audio;
-	}
+    private String chinese;
+    private String english;
+    private String audio;
+    private String lastReviewTime;
+    private int accuracy;
+    private int testCount;
+    public Phrase(String english, String chinese, String audio){
+	this.chinese = chinese;
+	this.english = english;
+	this.audio = audio;
+    }
 
-	/**
-	 * @return the chinese
-	 */
-	public String getChinese() {
-		return chinese;
-	}
+    public Phrase(Phrase p){
+	chinese = p.chinese;
+	english = p.english;
+	audio = p.audio;
+    }
 
-	/**
-	 * @param chinese the chinese to set
-	 */
-	public void setChinese(String chinese) {
-		this.chinese = chinese;
-	}
+    /**
+     * @return the chinese
+     */
+    public String getChinese() {
+	return chinese;
+    }
 
-	/**
-	 * @return the english
-	 */
-	public String getEnglish() {
-		return english;
-	}
+    /**
+     * @param chinese the chinese to set
+     */
+    public void setChinese(String chinese) {
+	this.chinese = chinese;
+    }
 
-	/**
-	 * @param english the english to set
-	 */
-	public void setEnglish(String english) {
-		this.english = english;
-	}
+    /**
+     * @return the english
+     */
+    public String getEnglish() {
+	return english;
+    }
 
-	/**
-	 * @return the audio
-	 */
-	public String getAudio() {
-		return audio;
-	}
+    /**
+     * @param english the english to set
+     */
+    public void setEnglish(String english) {
+	this.english = english;
+    }
 
-	/**
-	 * @param audio the audio to set
-	 */
-	public void setAudio(String audio) {
-		this.audio = audio;
-	}
+    /**
+     * @return the audio
+     */
+    public String getAudio() {
+	return audio;
+    }
 
-	/**
-	 * @return the lastReviewTime
-	 */
-	public String getLastReviewTime() {
-		return lastReviewTime;
-	}
+    /**
+     * @param audio the audio to set
+     */
+    public void setAudio(String audio) {
+	this.audio = audio;
+    }
 
-	/**
-	 * @param lastReviewTime the lastReviewTime to set
-	 */
-	public void setLastReviewTime(String lastReviewTime) {
-		this.lastReviewTime = lastReviewTime;
-	}
+    /**
+     * @return the lastReviewTime
+     */
+    public String getLastReviewTime() {
+	return lastReviewTime;
+    }
 
-	/**
-	 * @return the accuracy
-	 */
-	public int getAccuracy() {
-		return accuracy;
-	}
+    /**
+     * @param lastReviewTime the lastReviewTime to set
+     */
+    public void setLastReviewTime(String lastReviewTime) {
+	this.lastReviewTime = lastReviewTime;
+    }
 
-	public void increaseAccuracy(){
-		int i = (int) ((int) testCount * accuracy * 0.01);
-		accuracy = (int) ( ++i * 100.0 / ++testCount);
-	}
+    /**
+     * @return the accuracy
+     */
+    public int getAccuracy() {
+	return accuracy;
+    }
 
-	public void decreaseAccuracy(){
-		int i = (int) ((int) testCount * accuracy * 0.01);
-		accuracy = (int) (i  * 100.0 / ++testCount);
-	}
+    public void increaseAccuracy(){
+	int i = (int) ((int) testCount * accuracy * 0.01);
+	accuracy = (int) ( ++i * 100.0 / ++testCount);
+    }
+
+    public void decreaseAccuracy(){
+	int i = (int) ((int) testCount * accuracy * 0.01);
+	accuracy = (int) (i  * 100.0 / ++testCount);
+    }
 }

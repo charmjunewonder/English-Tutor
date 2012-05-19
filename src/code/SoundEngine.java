@@ -6,27 +6,27 @@ import javazoom.jl.player.Player;
 
 
 public class SoundEngine {
-	private Player player;
-	public SoundEngine(){
+    private Player player;
+    public SoundEngine(){
+    }
+
+    public void playSound(String filename){
+	try {
+	    FileInputStream fis     = new FileInputStream(filename);
+	    BufferedInputStream bis = new BufferedInputStream(fis);
+	    player = new Player(bis);
+	}
+	catch (Exception e) {
+	    System.out.println("Problem playing file " + filename);
+	    System.out.println(e);
 	}
 
-	public void playSound(String filename){
-		try {
-		    FileInputStream fis     = new FileInputStream(filename);
-		    BufferedInputStream bis = new BufferedInputStream(fis);
-		    player = new Player(bis);
-		}
-		catch (Exception e) {
-		    System.out.println("Problem playing file " + filename);
-		    System.out.println(e);
-		}
-
-		// run in new thread to play in background
-		new Thread() {
-			public void run() {
-			    try { player.play(); }
-			    catch (Exception e) { System.out.println(e); }
-			}
-		}.start();
-	}
+	// run in new thread to play in background
+	new Thread() {
+	    public void run() {
+		try { player.play(); }
+		catch (Exception e) { System.out.println(e); }
+	    }
+	}.start();
+    }
 }
