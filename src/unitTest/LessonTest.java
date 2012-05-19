@@ -59,7 +59,7 @@ public class LessonTest {
 	 * Test method for {@link Lesson#Lesson(java.sql.Connection, int)}.
 	 */
 	@Test
-	public void testLesson() {
+	public void testLesson() throws Exception{
 		Lesson l = new Lesson("Eric", conn, "Lesson_1");
 		assertNotNull("new Lesson should not be null", l);
 		assertEquals("lesson should contains correct account name", l.getAccountName(), "Eric");
@@ -67,22 +67,51 @@ public class LessonTest {
 	}
 
 	/**
-	 * Test method for {@link Lesson#addPharse(java.lang.String, java.lang.String, java.lang.String, boolean)}
+	 * Test method for {@link Lesson#addPharse(java.lang.String, java.lang.String, java.lang.String)}
 	 * and {@link Lesson#getPhrase(int)}.
 	 */
 	@Test
-	public void testAddAndGetPharse() {
+	public void testAddAndGetPharse() throws Exception{
+		Statement statement = conn.createStatement();
+		statement.executeUpdate("drop table if exists Lesson_1;");
 		Lesson l = new Lesson("Eric", conn, "Lesson_1");
-		l.addPharse("你好", "Hello", null, false);
-		l.addPharse("好梦", "Nice Dream", null, false);
+		l.addPharse("Hello", "你好", null);
+		l.addPharse("Nice Dream", "好梦", null);		
 		Phrase p = l.getPhrase(2);
-		assertEquals("check Chinese of the second phrase", p.chinese, "好梦");	
-		assertEquals("check English of the second phrase", p.english, "Nice Dream");	
+		assertEquals("check Chinese of the second phrase", "好梦", p.getChinese());	
+		assertEquals("check English of the second phrase", "Nice Dream", p.getEnglish());	
 		p = l.getPhrase(1);
-		assertEquals("check Chinese of the first phrase", p.chinese, "你好");	
-		assertEquals("check English of the first phrase", p.english, "Hello");	
+		assertEquals("check Chinese of the first phrase", "你好", p.getChinese());	
+		assertEquals("check English of the first phrase", "Hello", p.getEnglish());	
 	}
 
+	/**
+	 * Test method for {@link Lesson#getPhrase(int)}.
+	 */
+	@Test
+	public void testGetPharse() throws Exception{
+		Lesson l = new Lesson("Eric", conn, "Lesson_1");
+		Phrase p = l.getPhrase(2);
+		assertEquals("check Chinese of the second phrase", "好梦", p.getChinese());	
+		assertEquals("check English of the second phrase", "Nice Dream", p.getEnglish());	
+		p = l.getPhrase(1);
+		assertEquals("check Chinese of the first phrase", "你好", p.getChinese());	
+		assertEquals("check English of the first phrase", "Hello", p.getEnglish());
+	}
+	
+	/**
+	 * Test method for {@link Lesson#getPhrase(int)}.
+	 */
+	@Test
+	public void testUniqueAddPharse(){
+		try{
+			Lesson l = new Lesson("Eric", conn, "Lesson_1");
+			l.addPharse("Nice Dream", "好梦", null);	
+			fail("Unique");
+		}catch(Exception e){
+			assertEquals("check Exception of the first phrase", "column English is not unique", e.getMessage());	
+		}
+	}
 
 	/**
 	 * Test method for {@link Lesson#close()}.

@@ -14,7 +14,7 @@ public class Account {
 		try{
 			this.name = name;
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:"+name+".db");
+			connection = DriverManager.getConnection("jdbc:sqlite:data/"+name+".db");
 		}		
 		catch(Exception e){
 			System.out.println(e.toString());
