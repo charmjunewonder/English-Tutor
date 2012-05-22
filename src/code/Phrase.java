@@ -13,6 +13,10 @@ public class Phrase {
 	this.audio = audio;
     }
 
+    public int getTestCount() {
+	return testCount;
+    }
+
     public Phrase(Phrase p){
 	chinese = p.chinese;
 	english = p.english;
