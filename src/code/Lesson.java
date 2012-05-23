@@ -1,17 +1,21 @@
 package code;
 
-import java.sql.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Random;
 
 public class Lesson {
     private ArrayList<Phrase> phrases;
     private Connection connection;
     private Statement statement;
     private PreparedStatement prep;
-    private String accountName;
     private String lessonName;
     private int phraseCount;
     //private int needToInsertAfterIndex; // indicate where to insert when existing
@@ -27,40 +31,95 @@ public class Lesson {
     private ArrayList<String> newTestResultTimes;
     private ArrayList<Integer> newTestResultScores;
 
-    private boolean isLearnComplete;
-    private boolean isTested;
+    //private boolean isLearnComplete;
+    //private boolean isTested;
+    private boolean isNeededToRestore;
 
-    public Lesson(String accountName, Connection connection, String lessonName) throws Exception{
+    public Lesson(Connection connection, String lessonName) throws Exception{
 	this.connection = connection;
 	this.lessonName = lessonName;
 	this.phraseCount = 0;
-	this.accountName = accountName;
+
+	phrases = new ArrayList<Phrase>();
+	testResultTimes = new ArrayList<String>();
+	testResultScores = new ArrayList<Integer>();
+	newTestResultTimes = new ArrayList<String>();
+	newTestResultScores = new ArrayList<Integer>();
+
 	statement = connection.createStatement();
+	statement.executeUpdate("CREATE TABLE IF NOT EXISTS "+lessonName+" (English, Chinese, Audio, LastReviewTime, Accuracy, TestCount);");
     }
 
-    public void loadDefaultLessons(){
+    // load default lesson_index
+    public Lesson(Connection connection, int index) throws Exception{
+	this.connection = connection;
+	this.phraseCount = 0;
+
+	phrases = new ArrayList<Phrase>();
+	testResultTimes = new ArrayList<String>();
+	testResultScores = new ArrayList<Integer>();
+	newTestResultTimes = new ArrayList<String>();
+	newTestResultScores = new ArrayList<Integer>();
+
+	statement = connection.createStatement();
+	loadDefaultLesson(1);
+    }
+
+    public void loadDefaultLesson(int index){
 	try{
-	    statement.executeUpdate("create table )
+	    //statement.executeUpdate("create table if not exists Lesson_" + index + "(English, Chinese, Audio, LastReviewTime, Accuracy, TestCount);");	
+	    prep = connection.prepareStatement( "INSERT INTO "+lessonName+" VALUES (?, ?, ?, ?, ?, ?);");
+
+	    BufferedReader br = new BufferedReader(new FileReader("data/DefaultLessons/Lesson_" + index + ".csv"));
+	    String line;
+	    while ( (line=br.readLine()) != null)
+	    {
+		String[] values = line.split(",");    //separator
+
+		Phrase p = new Phrase(values[0], values[1], values[2]);
+		phrases.add(p);
+		//Use a PeparedStatemant, it?s easier and safer 
+		prep.setString(1, values[0]);
+		prep.setString(2, values[1]);
+		prep.setString(3, values[2]);
+		prep.addBatch();
+
+	    }
+	    br.close();
+
+	    connection.setAutoCommit(false);
+	    prep.executeBatch();
+	    connection.commit();
+
+	    lessonName = "Lesson_" + index;
+	}catch(Exception e){
+	    System.out.println(e.toString());
 	}
+    }
+
+    public boolean isNeededToRestore() {
+        return isNeededToRestore;
+    }
+
+    public void setNeededToRestore(boolean isNeededToRestore) {
+        this.isNeededToRestore = isNeededToRestore;
     }
 
     public void loadFromDatabase(){
 	try{
 	    // phrases
-	    statement.executeUpdate("create table if not exists "+lessonName+" (English, Chinese, Audio, LastReviewTime, Accuracy, TestCount);");
-	    ResultSet rs = statement.executeQuery("select * from " + lessonName +";");
+	    statement.executeUpdate("CREATE TABLE IF NOT EXISTS "+lessonName+" (English, Chinese, Audio, LastReviewTime, Accuracy, TestCount);");
+	    ResultSet rs = statement.executeQuery("SELECT * FROM " + lessonName +";");
 	    while (rs.next()) {
-		//needToInsertAfterIndex++;
 		Phrase p = new Phrase(rs.getString("English"), rs.getString("Chinese"), rs.getString("Audio"));
 		phrases.add(p);
 	    }
 	    rs.close();
 
 	    // test results
-	    statement.executeUpdate("create table if not exists "+lessonName+"_result (Time, Score);");
-	    rs = statement.executeQuery("select * from " + lessonName +"_result ;");
+	    statement.executeUpdate("CREATE TABLE IF NOT EXISTS "+lessonName+"_result (Time, Score);");
+	    rs = statement.executeQuery("SELECT * FROM " + lessonName +"_result ;");
 	    while (rs.next()) {
-		Phrase p = new Phrase(rs.getString("English"), rs.getString("Chinese"), rs.getString("Audio"));
 		testResultTimes.add(rs.getString("Time"));
 		testResultScores.add(rs.getInt("Score"));
 	    }
@@ -82,13 +141,6 @@ public class Lesson {
      */
     public void setLessonName(String lessonName) {
 	this.lessonName = lessonName;
-    }
-
-    /**
-     * @return the accountName
-     */
-    public String getAccountName() {
-	return accountName;
     }
 
     public int getPhraseCount(){
@@ -128,6 +180,7 @@ public class Lesson {
     }
 
     public void addPharse(String english, String chinese, String audio) throws Exception{
+	prep = connection.prepareStatement( "INSERT INTO "+lessonName+" VALUES (?, ?, ?, ?, ?, ?);");
 	prep.setString(1, english);
 	prep.setString(2, chinese);
 	prep.setString(3, audio);
@@ -174,7 +227,7 @@ public class Lesson {
     }*/
 
     public Phrase getPhrase(int row){
-	return phrases.get(row);
+	return phrases.get(row-1);
     }
 
     public ArrayList<Phrase> getAllPhrases(){
@@ -184,8 +237,7 @@ public class Lesson {
     public void close(){
 	try{
 	    connection.close();
-	}
-	catch(Exception e){
+	} catch(Exception e){
 	    System.out.println(e.toString());
 	}
     }
@@ -206,9 +258,9 @@ public class Lesson {
     public void writeToDatabase(){
 	try{
 	    // phrase
-	    statement.executeUpdate("drop table if exists" + lessonName + ";");
-	    statement.executeUpdate("create table "+lessonName+" (English, Chinese, Audio, LastReviewTime, Accuracy, TestCount);");
-	    prep = connection.prepareStatement( "insert into "+lessonName+" values (?, ?, ?, ?, ?, ?);");
+	    statement.executeUpdate("DROP TABLE IF EXISTS" + lessonName + ";");
+	    statement.executeUpdate("CREATE TABLE "+lessonName+" (English, Chinese, Audio, LastReviewTime, Accuracy, TestCount);");
+	    prep = connection.prepareStatement("INSERT INTO "+lessonName+" VALUES (?, ?, ?, ?, ?, ?);");
 	    Iterator<Phrase> itr = phrases.iterator();
 	    while(itr.hasNext()){
 		Phrase p = itr.next();
@@ -225,7 +277,7 @@ public class Lesson {
 	    connection.commit();
 
 	    // result
-	    prep = connection.prepareStatement( "insert into "+lessonName+"_result values (?, ?);");
+	    prep = connection.prepareStatement( "INSERT INTO "+lessonName+"_result VALUES (?, ?);");
 	    Iterator<String> timeItr = newTestResultTimes.iterator();
 	    Iterator<Integer> scoreItr = newTestResultScores.iterator();
 	    while(timeItr.hasNext() && scoreItr.hasNext()){
@@ -249,8 +301,8 @@ public class Lesson {
 
     public void deleteSelf(){
 	try{
-	    statement.executeUpdate("drop table " + lessonName + ";");
-	    statement.executeUpdate("drop table " + lessonName + "_result;");
+	    statement.executeUpdate("DROP TABLE " + lessonName + ";");
+	    statement.executeUpdate("DROP TABLE " + lessonName + "_result;");
 	}catch(Exception e){
 	    System.out.println(e.toString());
 	}

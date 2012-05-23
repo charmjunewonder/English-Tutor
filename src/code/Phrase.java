@@ -13,6 +13,15 @@ public class Phrase {
 	this.audio = audio;
     }
 
+    public Phrase(String english, String chinese, String audio, String time, int accuracy, int count){
+	this.chinese = chinese;
+	this.english = english;
+	this.audio = audio;
+	lastReviewTime = time;
+	this.accuracy = accuracy;
+	testCount = count;
+    }
+    
     public int getTestCount() {
 	return testCount;
     }

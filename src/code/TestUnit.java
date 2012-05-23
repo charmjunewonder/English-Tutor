@@ -43,27 +43,27 @@ public class TestUnit{
 	addActionListener();
 	addKeyBinding();
 	EventQueue.invokeLater(new Runnable() {
-		public void run() {
+	    public void run() {
 		try {
-		view.setVisible(true);
+		    view.setVisible(true);
 		}
 		catch (Exception e) {
-		e.printStackTrace();
+		    e.printStackTrace();
 		}
-		}
-		});
+	    }
+	});
 
 	showNextPhrase();
     }
 
     public void prepareTenPhrase(){
 	switch(testType){
-	    case TEST_ONE_LESSON:
-		tenPhrases = selectedLesson.getRandomTenPhrase();
-		break;
-	    case TEST_ALL_LESSONS:
-		tenPhrases = account.getRandomTenPhrase();
-		break;
+	case TEST_ONE_LESSON:
+	    tenPhrases = selectedLesson.getRandomTenPhrase();
+	    break;
+	case TEST_ALL_LESSONS:
+	    tenPhrases = account.getRandomTenPhrase();
+	    break;
 	}
 	view.getProgressBar().setMaximum(tenPhrases.size());
     }
@@ -75,7 +75,7 @@ public class TestUnit{
 	int index = currentPhraseIndex +1;
 	if(index > tenPhrases.size()-1 || index < 0) return;
 	Phrase p = new Phrase(tenPhrases.get(++currentPhraseIndex));
-	if(p == null) return;
+	if(p == null)	return;
 
 	currentPhrase = p;
 	view.getProgressBar().setValue(currentPhraseIndex+1);
@@ -83,16 +83,16 @@ public class TestUnit{
 	Random ran = new Random();
 	int rnum = ran.nextInt(3);
 	switch(rnum){
-	    case 0: // show Chinese
-		String chinese = p.chinese;
-		p.chinese = p.english;
-		p.english = chinese;
-	    case 1: // show English
-		view.getQuestionLabel().setText(p.chinese);
-		break;
-	    case 2: // speak English
-		playSound(p);
-		break;
+	case 0: // show Chinese
+	    String chinese = p.getChinese();
+	    p.setChinese(p.getEnglish());
+	    p.setEnglish(chinese);
+	case 1: // show English
+	    view.getQuestionLabel().setText(p.getChinese());
+	    break;
+	case 2: // speak English
+	    playSound(p);
+	    break;
 	}
     }
 
@@ -104,7 +104,7 @@ public class TestUnit{
 
     private void verifyAnswer(){
 	testState = TestState.NEXT_PHRASE;
-	if(currentPhrase.english.equals(view.getAnswerTextField().getText())){
+	if(currentPhrase.getEnglish().equals(view.getAnswerTextField().getText())){
 	    // correct answer
 	    totalCorrectPhraseNum++;
 	    // TODO add some correct response
@@ -114,38 +114,38 @@ public class TestUnit{
 	    // wrong answer
 	    //TODO
 
-	    view.getCorrectAnswerLabel().setText(currentPhrase.english);
+	    view.getCorrectAnswerLabel().setText(currentPhrase.getEnglish());
 	}
     }
 
     public void updateViewPhrase(Phrase p){
-	view.getAnswerTextField().setText(p.chinese);
+	view.getAnswerTextField().setText(p.getChinese());
     }	
 
     public void playSound(Phrase p){
-	soundEngine.playSound(p.audio);
+	soundEngine.playSound(p.getAudio());
     }	
 
     private void pressNextButton(){
 	switch(testState){
-	    case VERIFY_ANSWER:
-		verifyAnswer();
-		if(currentPhraseIndex == tenPhrases.size()-1){
-		    view.getNextButton().setText("Finish");
-		    testState = TestState.FINISH_TEST;
-		}else{
-		    view.getNextButton().setText("Next");
-		}
-		break;
-	    case NEXT_PHRASE:
-		view.getNextButton().setText("Verify");
-		testState = TestState.VERIFY_ANSWER;
-		clearComponent();
-		showNextPhrase();
-		break;
-	    case FINISH_TEST:
-		// TODO
-		break;
+	case VERIFY_ANSWER:
+	    verifyAnswer();
+	    if(currentPhraseIndex == tenPhrases.size()-1){
+		view.getNextButton().setText("Finish");
+		testState = TestState.FINISH_TEST;
+	    }else{
+		view.getNextButton().setText("Next");
+	    }
+	    break;
+	case NEXT_PHRASE:
+	    view.getNextButton().setText("Verify");
+	    testState = TestState.VERIFY_ANSWER;
+	    clearComponent();
+	    showNextPhrase();
+	    break;
+	case FINISH_TEST:
+	    // TODO
+	    break;
 	}
 
 	// turn to 'Finish' button
@@ -153,17 +153,17 @@ public class TestUnit{
 
     private void addActionListener(){
 	view.getNextButton().addActionListener(new ActionListener(){
-		public void actionPerformed(ActionEvent e){
+	    public void actionPerformed(ActionEvent e){
 		pressNextButton();
-		}
-		});
+	    }
+	});
 
 
 	view.getSoundButton().addActionListener(new ActionListener(){
-		public void actionPerformed(ActionEvent e){
+	    public void actionPerformed(ActionEvent e){
 		playSound(currentPhrase);	
-		}			
-		});
+	    }			
+	});
 
     }
 
@@ -182,7 +182,7 @@ public class TestUnit{
     public static void main(String[] args) throws Exception {
 	Class.forName("org.sqlite.JDBC");
 	Connection conn = DriverManager.getConnection("jdbc:sqlite:data/test.db");
-	Lesson l = new Lesson("Eric", conn, "Lesson_1");
+	Lesson l = new Lesson(conn, "Lesson_1");
 	l.addPharse("你好", "Hello", "sounds/101.mp3");
 	l.addPharse("好梦", "Nice Dream", "sounds/102.mp3");
 

@@ -1,8 +1,13 @@
 package code;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.Set;
 
 public class Account {
     private Connection connection;
@@ -19,52 +24,76 @@ public class Account {
 	    Class.forName("org.sqlite.JDBC");
 	    connection = DriverManager.getConnection("jdbc:sqlite:data/"+name+".db");
 	    Statement statement = connection.createStatement();
-	    statement.executeUpdate("create table if not exists lesson_names (Name);");	    
+	    statement.executeUpdate("CREATE TABLE IF NOT EXISTS lesson_names (Name);");	    
 	}		
 	catch(Exception e){
 	    System.out.println(e.toString());
 	}
     }
 
-    public void loadLessonsFromDatabase(){
-	Statement statement = connection.createStatement();
-
-	// lessons
-	ResultSet rs = statement.executeQuery("select * from lesson_names;");
-	while(rs.next()){
-	    String lName = rs.getString("Name");
-	    Lesson l = new Lesson(lName);
-	    l.loadFromDatabase();
-	    lesson.add(l);
-	    lessonNames.add(lName);
+    public void loadDefaultLessons(){
+	try{
+	    for(int i = 1; i <= 18; ++i){
+		Lesson l = new Lesson(connection, i);
+		lessons.add(l);
+		lessonNames.add(l.getLessonName());
+	    }
+	}catch(Exception e){
+	    System.out.println(e.toString());
 	}
-	rs.close();
+    }    
+
+    public void loadLessonsFromDatabase(){
+	try{
+	    Statement statement = connection.createStatement();
+
+	    // lessons
+	    ResultSet rs = statement.executeQuery("SELECT * FROM lesson_names;");
+	    while(rs.next()){
+		String lName = rs.getString("Name");
+		Lesson l = new Lesson(connection,  lName);
+		l.loadFromDatabase();
+		lessons.add(l);
+		lessonNames.add(lName);
+	    }
+	    rs.close();
+	}catch(Exception e){
+	    System.out.println(e.toString());
+	}
     }
 
     public void writeToDatabase(){
-	Statement statement = connection.createStatement();
+	try{
+	    // lesson names
+	    Iterator<String> nameItr = newLessonNames.iterator();
+	    PreparedStatement prep = connection.prepareStatement("INSERT INTO lesson_names VALUES (?);");	
+	    while(nameItr.hasNext()){
+		prep.setString(1, nameItr.next());
+		prep.addBatch();
+	    }
+	    connection.setAutoCommit(false);
+	    prep.executeBatch();
+	    connection.commit();
 
-	// lesson names
-	Iterator<String> nameItr = newLessonNames.iterator();
-	PreparedStatement prep = connection.prepareStatement( "insert into lesson_names values (?);");	
-	while(nameItr.hasNext()){
-	    prep.setString(1, nameItr.next());
-	    prep.addBatch();
-	}
-	connection.setAutoCommit(false);
-	prep.executeBatch();
-	connection.commit();
+	    // delete lessons
+	    Iterator<Lesson> deleteItr = deleteLesson.iterator();
+	    Statement statement = connection.createStatement();
+	    while(deleteItr.hasNext()){
+		Lesson l = deleteItr.next();
+		l.deleteSelf();
+		statement.executeUpdate("DELETE FROM lesson_names WHERE Name = " + l.getLessonName() + ";");
+	    }
 
-	// delete lessons
-	Iterator<Lesson> deleteItr = deleteLesson.iterator();
-	while(deleteItr.hasNext()){
-	    deleteItr.next().deleteSelf();
-	}
-
-	// load lesson to database
-	Iterator<Lesson> lessonItr = lessons.iterator();
-	while(lessonItr.hasNext()){
-	    lessonItr.next().writeToDatabase();
+	    // load lesson to database
+	    Iterator<Lesson> lessonItr = lessons.iterator();
+	    while(lessonItr.hasNext()){
+		Lesson l = lessonItr.next();
+		if(l.isNeededToRestore()){
+		    l.writeToDatabase();
+		}
+	    }
+	}catch(Exception e){
+	    System.out.println(e.toString());
 	}
     }
 
@@ -79,11 +108,10 @@ public class Account {
 
     public void createNewLesson(String lessonName) throws Exception{
 	if (lessonNames.add(lessonName)){
-	    Lesson l = new Lesson(lessonName, connection, lessonName);
+	    Lesson l = new Lesson(connection, lessonName);
 	    addLesson(l);
 	    newLessonNames.add(lessonName);
-	}
-	else{
+	} else{
 	    throw new Exception("This lesson name exists, please use another name");
 	}
     }
@@ -127,5 +155,18 @@ public class Account {
 
     public String toString(){
 	return name;
+    }
+
+    public void deleteSelf(){
+	try{
+	    connection.createStatement().executeUpdate("drop table lesson_names;");
+	    int count = lessons.size();
+	    for(int i = 0; i < count; ++i){
+		Lesson l = lessons.get(i);
+		l.deleteSelf();
+	    }
+	}catch(Exception e){
+	    System.out.println(e.toString());
+	}
     }
 }
