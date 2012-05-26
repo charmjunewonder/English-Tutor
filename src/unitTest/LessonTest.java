@@ -2,6 +2,7 @@
  * 
  */
 package unitTest;
+import java.io.File;
 import java.sql.*;
 
 import code.Lesson;
@@ -45,6 +46,8 @@ public class LessonTest {
      */
     @Before
     public void setUp() throws Exception {
+	File file = new File("data/test.db");
+	file.delete();
 	Class.forName("org.sqlite.JDBC");
 	conn = DriverManager.getConnection("jdbc:sqlite:data/test.db");
 	//statement = conn.createStatement();

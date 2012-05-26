@@ -72,7 +72,9 @@ public class Lesson {
 
     public void loadDefaultLesson(int index){
 	try{
-	    //statement.executeUpdate("create table if not exists Lesson_" + index + "(English, Chinese, Audio, LastReviewTime, Accuracy, TestCount);");	
+	    lessonName = "Lesson_" + index;
+
+	    statement.executeUpdate("create table if not exists " + lessonName + "(English, Chinese, Audio, LastReviewTime, Accuracy, TestCount);");	
 	    prep = connection.prepareStatement( "INSERT INTO "+lessonName+" VALUES (?, ?, ?, ?, ?, ?);");
 
 	    BufferedReader br = new BufferedReader(new FileReader("data/DefaultLessons/Lesson_" + index + ".csv"));
@@ -96,18 +98,18 @@ public class Lesson {
 	    prep.executeBatch();
 	    connection.commit();
 
-	    lessonName = "Lesson_" + index;
 	}catch(Exception e){
-	    System.out.println(e.toString());
+	    //System.out.println(e.printStackTrace());
+	    e.printStackTrace();
 	}
     }
 
     public boolean isNeededToRestore() {
-        return isNeededToRestore;
+	return isNeededToRestore;
     }
 
     public void setNeededToRestore(boolean isNeededToRestore) {
-        this.isNeededToRestore = isNeededToRestore;
+	this.isNeededToRestore = isNeededToRestore;
     }
 
     public void loadFromDatabase(){
@@ -155,17 +157,19 @@ public class Lesson {
     public ArrayList<Phrase> getRandomTenPhrase(){
 	ArrayList<Phrase> phrases = new ArrayList<Phrase>();
 
-	int count = phraseCount;
+	int count = this.phrases.size();
 	if(phraseCount>10){
 	    count = 10;
 	}
 
-	HashSet<Integer> randomNums = getRandomNumSet(count, phraseCount);
+	HashSet<Integer> randomNums = getRandomNumSet(count, this.phrases.size());
 	Iterator<Integer> itr = randomNums.iterator(); 
 	try{
 	    while(itr.hasNext()) {
 		Integer element = itr.next();
-		phrases.add(getPhrase(element.intValue()));
+		Phrase p = getPhrase(element.intValue());
+		p.setLessonName(lessonName);
+		phrases.add(p);
 	    } 
 	}catch(Exception e){
 	    System.out.println(e.toString());	

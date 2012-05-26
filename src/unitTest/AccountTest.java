@@ -3,7 +3,11 @@
  */
 package unitTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
+import java.io.File;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -42,6 +46,8 @@ public class AccountTest {
      */
     @Before
     public void setUp() throws Exception {
+	File file = new File("data/test.db");
+	file.delete();
     }
 
     /**
@@ -56,9 +62,19 @@ public class AccountTest {
      */
     @Test
     public void testAccount() {
-	Account a = new Account("Eric");
+	Account a = new Account("test");
 	assertNotNull("new Account should not be null", a);
-	assertEquals("account should contains correct account name", a.getName(), "Eric");
+	assertEquals("account should contains correct account name", a.getName(), "test");
+    }
+    
+    @Test
+    public void testLoadDefaultLesson(){
+	Account a = new Account("test");
+	a.loadDefaultLessons();
+	Lesson l = a.getLesson(1);
+	assertEquals("english of the first phrase", "Hello", l.getPhrase(1).getEnglish());
+	assertEquals("chinese of the fifth phrase", "你是谁", l.getPhrase(5).getChinese());
+	assertEquals("audio of the last phrase", "110", l.getPhrase(10).getAudio());
     }
 
     /**

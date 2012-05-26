@@ -25,6 +25,9 @@ public class TestUnit{
     private enum TestState{
 	VERIFY_ANSWER, NEXT_PHRASE, FINISH_TEST
     }
+    public enum QuestionType{
+	ENGLISH, CHINESE, AUDIO
+    }
 
     private TestUnitView view;
     private TestType testType;
@@ -35,11 +38,20 @@ public class TestUnit{
     private Account account;
     private ArrayList<Phrase> tenPhrases;
     private Phrase currentPhrase;
-    private SoundEngine soundEngine;	
+    private SoundEngine soundEngine;
+
+    private QuestionType currentQuestionType;
+    private ArrayList<QuestionType> questionTypes;
+    private ArrayList<Phrase> wrongPhrases;
+    private ArrayList<String> wrongAnswers;
 
     public TestUnit(Lesson l){
 	view = new TestUnitView();
 	tenPhrases = new ArrayList<Phrase>();
+	questionTypes = new ArrayList<QuestionType>();
+	wrongPhrases = new ArrayList<Phrase>();
+	wrongAnswers = new ArrayList<String>();
+
 	currentPhraseIndex = -1;
 	testType = TestType.TEST_ONE_LESSON;
 	testState = TestState.VERIFY_ANSWER;
@@ -79,7 +91,8 @@ public class TestUnit{
 	}
 	int index = currentPhraseIndex +1;
 	if(index > tenPhrases.size()-1 || index < 0) return;
-	Phrase p = new Phrase(tenPhrases.get(++currentPhraseIndex));
+	
+	Phrase p = tenPhrases.get(++currentPhraseIndex);
 	if(p == null)	return;
 
 	currentPhrase = p;
@@ -89,13 +102,15 @@ public class TestUnit{
 	int rnum = ran.nextInt(3);
 	switch(rnum){
 	case 0: // show Chinese
-	    String chinese = p.getChinese();
-	    p.setChinese(p.getEnglish());
-	    p.setEnglish(chinese);
-	case 1: // show English
+	    currentQuestionType = QuestionType.CHINESE;
 	    view.getQuestionLabel().setText(p.getChinese());
 	    break;
+	case 1: // show English
+	    currentQuestionType = QuestionType.ENGLISH;
+	    view.getQuestionLabel().setText(p.getEnglish());
+	    break;
 	case 2: // speak English
+	    currentQuestionType = QuestionType.AUDIO;
 	    playSound(p);
 	    break;
 	}
@@ -118,7 +133,10 @@ public class TestUnit{
 	else{
 	    // wrong answer
 	    //TODO
-
+	    questionTypes.add(currentQuestionType);
+	    wrongPhrases.add(currentPhrase);
+	    wrongAnswers.add(view.getAnswerTextField().getText());
+	    
 	    view.getCorrectAnswerLabel().setText(currentPhrase.getEnglish());
 	}
     }
@@ -150,6 +168,9 @@ public class TestUnit{
 	    break;
 	case FINISH_TEST:
 	    // TODO
+	    new ResultController(wrongPhrases, questionTypes, wrongAnswers, tenPhrases.size());
+	    view.setVisible(false); //you can't see me!
+	    view.dispose(); //Destroy the JFrame object
 	    break;
 	}
 
@@ -185,11 +206,10 @@ public class TestUnit{
     }
 
     public static void main(String[] args) throws Exception {
+
 	Class.forName("org.sqlite.JDBC");
 	Connection conn = DriverManager.getConnection("jdbc:sqlite:data/test.db");
-	Lesson l = new Lesson(conn, "Lesson_1");
-	l.addPharse("你好", "Hello", "sounds/101.mp3");
-	l.addPharse("好梦", "Nice Dream", "sounds/102.mp3");
+	Lesson l = new Lesson(conn, 1);
 
 	new TestUnit(l);
     }

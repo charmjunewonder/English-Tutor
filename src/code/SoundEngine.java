@@ -17,7 +17,7 @@ public class SoundEngine {
 
     public void playSound(String filename){
 	try {
-	    FileInputStream fis     = new FileInputStream(filename);
+	    FileInputStream fis     = new FileInputStream("sounds/" + filename + ".mp3");
 	    BufferedInputStream bis = new BufferedInputStream(fis);
 	    player = new Player(bis);
 	}

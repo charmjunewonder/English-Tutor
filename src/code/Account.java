@@ -5,9 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * @author Eric
@@ -18,14 +18,18 @@ public class Account {
     private Connection connection;
     private String name;
     private ArrayList<Lesson> lessons;
-    private Set<String> lessonNames;
+    private HashSet<String> lessonNames;
 
     private ArrayList<Lesson> deleteLesson;
-    private Set<String> newLessonNames;
+    private HashSet<String> newLessonNames;
 
     public Account(String name){
 	try{
 	    this.name = name;
+	    lessons = new ArrayList<Lesson>();
+	    lessonNames = new HashSet<String>();
+	    deleteLesson = new ArrayList<Lesson>();
+	    newLessonNames = new HashSet<String>();
 	    Class.forName("org.sqlite.JDBC");
 	    connection = DriverManager.getConnection("jdbc:sqlite:data/"+name+".db");
 	    Statement statement = connection.createStatement();
@@ -65,6 +69,10 @@ public class Account {
 	}catch(Exception e){
 	    System.out.println(e.toString());
 	}
+    }
+    
+    public Lesson getLesson(int index){
+	return lessons.get(index);
     }
 
     public void writeToDatabase(){
@@ -146,7 +154,9 @@ public class Account {
 	    int lessonRandomNum = random.nextInt() % count;
 	    Lesson l = lessons.get(lessonRandomNum);
 	    int phraseRandomNum = random.nextInt() % l.getPhraseCount();
-	    phrases.add(l.getPhrase(phraseRandomNum));
+	    Phrase p = l.getPhrase(phraseRandomNum);
+	    p.setLessonName(l.getLessonName());
+	    phrases.add(p);
 	}
 	return phrases;
     }

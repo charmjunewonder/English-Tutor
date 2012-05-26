@@ -13,11 +13,26 @@ public class Phrase {
     private String lastReviewTime;
     private int accuracy;
     private int testCount;
+    private String lessonName;
 
     public Phrase(String english, String chinese, String audio){
 	this.chinese = chinese;
 	this.english = english;
 	this.audio = audio;
+    }
+
+    /**
+     * @return the lessonName
+     */
+    public String getLessonName() {
+        return lessonName;
+    }
+
+    /**
+     * @param lessonName the lessonName to set
+     */
+    public void setLessonName(String lessonName) {
+        this.lessonName = lessonName;
     }
 
     public Phrase(String english, String chinese, String audio, String time, int accuracy, int count){
