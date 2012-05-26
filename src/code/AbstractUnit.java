@@ -2,6 +2,11 @@ package code;
 
 import java.util.ArrayList;
 
+/**
+ * @author Eric
+ * @version 0.1
+ */
+
 public abstract class AbstractUnit {
     protected Lesson selectedLesson;
     protected int currentPhraseIndex;

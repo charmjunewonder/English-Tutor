@@ -25,6 +25,11 @@ import java.awt.GridBagLayout;
 
 import java.util.ArrayList;
 
+/**
+ * @author Eric
+ * @version 0.1
+ */
+
 public class LearnUnitView extends JFrame {
 
     private JPanel contentPane;

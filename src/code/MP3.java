@@ -3,6 +3,11 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import javazoom.jl.player.Player;
 
+/**
+ * @author Eric
+ * @version 0.1
+ */
+
 public class MP3 {
     private String filename;
     private Player player; 

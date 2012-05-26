@@ -4,6 +4,11 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import javazoom.jl.player.Player;
 
+/**
+ * @author Eric
+ * @version 0.1
+ */
+
 
 public class SoundEngine {
     private Player player;

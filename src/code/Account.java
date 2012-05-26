@@ -9,6 +9,11 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * @author Eric
+ * @version 0.1
+ */
+
 public class Account {
     private Connection connection;
     private String name;

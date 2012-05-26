@@ -1,5 +1,10 @@
 package code;
 
+/**
+ * @author Eric
+ * @version 0.1
+ */
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.Connection;

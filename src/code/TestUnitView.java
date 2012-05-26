@@ -16,6 +16,11 @@ import java.awt.Color;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 
+/**
+ * @author Eric
+ * @version 0.1
+ */
+
 public class TestUnitView extends JFrame {
 
     private JPanel	contentPane;

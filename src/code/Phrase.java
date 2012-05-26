@@ -1,12 +1,19 @@
 package code;
 
+/**
+ * @author Eric
+ * @version 0.1
+ */
+
 public class Phrase {
+
     private String chinese;
     private String english;
     private String audio;
     private String lastReviewTime;
     private int accuracy;
     private int testCount;
+
     public Phrase(String english, String chinese, String audio){
 	this.chinese = chinese;
 	this.english = english;
@@ -22,14 +29,14 @@ public class Phrase {
 	testCount = count;
     }
     
-    public int getTestCount() {
-	return testCount;
-    }
-
     public Phrase(Phrase p){
 	chinese = p.chinese;
 	english = p.english;
 	audio = p.audio;
+    }
+
+    public int getTestCount() {
+	return testCount;
     }
 
     /**

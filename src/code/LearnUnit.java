@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.sql.*;
 import java.awt.event.*;
 
+/**
+ * @author Eric
+ * @version 0.1
+ */
+
 public class LearnUnit extends AbstractUnit{
     private enum LearnType{
 	LEARN_ONE_LESSON, LEARN_ALL_LESSONS

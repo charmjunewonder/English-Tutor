@@ -13,6 +13,11 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 
+/**
+ * @author Eric
+ * @version 0.1
+ */
+
 public class TestUnit{
     private enum TestType{
 	TEST_ONE_LESSON, TEST_ALL_LESSONS

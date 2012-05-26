@@ -10,9 +10,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * @author charmjunewonder
- *
+ * @author Eric
+ * @version 0.1
  */
+
 public class Database {
 
     private Account selectedAccount;
