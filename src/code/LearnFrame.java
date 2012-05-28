@@ -1,17 +1,20 @@
 
 package code;
 
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.ImageIcon;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class LearnFrame extends AbstractFrame {  
     private JLabel titleLabel;  
@@ -66,8 +69,8 @@ public class LearnFrame extends AbstractFrame {
 	getMainPanel().add(phraseScrollPanel,BorderLayout.CENTER);
     }
 
-    public void addPhraseItem(String chinese,String english){
-	PhraseItemPanel newPhrase = new PhraseItemPanel(chinese,english);
+    public void addPhraseItem(Phrase p){
+	PhraseItemPanel newPhrase = new PhraseItemPanel(p);
 	newPhrase.setOpaque(false);
 	phrasePanel.add(newPhrase);
     }
@@ -75,14 +78,16 @@ public class LearnFrame extends AbstractFrame {
     private class PhraseItemPanel extends JPanel{
 	private JLabel chineseLabel,englishLabel;
 	private JButton voiceButton;
+	private Phrase phrase;
 
-	public PhraseItemPanel(String c,String e){
+	public PhraseItemPanel(Phrase p){
 	    super();
 	    setLayout(new GridLayout(1,5));
+	    phrase = p;
 	    voiceButton = new JButton(new ImageIcon("resource/VoiceButton.png"));
-	    chineseLabel = new JLabel(c);
+	    chineseLabel = new JLabel(p.getChinese());
 	    chineseLabel.setVisible(false);
-	    englishLabel = new JLabel(e);
+	    englishLabel = new JLabel(p.getEnglish());
 	    englishLabel.addMouseListener(new EnglishLabelAdapter());
 
 	    add(englishLabel);
@@ -95,17 +100,11 @@ public class LearnFrame extends AbstractFrame {
 	private class EnglishLabelAdapter extends MouseAdapter{
 	    public void mouseClicked(MouseEvent e){
 		chineseLabel.setVisible(true);
-	    }
-	    public void mousePressed(MouseEvent e){
-		chineseLabel.setVisible(true);
+		DateFormat dateFormat = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		System.out.println(dateFormat.format(date));
 	    }
 	}
     }
 
-    public static void main(String args[]){
-	LearnFrame test = new LearnFrame();
-	test.setVisible(true);
-	test.addPhraseItem("ÎÒ°®Äã", "I fuck you");
-	test.addPhraseItem("½²ºÍÐ³","Watch AV");
-    }
 }
