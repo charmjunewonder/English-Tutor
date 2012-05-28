@@ -100,9 +100,10 @@ public class LearnFrame extends AbstractFrame {
 	private class EnglishLabelAdapter extends MouseAdapter{
 	    public void mouseClicked(MouseEvent e){
 		chineseLabel.setVisible(true);
-		DateFormat dateFormat = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("/MM/dd/yy");
 		Date date = new Date();
-		System.out.println(dateFormat.format(date));
+		String dateString = dateFormat.format(date);
+		phrase.setLastReviewTime(dateString);
 	    }
 	}
     }
