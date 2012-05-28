@@ -27,15 +27,15 @@ public class LearnUnit extends AbstractUnit{
 
 	addActionListener();
 	EventQueue.invokeLater(new Runnable() {
-		public void run() {
+	    public void run() {
 		try {
-		view.setVisible(true);
+		    view.setVisible(true);
 		}
 		catch (Exception e) {
-		e.printStackTrace();
+		    e.printStackTrace();
 		}
-		}
-		});	
+	    }
+	});	
     }
 
     private void addActionListener(){
