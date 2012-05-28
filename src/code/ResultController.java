@@ -14,7 +14,9 @@ public class ResultController {
     private int questionCount;
 
     public ResultController(ArrayList<Phrase> wrongPhrases, 
-	    ArrayList<QuestionType> questionTypes, ArrayList<String> wrongAnswers, int questionCount){
+	    ArrayList<QuestionType> questionTypes, 
+	    ArrayList<String> wrongAnswers, 
+	    int questionCount){
 	int count = wrongPhrases.size();
 	this.wrongPhrases = wrongPhrases;
 	this.questionCount = questionCount;
@@ -39,9 +41,9 @@ public class ResultController {
 	    }
 	}
 
-	addListener();
 	
 	view = new ResultFrame(data);
+	addListener();
 	setViewContent();
 	view.setVisible(true);
     }

@@ -91,7 +91,7 @@ public class TestUnit{
 	}
 	int index = currentPhraseIndex +1;
 	if(index > tenPhrases.size()-1 || index < 0) return;
-	
+
 	Phrase p = tenPhrases.get(++currentPhraseIndex);
 	if(p == null)	return;
 
@@ -136,7 +136,7 @@ public class TestUnit{
 	    questionTypes.add(currentQuestionType);
 	    wrongPhrases.add(currentPhrase);
 	    wrongAnswers.add(view.getAnswerTextField().getText());
-	    
+
 	    view.getCorrectAnswerLabel().setText(currentPhrase.getEnglish());
 	}
     }
