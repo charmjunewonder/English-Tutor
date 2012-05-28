@@ -5,7 +5,9 @@ package code;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -32,13 +34,28 @@ public class Database {
 	    }
 	    rs.close();*/
 	}catch(Exception e){
-	    System.out.println(e.toString());
+	    e.printStackTrace();
 	}
     }
 
-    public void createAccount(String name) throws Exception{
-	Statement statement = connection.createStatement();
-	statement.executeUpdate("INSERT INTO account_names VALUES (" + name + ");");
+    // use for test
+    public Database(Connection connection){
+	try{
+	    Class.forName("org.sqlite.JDBC");
+	    this.connection = connection;
+	    Statement statement = connection.createStatement();
+	    statement.executeUpdate("CREATE TABLE IF NOT EXISTS account_names (Name UNIQUE);");
+	}catch(Exception e){
+	    e.printStackTrace();
+	}
+    }
+
+    public void createAccount(String name) throws SQLException{
+	//Statement statement = connection.createStatement();
+	PreparedStatement prep = connection.prepareStatement("INSERT INTO account_names VALUES (?)");
+	prep.setString(1, name);
+	prep.executeUpdate();
+
 	Account a = new Account(name);
 	a.loadDefaultLessons();
     }
@@ -54,7 +71,7 @@ public class Database {
 	    statement.executeUpdate("DELETE FROM account_names WHERE Name = " + name + ";");
 
 	}catch(Exception e){
-	    System.out.println(e.toString());
+	    e.printStackTrace();
 	}
     }
 
@@ -64,10 +81,13 @@ public class Database {
 	try{
 	    Statement statement = connection.createStatement();
 	    ResultSet result = statement.executeQuery("SELECT * FROM account_names ;");
-	    String name = result.getString("Name");
-	    accountNames.add(name);
+	    while(result.next()){
+		String name = result.getString("Name");
+		accountNames.add(name);
+	    }
+	    result.close();
 	}catch(Exception e){
-	    System.out.println(e.toString());
+	    e.printStackTrace();
 	}
 	return accountNames;
     }

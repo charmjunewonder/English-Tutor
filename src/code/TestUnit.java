@@ -59,6 +59,7 @@ public class TestUnit{
 	soundEngine = new SoundEngine();
 	addActionListener();
 	addKeyBinding();
+	
 	EventQueue.invokeLater(new Runnable() {
 	    public void run() {
 		try {
