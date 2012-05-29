@@ -76,7 +76,6 @@ public abstract class AbstractFrame extends JFrame{
 	exitButton.addMouseListener(new ExitButtonAdapter());
 	exitButton.setPreferredSize(new Dimension(30,30));
 	exitButton.setToolTipText("Exit");
-	//exitButton.setContentAreaFilled( false );
 	exitButton.setBorderPainted(false);
 	exitButton.setOpaque(false);
 
