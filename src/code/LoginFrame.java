@@ -1,18 +1,16 @@
 
 package code;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JPanel;
-import javax.swing.JComboBox;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.Color;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class LoginFrame extends AbstractFrame{
     private JLabel userComboBoxLabel;
@@ -63,7 +61,6 @@ public class LoginFrame extends AbstractFrame{
 
 	userComboBoxPanel = new JPanel();
 	userComboBoxPanel.setOpaque(false);
-
 	userComboBoxLabel = new JLabel("ID");
 	userComboBoxLabel.setSize(20,10);
 	userComboBoxLabel.setForeground(Color.WHITE);
@@ -71,12 +68,18 @@ public class LoginFrame extends AbstractFrame{
 	userComboBox = new JComboBox();
 	userComboBox.setEditable(true);
 	userComboBox.setSize(50,10);
+	userComboBox.setBounds(0, 0, 20, 100);
 
 	userComboBoxPanel.add(userComboBoxLabel);
 	userComboBoxPanel.add(userComboBox);
 
-	loginButton = new JButton("Login");
-	loginButton.setPreferredSize(new Dimension(40,30));
+	loginButton = new JButton("LOG IN");
+	loginButton.setSize(new Dimension(100,30));
+	loginButton.setBorderPainted(false);
+	//Set JButton font using new created font
+	Font newButtonFont=new Font("Arial", Font.BOLD, 28);  
+	loginButton.setFont(newButtonFont);
+	loginButton.setForeground(Color.red);
 
 	buttonPanel = new JPanel();
 	buttonPanel.setOpaque(false);

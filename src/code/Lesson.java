@@ -67,7 +67,7 @@ public class Lesson {
 	newTestResultScores = new ArrayList<Integer>();
 
 	statement = connection.createStatement();
-	loadDefaultLesson(1);
+	loadDefaultLesson(index);
     }
 
     public void loadDefaultLesson(int index){
