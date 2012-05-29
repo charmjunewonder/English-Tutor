@@ -1,74 +1,68 @@
 
 package code;
 
-import java.awt.BorderLayout;
+import java.awt.Image;
+import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.border.EmptyBorder;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.apache.commons.io.FilenameUtils;
 
 public abstract class AbstractFrame extends JFrame{
     private int lastx,lasty;
-    private ImageIcon backgroundImage;
+    private ImageIcon backgroundImageIcon;
     private JButton exitButton,shrinkButton;
-    private JPanel titlePanel,buttonPanel,leftPanel,rightPanel,mainPanel;
-    private BorderLayout titleLayout,frameLayout;
+    private ImagePanel contentPane;
     private Cursor cursor;
 
     protected AbstractFrame(String filePath){
 	super();
 	setUndecorated(true);
 	setBackground(new Color(0,0,0,0));
-	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	addMouseMotionListener(new FrameMouseListener());
 
 	lastx = lasty = -1;
-	backgroundImage = null;
 
-	frameLayout = new BorderLayout();
-	setLayout(frameLayout);
-	initPanels();
-
+	initBackgroundImage(filePath);
+	initBounds();
+	initContentPane();
 	initTitlePanel();
-	add(titlePanel,BorderLayout.NORTH);
-
 	initCursor();
-	setBackgroundImage(filePath);
 	setLocationRelativeTo(null);
     }
 
-    private void initPanels(){
-	mainPanel = new JPanel();
-	leftPanel = new JPanel();
-	rightPanel = new JPanel();
-	mainPanel.setOpaque(false);
-	leftPanel.setOpaque(false);
-	rightPanel.setOpaque(false);
-	add(mainPanel,BorderLayout.CENTER);
-	add(leftPanel,BorderLayout.WEST);
-	add(rightPanel,BorderLayout.EAST);
+    private void initBackgroundImage(String filePath){
+    	backgroundImageIcon = new ImageIcon(filePath);
     }
-
-    protected JPanel getMainPanel(){
-	return mainPanel;
+    
+    private void initBounds(){
+    	setBounds(0,0,backgroundImageIcon.getIconWidth(),backgroundImageIcon.getIconHeight());
+        
     }
-
+    
+    private void initContentPane(){
+    	contentPane = new ImagePanel(backgroundImageIcon.getImage());
+    	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+    	setContentPane(contentPane);
+    	contentPane.setLayout(null);
+    }
+    
     private void initCursor(){
 	ImageIcon icon = new ImageIcon(FilenameUtils.separatorsToSystem("resource/cursor.png"));
 	cursor = Toolkit.getDefaultToolkit().createCustomCursor(
 		icon.getImage(),
-		new Point(0,icon.getIconHeight()-1),"cursor"
+		new Point(0,0),"cursor"
 		);
 	setCursor(cursor);
     }
@@ -76,28 +70,23 @@ public abstract class AbstractFrame extends JFrame{
     private void initTitlePanel(){
 	exitButton = new JButton(new ImageIcon(FilenameUtils.separatorsToSystem("resource/x_white.png")));
 	exitButton.addMouseListener(new ExitButtonAdapter());
-	exitButton.setPreferredSize(new Dimension(30,30));
 	exitButton.setToolTipText("Exit");
 	exitButton.setBorderPainted(false);
+	exitButton.setBackground(new Color(0,0,0,0));
 	exitButton.setOpaque(false);
-
+	exitButton.setBounds(getWidth()-50,17,30,30);
+	exitButton.setBorderPainted(false);
+    contentPane.add(exitButton);
+    
 	shrinkButton = new JButton(new ImageIcon(FilenameUtils.separatorsToSystem("resource/shrink_white.png")));
 	shrinkButton.addMouseListener(new ShrinkButtonAdapter());
-	shrinkButton.setPreferredSize(new Dimension(50,20));
 	shrinkButton.setToolTipText("Shrink");
 	shrinkButton.setBorderPainted(false);
+	shrinkButton.setBackground(new Color(0,0,0,0));
 	shrinkButton.setOpaque(false);
-
-	buttonPanel = new JPanel();
-	buttonPanel.add(shrinkButton);
-	buttonPanel.add(exitButton);
-	buttonPanel.setOpaque(false);
-
-	titleLayout = new BorderLayout();
-	titlePanel = new JPanel();
-	titlePanel.setLayout(titleLayout);
-	titlePanel.add(buttonPanel,BorderLayout.EAST);
-	titlePanel.setOpaque(false);
+	shrinkButton.setBounds(getWidth()-100, 22, 50, 20);
+	shrinkButton.setBorderPainted(false);
+	contentPane.add(shrinkButton);
     }
 
     private class FrameMouseListener implements MouseMotionListener{
@@ -150,17 +139,15 @@ public abstract class AbstractFrame extends JFrame{
     private JButton getShrinkButton(){
 	return shrinkButton;
     }
-
-    private void setBackgroundImage(String filePath){
-	JPanel backgroundPanel = (JPanel)getContentPane();
-	backgroundImage = new ImageIcon(filePath);
-
-	JLabel backgroundLabel = new JLabel(backgroundImage);
-	backgroundLabel.setBounds(0, 0, backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
-	getLayeredPane().add(backgroundLabel, new Integer(Integer.MIN_VALUE));
-
-	backgroundPanel.setOpaque(false);
-
-	setSize(backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
+    
+    private class ImagePanel extends JPanel {
+    	private Image image;
+    	public ImagePanel(Image image) {
+    	this.image = image;
+    	}
+    	@Override
+    	protected void paintComponent(Graphics g) {
+    	g.drawImage(image, 0, 0, null);
+    	}
     }
 }
