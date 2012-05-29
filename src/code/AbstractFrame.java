@@ -72,16 +72,19 @@ public abstract class AbstractFrame extends JFrame{
     }
 
     private void initTitlePanel(){
-	exitButton = new JButton(new ImageIcon("resource/exitButton.png"));
+	exitButton = new JButton(new ImageIcon("resource/x_white.png"));
 	exitButton.addMouseListener(new ExitButtonAdapter());
-	exitButton.setPreferredSize(new Dimension(20,20));
+	exitButton.setPreferredSize(new Dimension(30,30));
 	exitButton.setToolTipText("Exit");
+	//exitButton.setContentAreaFilled( false );
+	exitButton.setBorderPainted(false);
 	exitButton.setOpaque(false);
 
-	shrinkButton = new JButton(new ImageIcon("resource/shrinkButton.png"));
+	shrinkButton = new JButton(new ImageIcon("resource/shrink_white.png"));
 	shrinkButton.addMouseListener(new ShrinkButtonAdapter());
-	shrinkButton.setPreferredSize(new Dimension(20,20));
+	shrinkButton.setPreferredSize(new Dimension(50,20));
 	shrinkButton.setToolTipText("Shrink");
+	shrinkButton.setBorderPainted(false);
 	shrinkButton.setOpaque(false);
 
 	buttonPanel = new JPanel();
@@ -119,8 +122,11 @@ public abstract class AbstractFrame extends JFrame{
 	public void mouseClicked(MouseEvent e){
 	    setExtendedState(JFrame.ICONIFIED);
 	}
-	public void mousePressed(MouseEvent e){
-	    setExtendedState(JFrame.ICONIFIED);
+	public void mouseEntered(MouseEvent e){
+	    shrinkButton.setIcon(new ImageIcon("resource/shrink_green.png"));
+	}
+	public void mouseExited(MouseEvent e){
+	    shrinkButton.setIcon(new ImageIcon("resource/shrink_white.png"));
 	}
     }
 
@@ -128,8 +134,11 @@ public abstract class AbstractFrame extends JFrame{
 	public void mouseClicked(MouseEvent e){
 	    dispose(); 
 	}
-	public void mousePressed(MouseEvent e){
-	    dispose();
+	public void mouseEntered(MouseEvent e){
+	    exitButton.setIcon(new ImageIcon("resource/x_red.png"));
+	}
+	public void mouseExited(MouseEvent e){
+	    exitButton.setIcon(new ImageIcon("resource/x_white.png"));
 	}
     }
 

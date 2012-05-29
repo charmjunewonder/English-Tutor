@@ -21,7 +21,9 @@ public class Account {
     private HashSet<String> lessonNames;
 
     private ArrayList<Lesson> deleteLesson;
-    private HashSet<String> newLessonNames;
+    private ArrayList<String> newLessonNames;
+    
+    private boolean isModify;
 
     public Account(String name){
 	try{
@@ -29,15 +31,29 @@ public class Account {
 	    lessons = new ArrayList<Lesson>();
 	    lessonNames = new HashSet<String>();
 	    deleteLesson = new ArrayList<Lesson>();
-	    newLessonNames = new HashSet<String>();
+	    newLessonNames = new ArrayList<String>();
 	    Class.forName("org.sqlite.JDBC");
 	    connection = DriverManager.getConnection("jdbc:sqlite:data/"+name+".db");
 	    Statement statement = connection.createStatement();
-	    statement.executeUpdate("CREATE TABLE IF NOT EXISTS lesson_names (Name);");	    
+	    statement.executeUpdate("CREATE TABLE IF NOT EXISTS lesson_names (Name UNIQUE);");	    
 	}		
 	catch(Exception e){
 	    System.out.println(e.toString());
 	}
+    }
+
+    /**
+     * @return the isModify
+     */
+    public boolean isModify() {
+        return isModify;
+    }
+
+    /**
+     * @param isModify the isModify to set
+     */
+    public void setModify(boolean isModify) {
+        this.isModify = isModify;
     }
 
     public void loadDefaultLessons(){
@@ -46,7 +62,9 @@ public class Account {
 		Lesson l = new Lesson(connection, i);
 		lessons.add(l);
 		lessonNames.add(l.getLessonName());
+		newLessonNames.add(l.getLessonName());
 	    }
+	    writeToDatabase();
 	}catch(Exception e){
 	    System.out.println(e.toString());
 	}
@@ -115,12 +133,14 @@ public class Account {
     }
 
     public void deleteLesson(Lesson l){
+	isModify = true;
 	lessons.remove(l);
 	deleteLesson.add(l);
     }
 
     public void createNewLesson(String lessonName) throws Exception{
 	if (lessonNames.add(lessonName)){
+	    isModify = true;
 	    Lesson l = new Lesson(connection, lessonName);
 	    addLesson(l);
 	    newLessonNames.add(lessonName);
