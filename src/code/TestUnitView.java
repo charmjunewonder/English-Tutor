@@ -1,20 +1,18 @@
 package code;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.SpringLayout;
-import javax.swing.JLabel;
 import javax.swing.JButton;
-import javax.swing.JTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
-import java.awt.Color;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
+import javax.swing.border.EmptyBorder;
 
 /**
  * @author Eric
@@ -96,7 +94,7 @@ public class TestUnitView extends JFrame {
 	sl_contentPane.putConstraint(SpringLayout.SOUTH, correctAnswerLabel, -27, SpringLayout.NORTH, progressBar);
 	sl_contentPane.putConstraint(SpringLayout.EAST, correctAnswerLabel, 161, SpringLayout.WEST, contentPane);
 	contentPane.add(correctAnswerLabel);
-	contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{nextButton, answerTextField, progressBar, soundButton, questionLabel, correctAnswerLabel}));
+	//contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{nextButton, answerTextField, progressBar, soundButton, questionLabel, correctAnswerLabel}));
     }
 
     /**

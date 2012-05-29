@@ -12,6 +12,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.apache.commons.io.FilenameUtils;
+
 public class LoginFrame extends AbstractFrame{
     private JLabel userComboBoxLabel;
     private JPanel summaryPanel,userPanel,userUpPanel,userMiddlePanel,userDownPanel,userComboBoxPanel,buttonPanel;
@@ -20,7 +22,7 @@ public class LoginFrame extends AbstractFrame{
     private BorderLayout userPanelLayout;
 
     public LoginFrame(){
-	super("resource/LoginFrame.png");
+	super(FilenameUtils.separatorsToSystem("resource/LoginFrame.png"));
 	initMainPanelLayout();
 	initSummaryPanel();
 	initUserPanel();

@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.apache.commons.io.FilenameUtils;
+
 public class MainFrame extends AbstractFrame{
     private JPanel leftPanel,rightPanel,titlePanel,testAllPanel,lessonPanel,buttonPanel,lessons;
     private JScrollPane lessonScrollPanel;
@@ -18,7 +20,7 @@ public class MainFrame extends AbstractFrame{
     private int sum_lesson;
 
     public MainFrame(){
-	super("resource/MainFrame.png");
+	super(FilenameUtils.separatorsToSystem("resource/MainFrame.png"));
 	sum_lesson=0;
 	initMainFrameLayout();
 	initPanel();
@@ -71,7 +73,7 @@ public class MainFrame extends AbstractFrame{
 
     private void initTitlePanel(){
 
-	logoutButton = new JButton(new ImageIcon("resource/LogoutButton.PNG"));
+	logoutButton = new JButton(new ImageIcon(FilenameUtils.separatorsToSystem("resource/LogoutButton.PNG")));
 	logoutButton.setBackground(new Color(0,0,0,0));
 	titleLabel = new JLabel("English Tutor");
 
@@ -152,9 +154,9 @@ public class MainFrame extends AbstractFrame{
 	private LessonItemPanel(String lessonName) {
 	    super();
 	    setLayout(new GridLayout(1,5));
-	    lockLabel = new JLabel(new ImageIcon("resource/LockLabel.png"));
+	    lockLabel = new JLabel(new ImageIcon(FilenameUtils.separatorsToSystem("resource/LockLabel.png")));
 	    lessonNameLabel  = new JLabel(lessonName);
-	    smileLabel = new JLabel(new ImageIcon("resource/SmileLabel.png"));
+	    smileLabel = new JLabel(new ImageIcon(FilenameUtils.separatorsToSystem("resource/SmileLabel.png")));
 	    //smileLabel.setVisible(false);
 
 	    add(lockLabel);

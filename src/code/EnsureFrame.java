@@ -1,7 +1,12 @@
+package code;
+
+import java.awt.BorderLayout;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
+
+import org.apache.commons.io.FilenameUtils;
 
 public class EnsureFrame extends AbstractFrame{
    private JButton firstButton,secondButton,thridButton;
@@ -10,7 +15,7 @@ public class EnsureFrame extends AbstractFrame{
    private BorderLayout ensureFrameLayout;
    
    public EnsureFrame(){
-	    super("ensureFrame.png");
+	    super(FilenameUtils.separatorsToSystem("ensureFrame.png"));
 	    initLayout();
 	    initTextLabel();
 	    initButtonPanel();

@@ -16,13 +16,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.apache.commons.io.FilenameUtils;
+
 public class LearnFrame extends AbstractFrame {  
     private JLabel titleLabel;  
     private JPanel titlePanel,phrasePanel;
     private JScrollPane phraseScrollPanel;
 
     public LearnFrame(){
-	super("resource/Learn.png");
+	super(FilenameUtils.separatorsToSystem("resource/Learn.png"));
 	getMainPanel().setLayout(new BorderLayout());
 	initTitleLabel();
 	initPhraseScrollPanel();
@@ -84,7 +86,7 @@ public class LearnFrame extends AbstractFrame {
 	    super();
 	    setLayout(new GridLayout(1,5));
 	    phrase = p;
-	    voiceButton = new JButton(new ImageIcon("resource/VoiceButton.png"));
+	    voiceButton = new JButton(new ImageIcon(FilenameUtils.separatorsToSystem("resource/VoiceButton.png")));
 	    chineseLabel = new JLabel(p.getChinese());
 	    chineseLabel.setVisible(false);
 	    englishLabel = new JLabel(p.getEnglish());
