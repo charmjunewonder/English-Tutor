@@ -1,7 +1,5 @@
 package code;
 
-import java.awt.BorderLayout;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,24 +10,18 @@ public class EnsureFrame extends AbstractFrame{
    private JButton firstButton,secondButton,thridButton;
    private JLabel statementLabel;
    private JPanel buttonPanel;
-   private BorderLayout ensureFrameLayout;
    
    public EnsureFrame(){
 	    super(FilenameUtils.separatorsToSystem("ensureFrame.png"));
-	    initLayout();
 	    initTextLabel();
 	    initButtonPanel();
    }
-   
-   private void initLayout(){
-	    ensureFrameLayout = new BorderLayout();
-	    getMainPanel().setLayout(ensureFrameLayout);
-   }
-   
+
    private void initTextLabel(){
 	    statementLabel = new JLabel("Do you really want to quit the tutor?");
 	    statementLabel.setOpaque(false);
-        getMainPanel().add(statementLabel,BorderLayout.CENTER);
+        statementLabel.setBounds(10,10,100,10);
+        getContentPane().add(statementLabel);
    }
    
    private void initButtonPanel(){
@@ -44,7 +36,8 @@ public class EnsureFrame extends AbstractFrame{
 	    buttonPanel.add(secondButton);
 	    buttonPanel.add(thridButton);
 	    
-	    getMainPanel().add(buttonPanel,BorderLayout.SOUTH);
+	    buttonPanel.setBounds(10, 150, 10, 150);
+	    getContentPane().add(buttonPanel);
    }
    
    private JLabel getStatementLabel(){

@@ -1,8 +1,6 @@
 
 package code;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -20,55 +18,45 @@ import org.apache.commons.io.FilenameUtils;
 
 public class LearnFrame extends AbstractFrame {  
     private JLabel titleLabel;  
-    private JPanel titlePanel,phrasePanel;
+    private JPanel phrasePanel;
+    private JButton finishButton;
     private JScrollPane phraseScrollPanel;
-
+    private int sum;
+    
     public LearnFrame(){
 	super(FilenameUtils.separatorsToSystem("resource/Learn.png"));
-	getMainPanel().setLayout(new BorderLayout());
 	initTitleLabel();
 	initPhraseScrollPanel();
+	initFinishButton();
+    sum=0;
     }  
 
     private void initTitleLabel(){
-	titlePanel = new JPanel();
-	titlePanel.setOpaque(false);
-	titlePanel.add(new JLabel());
 	titleLabel = new JLabel("Learning");
-	titlePanel.add(titleLabel);
-	titlePanel.add(new JLabel());
-	getMainPanel().add(titlePanel,BorderLayout.NORTH);
+	titleLabel.setBounds(235,52,96,31);
+	getContentPane().add(titleLabel);
     }
-
+    
+    private void initFinishButton(){
+    	finishButton = new JButton("Finish");
+    	finishButton.setBounds(489, 598, 50, 50);
+    	getContentPane().add(finishButton);
+    }
+    
     private void initPhraseScrollPanel(){
+    phrasePanel = new JPanel();
+    phrasePanel.setLayout(new GridLayout(10,1));	
+    	
 	phraseScrollPanel = new JScrollPane();
 	phraseScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	phraseScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-	phraseScrollPanel.setPreferredSize(new Dimension(250,250));
 	phraseScrollPanel.setVisible(true);
 	phraseScrollPanel.getViewport().setOpaque(false);
 	phraseScrollPanel.setOpaque(false);
-
-	phrasePanel = new JPanel();
-	phrasePanel.setLayout(new GridLayout(10,1));
-	phraseScrollPanel.setViewportView(phrasePanel);
-
-	JPanel northPanel = new JPanel();
-	northPanel.setOpaque(false);
-	JPanel southPanel = new JPanel();
-	southPanel.setOpaque(false);
-	southPanel.add(new JLabel("  "));
-	southPanel.add(new JLabel("  "));
-	JPanel eastPanel = new JPanel();
-	eastPanel.setOpaque(false);
-	JPanel westPanel = new JPanel();
-	westPanel.setOpaque(false);
-
-	getMainPanel().add(northPanel);
-	getMainPanel().add(southPanel,BorderLayout.SOUTH);
-	getMainPanel().add(eastPanel,BorderLayout.EAST);
-	getMainPanel().add(westPanel,BorderLayout.WEST);
-	getMainPanel().add(phraseScrollPanel,BorderLayout.CENTER);
+    phraseScrollPanel.setViewportView(phrasePanel);
+    
+    phraseScrollPanel.setBounds(52, 107, 483, 450);
+	getContentPane().add(phraseScrollPanel);
     }
 
     public void addPhraseItem(Phrase p){
@@ -108,6 +96,13 @@ public class LearnFrame extends AbstractFrame {
 		phrase.setLastReviewTime(dateString);
 	    }
 	}
+    }
+    
+    public static void main(String args[]){
+    	LearnFrame test = new LearnFrame();
+    	test.setVisible(true);
+    	test.addPhraseItem(new Phrase("English","Chinese","101.mp3"));
+        test.addPhraseItem(new Phrase("AAAAA","BBBB","102.mp3"));
     }
 
 }

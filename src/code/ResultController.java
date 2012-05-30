@@ -61,11 +61,11 @@ public class ResultController {
 	int wrongCount = wrongPhrases.size();
 	view.getScoreLabel().setText("Score: " + (questionCount - wrongCount) * 10);
 	if(wrongCount > 80){
-	    view.getSuggestionLabel().setText("Suggestion:\n  Congraduration, you can learn next lesson");
+	    view.getSuggestionTwoLabel().setText("Congraduration, you can learn next lesson");
 	} else if(wrongCount > 60){
-	    view.getSuggestionLabel().setText("Suggestion:\n You are recommended to retest this lesson");
+	    view.getSuggestionTwoLabel().setText("You are recommended to retest this lesson");
 	} else{
-	    view.getSuggestionLabel().setText("Suggestion:\n You are recommended to relearn this lesson");
+	    view.getSuggestionTwoLabel().setText("You are recommended to relearn this lesson");
 	}
     }
 

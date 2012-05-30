@@ -1,8 +1,8 @@
 package code;
 
-import java.awt.BorderLayout;
+//import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
+//import java.awt.GridLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -171,5 +171,9 @@ public class MainFrame extends AbstractFrame{
 	    smileLabel.setVisible(true);
 	}
     }
-
+    
+    public static void main(String args[]){
+    	MainFrame test = new MainFrame();
+    	test.setVisible(true);
+    }
 }

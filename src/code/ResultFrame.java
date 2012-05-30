@@ -1,102 +1,70 @@
 
 package code;
 
-import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import java.awt.GridLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.BorderLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
 public class ResultFrame extends AbstractFrame{
-    private GridLayout resultFrameLayout;
-    private JPanel firstPanel,secondPanel,thridPanel,forthPanel,buttonPanel;
+
     private JTable resultTable;
-    private JLabel titleLabel,scoreLabel,suggestionLabel;
-    private JButton retryButton,finishButton;
+    private JLabel titleLabel,scoreLabel,suggestionOneLabel,suggestionTwoLabel;
+    private JButton finishButton;
 
     public ResultFrame(Object[][] rowData){
 	super("resource/ResultFrame.png");
-	initResultFrameLayout();
-	initFirstPanel();
-	initSecondPanel(rowData);
-	initThridPanel();
-	initForthPanel();
+	initTitleLabel();
+	initScoreLabel();
+	initResultTable(rowData);
+	initSuggestionOneLabel();
+	initSuggestionTwoLabel();
+	initFinishButton();
+    }
+    private void initTitleLabel(){
+    	titleLabel = new JLabel("RESULT");
+    	titleLabel.setBounds(191, 69, 120, 56);
+    	getContentPane().add(titleLabel);
+    }
+    
+    private void initScoreLabel(){
+    	scoreLabel = new JLabel("SCORE:");
+        scoreLabel.setBounds(43,133,100,30);
+        getContentPane().add(scoreLabel);
+    }
+    
+    private void initResultTable(Object[][] rowData){
+    	String[] name = new String[4];
+    	name[0]="Lesson";
+    	name[1]="Question";
+    	name[2]="Your Answer";
+    	name[3]="Correct Answer";
+    	resultTable = new JTable(rowData,name);
+    	resultTable.setBounds(53, 184, 392, 201);
+    	getContentPane().add(resultTable);
     }
 
-    private void initResultFrameLayout(){
-	resultFrameLayout = new GridLayout(4,1);
-	getMainPanel().setLayout(resultFrameLayout);
+    private void initSuggestionOneLabel(){
+    	suggestionOneLabel = new JLabel();
+    	suggestionOneLabel.setOpaque(false);
+    	suggestionOneLabel.setText("Suggestion:");
+        suggestionOneLabel.setBounds(43, 434, 120, 25);
+        getContentPane().add(suggestionOneLabel);
     }
-
-    private void initFirstPanel(){
-	firstPanel = new JPanel();
-	firstPanel.setLayout(new GridLayout(2,3));
-	firstPanel.setOpaque(false);
-
-	titleLabel = new JLabel("                 RESULT");
-	scoreLabel = new JLabel("   SCORE:");
-
-	firstPanel.add(new JLabel());
-	firstPanel.add(titleLabel);
-	firstPanel.add(new JLabel());
-	firstPanel.add(scoreLabel);
-	firstPanel.add(new JLabel());
-	firstPanel.add(new JLabel());
-	getMainPanel().add(firstPanel);
+    
+    private void initSuggestionTwoLabel(){
+    	suggestionTwoLabel = new JLabel();
+    	suggestionTwoLabel.setOpaque(false);
+    	suggestionTwoLabel.setText("Congraduation: XXX.Fuck you.");
+        suggestionTwoLabel.setBounds(53, 481, 326, 45);
+        getContentPane().add(suggestionTwoLabel);
     }
-
-    private void initSecondPanel(Object[][] rowData){
-	secondPanel = new JPanel();
-	secondPanel.setOpaque(false);
-	String[] name = new String[4];
-	name[0]="Lesson";
-	name[1]="Question";
-	name[2]="Your Answer";
-	name[3]="Correct Answer";
-	resultTable = new JTable(rowData,name);
-	secondPanel.add(resultTable);
-	getMainPanel().add(secondPanel);
-    }
-
-    private void initThridPanel(){
-	thridPanel = new JPanel();
-	thridPanel.setOpaque(false);
-	suggestionLabel = new JLabel();
-	suggestionLabel.setOpaque(false);
-	suggestionLabel.setText("Suggestion:\n  Congraduration,XXX.Fuck you");
-	thridPanel.add(suggestionLabel);
-
-	getMainPanel().add(thridPanel);
-    }
-
-    private void initForthPanel(){
-	forthPanel = new JPanel();
-	forthPanel.setOpaque(false);
-	forthPanel.setLayout(new BorderLayout());
-
-	buttonPanel = new JPanel();
-	buttonPanel.setLayout(new GridLayout(1,5));
-	buttonPanel.setOpaque(false);
-
-	retryButton = new JButton(new ImageIcon("resource/RetryButton.png"));
-	retryButton.setBackground(new Color(0,0,0,0));
-
-
-	finishButton = new JButton("Finish");
-	finishButton.setBackground(new Color(0,0,0,0));
-	buttonPanel.add(new JLabel());
-	buttonPanel.add(new JLabel());
-	buttonPanel.add(new JLabel());
-	buttonPanel.add(retryButton);
-	buttonPanel.add(finishButton);
-
-
-	forthPanel.add(buttonPanel,BorderLayout.NORTH);
-	getMainPanel().add(forthPanel);
+    
+    private void initFinishButton(){
+    	finishButton = new JButton("Finish");
+    	finishButton.setBackground(new Color(0,0,0,0));
+    	finishButton.setBounds(418,447,50,50);
+        getContentPane().add(finishButton);
     }
 
     /**
@@ -109,8 +77,8 @@ public class ResultFrame extends AbstractFrame{
     /**
      * @return the suggestionLabel
      */
-    public JLabel getSuggestionLabel() {
-        return suggestionLabel;
+    public JLabel getSuggestionTwoLabel() {
+        return suggestionTwoLabel;
     }
 
     /**
