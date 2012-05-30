@@ -19,12 +19,12 @@ public class LearnController {
 	selectedLesson = lesson;
 	view = new LearnFrame();
 	
-	initAllPhrase();
+	initAllPhrases();
 
 	view.setVisible(true);
     }
 
-    private void initAllPhrase(){
+    private void initAllPhrases(){
 	for(Phrase p : selectedLesson.getAllPhrases()){
 	    view.addPhraseItem(p);
 	}

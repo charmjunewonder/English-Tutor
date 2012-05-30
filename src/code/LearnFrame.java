@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 import org.apache.commons.io.FilenameUtils;
@@ -22,13 +23,13 @@ public class LearnFrame extends AbstractFrame {
     private JButton finishButton;
     private JScrollPane phraseScrollPanel;
     private int sum;
-    
+
     public LearnFrame(){
 	super(FilenameUtils.separatorsToSystem("resource/Learn.png"));
 	initTitleLabel();
 	initPhraseScrollPanel();
 	initFinishButton();
-    sum=0;
+	sum=0;
     }  
 
     private void initTitleLabel(){
@@ -36,26 +37,29 @@ public class LearnFrame extends AbstractFrame {
 	titleLabel.setBounds(235,52,96,31);
 	getContentPane().add(titleLabel);
     }
-    
+
     private void initFinishButton(){
-    	finishButton = new JButton("Finish");
-    	finishButton.setBounds(489, 598, 50, 50);
-    	getContentPane().add(finishButton);
+	finishButton = new JButton("Finish");
+	finishButton.setBounds(489, 598, 50, 50);
+	getContentPane().add(finishButton);
     }
-    
+
     private void initPhraseScrollPanel(){
-    phrasePanel = new JPanel();
-    phrasePanel.setLayout(new GridLayout(10,1));	
-    	
+	phrasePanel = new JPanel();
+	phrasePanel.setLayout(new GridLayout(10,1));
+	phrasePanel.setOpaque(false);
+
+
 	phraseScrollPanel = new JScrollPane();
 	phraseScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	phraseScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 	phraseScrollPanel.setVisible(true);
 	phraseScrollPanel.getViewport().setOpaque(false);
 	phraseScrollPanel.setOpaque(false);
-    phraseScrollPanel.setViewportView(phrasePanel);
-    
-    phraseScrollPanel.setBounds(52, 107, 483, 450);
+	phraseScrollPanel.setBorder(null);
+	phraseScrollPanel.setViewportView(phrasePanel);
+
+	phraseScrollPanel.setBounds(52, 107, 483, 450);
 	getContentPane().add(phraseScrollPanel);
     }
 
@@ -97,12 +101,12 @@ public class LearnFrame extends AbstractFrame {
 	    }
 	}
     }
-    
+
     public static void main(String args[]){
-    	LearnFrame test = new LearnFrame();
-    	test.setVisible(true);
-    	test.addPhraseItem(new Phrase("English","Chinese","101.mp3"));
-        test.addPhraseItem(new Phrase("AAAAA","BBBB","102.mp3"));
+	LearnFrame test = new LearnFrame();
+	test.addPhraseItem(new Phrase("English","Chinese","101.mp3"));
+	test.addPhraseItem(new Phrase("AAAAA","BBBB","102.mp3"));
+	test.setVisible(true);
     }
 
 }

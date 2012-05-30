@@ -136,6 +136,9 @@ public class TestController {
 	soundEngine.playSound(p.getAudio());
     }	
 
+    /**
+     * 
+     */
     private void pressNextButton(){
 	switch(testState){
 	case VERIFY_ANSWER:
@@ -143,7 +146,6 @@ public class TestController {
 	    clearComponent();
 	    showNextPhrase();
 	    if(currentPhraseIndex == tenPhrases.size()-1){
-		view.getNextButton().setText("Finish");
 		testState = TestState.FINISH_TEST;
 	    }
 	    break;
