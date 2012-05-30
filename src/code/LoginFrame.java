@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import org.apache.commons.io.FilenameUtils;
 
 public class LoginFrame extends AbstractFrame{
-    private JLabel titleLabel,IDLabel;
+    private JLabel titleLabel, IDLabel, summaryLabel;
     private JPanel summaryPanel;
     private JComboBox userComboBox;
     private JButton loginButton;
@@ -24,6 +24,15 @@ public class LoginFrame extends AbstractFrame{
 	initUserComboBox();
 	initLoginButton();
 	initSummaryPanel();
+	this.setVisible(true);
+	createBufferStrategy(2);
+    }
+
+    /**
+     * @return the titleLabel
+     */
+    public JLabel getTitleLabel() {
+        return titleLabel;
     }
 
     /**
@@ -50,6 +59,11 @@ public class LoginFrame extends AbstractFrame{
     private void initSummaryPanel(){      
 	summaryPanel = new JPanel();
 	summaryPanel.setOpaque(false);
+    }
+    
+    private void initSummaryLabel(){
+	summaryLabel = new JLabel();
+	summaryLabel.setBounds(100, 100, 200, 100);
     }
     
     private void initTitleLabel(){

@@ -1,9 +1,15 @@
 package code;
 
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferStrategy;
 import java.sql.SQLException;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.text.JTextComponent;
 
@@ -18,13 +24,40 @@ public class LoginController {
 
 	initAllExistingAccount();
 	addListener();
+	initLabels();
 
 	view.setVisible(true);
+    }
+
+    public void setVisible(boolean visible){
+	view.setVisible(visible);
     }
 
     private void initAllExistingAccount(){
 	for(String name : database.getAllAccountNames()){
 	    view.addAccountName(name); 
+	}
+    }
+
+    private void initLabels(){
+	try{
+	    //InputStream in = LoginController.class.getResourceAsStream("abaddon_0.TTF");  
+	    /*File file = new File(FilenameUtils.separatorsToSystem("resource/Jaggard Two.ttf"));
+	    FileInputStream in = new FileInputStream(file);
+
+	    Font dynamicFont = Font.createFont(Font.TRUETYPE_FONT, in);
+	    Font dynamicFontPt = dynamicFont.deriveFont(30f);
+	    GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(dynamicFontPt);
+	    in.close();*/
+	    //Font font = Font.createFont(Font.TRUETYPE_FONT, );
+
+	    //Font.deriveFont(font, 30); 
+	    JLabel titleLabel = view.getTitleLabel();
+	    titleLabel.setText("<html> <p>English</p> <p>Tutor</p> </html>");
+	    titleLabel.setFont(new Font("Academy Engraved LET", Font.BOLD, 30));
+	    titleLabel.setForeground(Color.YELLOW);
+	}catch(Exception e){
+	    e.printStackTrace();
 	}
     }
 
@@ -48,21 +81,34 @@ public class LoginController {
 			account = new Account(name);
 			account.loadLessonsFromDatabase();
 		    }
-
-
-
-		    new MainController(account);
+		    final Account accountFinal = account;
 		    
+		    //EnsureFrame ensureFrame = new EnsureFrame();
+		    EnsureFrame.showMessageDialog(name + " has already existed. Please use another name.");
+
+		    /*MainController main = new MainController(account);
+		    //TODO
+
 		    view.setVisible(false);
 		    view.dispose();
-		    /*	    EventQueue.invokeLater(new Runnable() {
+		    main.setVisible(true);*/
+		    /*EventQueue.invokeLater(new Runnable() {
 			public void run() {
 			    try {
+				MainController main = new MainController(accountFinal);
+
+				//view.createBufferStrategy(2);
+				BufferStrategy myStrategy = view.getBufferStrategy();
+				Graphics g = myStrategy.getDrawGraphics(); // acquire the graphics
+
+				//TODO what is the magic here?
+				// draw stuff here
+				main.setVisible(true);
+				main.view.paint(g);
+				myStrategy.show();
 				view.setVisible(false);
 				view.dispose();
-
-				//TODO new MainController
-				new MainController(account);
+				g.dispose();
 			    }
 			    catch (Exception e) {
 				e.printStackTrace();
@@ -71,7 +117,8 @@ public class LoginController {
 		    });*/
 
 		} catch(SQLException sqle){
-		    JOptionPane.showMessageDialog(null, "Please use another name.", name + " exists", JOptionPane.ERROR_MESSAGE);
+		    //JOptionPane.showMessageDialog(null, "Please use another name.", name + " exists", JOptionPane.ERROR_MESSAGE);
+		    //new EnsureFrame()
 		}
 
 

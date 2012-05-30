@@ -1,6 +1,8 @@
+/**
+ * 
+ */
 package code;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -8,29 +10,25 @@ import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.Action;
-import javax.swing.AbstractAction;
-import javax.swing.KeyStroke;
-import java.awt.event.KeyEvent;
+import code.TestUnit.QuestionType;
 
 /**
- * @author Eric
- * @version 0.1
+ * @author charmjunewonder
+ *
  */
-
-public class TestUnit{
+public class TestController {
+    public static final int ENGLISH_QUESTION_TYPE = 284;
+    public static final int CHINESE_QUESTION_TYPE = 230;
+    public static final int AUDIO_QUESTION_TYPE = 273;
+    
     private enum TestType{
 	TEST_ONE_LESSON, TEST_ALL_LESSONS
     }
     private enum TestState{
-	VERIFY_ANSWER, NEXT_PHRASE, FINISH_TEST
+	VERIFY_ANSWER, FINISH_TEST
     }
-    public enum QuestionType{
-	ENGLISH, CHINESE, AUDIO
-    }
-
-
-    private TestUnitView view;
+    
+    private TestFrame view;
     private TestType testType;
     private TestState testState;
     private Lesson selectedLesson;
@@ -46,8 +44,8 @@ public class TestUnit{
     private ArrayList<Phrase> wrongPhrases;
     private ArrayList<String> wrongAnswers;
 
-    public TestUnit(Lesson l){
-	view = new TestUnitView();
+    public TestController(Lesson l){
+	view = new TestFrame();
 	tenPhrases = new ArrayList<Phrase>();
 	questionTypes = new ArrayList<QuestionType>();
 	wrongPhrases = new ArrayList<Phrase>();
@@ -59,22 +57,11 @@ public class TestUnit{
 	selectedLesson = l;
 	soundEngine = new SoundEngine();
 	addActionListener();
-	addKeyBinding();
-	
-	EventQueue.invokeLater(new Runnable() {
-	    public void run() {
-		try {
-		    view.setVisible(true);
-		}
-		catch (Exception e) {
-		    e.printStackTrace();
-		}
-	    }
-	});
 
+	view.setVisible(true);
 	showNextPhrase();
     }
-
+    
     public void prepareTenPhrase(){
 	switch(testType){
 	case TEST_ONE_LESSON:
@@ -84,7 +71,6 @@ public class TestUnit{
 	    tenPhrases = account.getRandomTenPhrase();
 	    break;
 	}
-	view.getProgressBar().setMaximum(tenPhrases.size());
     }
 
     public void showNextPhrase(){
@@ -98,7 +84,6 @@ public class TestUnit{
 	if(p == null)	return;
 
 	currentPhrase = p;
-	view.getProgressBar().setValue(currentPhraseIndex+1);
 
 	Random ran = new Random();
 	int rnum = ran.nextInt(3);
@@ -119,18 +104,18 @@ public class TestUnit{
     }
 
     private void clearComponent(){
-	view.getCorrectAnswerLabel().setText("");
+	//view.getCorrectAnswerLabel().setText("");
 	view.getQuestionLabel().setText("");
 	view.getAnswerTextField().setText("");
     }
 
     private void verifyAnswer(){
-	testState = TestState.NEXT_PHRASE;
+	//testState = TestState.NEXT_PHRASE;
 	if(currentPhrase.getEnglish().equals(view.getAnswerTextField().getText())){
 	    // correct answer
 	    totalCorrectPhraseNum++;
 	    // TODO add some correct response
-	    pressNextButton();
+	    //pressNextButton();
 	}
 	else{
 	    // wrong answer
@@ -139,7 +124,7 @@ public class TestUnit{
 	    wrongPhrases.add(currentPhrase);
 	    wrongAnswers.add(view.getAnswerTextField().getText());
 
-	    view.getCorrectAnswerLabel().setText(currentPhrase.getEnglish());
+	    //view.getCorrectAnswerLabel().setText(currentPhrase.getEnglish());
 	}
     }
 
@@ -155,18 +140,12 @@ public class TestUnit{
 	switch(testState){
 	case VERIFY_ANSWER:
 	    verifyAnswer();
+	    clearComponent();
+	    showNextPhrase();
 	    if(currentPhraseIndex == tenPhrases.size()-1){
 		view.getNextButton().setText("Finish");
 		testState = TestState.FINISH_TEST;
-	    }else{
-		view.getNextButton().setText("Next");
 	    }
-	    break;
-	case NEXT_PHRASE:
-	    view.getNextButton().setText("Verify");
-	    testState = TestState.VERIFY_ANSWER;
-	    clearComponent();
-	    showNextPhrase();
 	    break;
 	case FINISH_TEST:
 	    // TODO
@@ -175,8 +154,6 @@ public class TestUnit{
 	    view.dispose(); //Destroy the JFrame object
 	    break;
 	}
-
-	// turn to 'Finish' button
     }
 
     private void addActionListener(){
@@ -192,27 +169,14 @@ public class TestUnit{
 		playSound(currentPhrase);	
 	    }			
 	});
-
     }
-
-    private void addKeyBinding(){
-	Action pressNextButton = new AbstractAction() {
-	    public void actionPerformed(ActionEvent e) {
-		pressNextButton();
-	    }
-	};
-	view.getNextButton().getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
-		"pressed");
-	view.getNextButton().getActionMap().put("pressed",
-		pressNextButton);
-    }
-
+    
     public static void main(String[] args) throws Exception {
 
-	Class.forName("org.sqlite.JDBC");
-	Connection conn = DriverManager.getConnection("jdbc:sqlite:data/test.db");
-	Lesson l = new Lesson(conn, 1);
+   	Class.forName("org.sqlite.JDBC");
+   	Connection conn = DriverManager.getConnection("jdbc:sqlite:data/test.db");
+   	Lesson l = new Lesson(conn, 1);
 
-	new TestUnit(l);
+   	new TestController(l);
     }
 }

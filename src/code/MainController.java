@@ -3,6 +3,7 @@
  */
 package code;
 
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,7 +16,7 @@ import javax.swing.JOptionPane;
 public class MainController {
 
     private Account account;
-    private MainFrame view;
+    public MainFrame view;
 
     public MainController(Account a){
 	account = a;
@@ -24,8 +25,14 @@ public class MainController {
 	initAllLessons();
 	addListener();
 
-	view.setVisible(true);
+	//view.setVisible(true);
     }
+    
+    
+    public void update(Graphics g){
+	view.update(g);
+    }
+
 
     private void initAllLessons(){
 	for(Lesson l : account.getAllLesson()){
