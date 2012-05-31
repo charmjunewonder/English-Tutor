@@ -36,7 +36,7 @@ public class HistoryPanel extends JPanel{
 	}
 	return historyPanel;
     }
-    
+
     private HistoryPanel(){
 	super();
 	setBounds(500,50,400,600);
@@ -58,25 +58,25 @@ public class HistoryPanel extends JPanel{
     private void initHistoryScrollPanel(){
 	historyScrollPanel = new JScrollPane();
 
-    historyScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	historyScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 	historyScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	historyScrollPanel.setBounds(0, 50, 400, 550);
-	
-	
+
+
 	add(historyScrollPanel);
     }
 
     private void initHistoryTable(){
-    String[] columnNames = new String[3];
+	String[] columnNames = new String[3];
 	columnNames[0] = "Date";
 	columnNames[1] = "Mark";
 	columnNames[2] = "Color";
-	
-	
+
+
 	tableModel = new DefaultTableModel(0,3);
 	tableModel.setColumnIdentifiers(columnNames);
 	historyTable = new JTable(){
-		/*    
+	    /*    
 		public Component prepareRenderer(
 			    TableCellRenderer renderer, int row, int column)
 		    {
@@ -92,14 +92,14 @@ public class HistoryPanel extends JPanel{
 
 			return c;
 		    }
-		  *//*  
+	     *//*  
 		    @Override
 		    public boolean isCellEditable(int row, int column) {
 		       return false;
 		    }*/
 	};
 	historyTable.setModel(tableModel);
-	
+
 	historyTable.setBounds(0, 0, 400, 550);
 	historyScrollPanel.setViewportView(historyTable);
     }
@@ -113,14 +113,14 @@ public class HistoryPanel extends JPanel{
 		return false;
 	    }
 	};
-	
-    String[] columnNames = new String[3];
+
+	String[] columnNames = new String[3];
 	columnNames[0] = "Date";
 	columnNames[1] = "Mark";
 	columnNames[2] = "Color";
-	
+
 	newTableModel.setColumnIdentifiers(columnNames);
-	
+
 	for(int i=0;i<sum_history-1;i++)
 	    for(int j=0;j<3;j++){
 		newTableModel.setValueAt(tableModel.getValueAt(i, j), i, j);
@@ -144,6 +144,15 @@ public class HistoryPanel extends JPanel{
 	historyTable.getColumn("Color").setCellRenderer(historyTable.getDefaultRenderer(Icon.class));	    
     }
 
+    public void clearHistoryTableContent(){
+	DefaultTableModel mtl = (DefaultTableModel)historyTable.getModel();
+	int row = mtl.getRowCount();
+	while(--row >= 0){
+	    mtl.removeRow(row);
+	}
+	sum_history = 0;
+    }
+
     public JLabel getTitleLabel(){
 	return titleLabel;
     }
@@ -151,7 +160,7 @@ public class HistoryPanel extends JPanel{
     public JTable getHistoryTable(){
 	return historyTable;
     }
-    
+
     public static void main(String args[]){
 	MainFrame test = new MainFrame();
 	HistoryPanel p = new HistoryPanel();

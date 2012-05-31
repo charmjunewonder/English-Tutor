@@ -11,11 +11,12 @@ import javazoom.jl.player.Player;
 
 
 public class SoundEngine {
-    private Player player;
+    //private Player player;
     public SoundEngine(){
     }
 
-    public void playSound(String filename){
+    public static void playSound(String filename){
+	Player player = null;
 	try {
 	    FileInputStream fis     = new FileInputStream("sounds/" + filename + ".mp3");
 	    BufferedInputStream bis = new BufferedInputStream(fis);
@@ -25,12 +26,13 @@ public class SoundEngine {
 	    System.out.println("Problem playing file " + filename);
 	    System.out.println(e);
 	}
-
+	final Player soundPlayer = player;
 	// run in new thread to play in background
 	new Thread() {
 	    public void run() {
-		try { player.play(); }
-		catch (Exception e) { System.out.println(e); }
+		try { 
+		    soundPlayer.play();
+		}catch (Exception e) { System.out.println(e); }
 	    }
 	}.start();
     }

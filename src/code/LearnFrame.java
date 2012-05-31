@@ -1,17 +1,17 @@
 
 package code;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -45,6 +45,13 @@ public class LearnFrame extends AbstractFrame {
 	getContentPane().add(titleLabel);
     }
 
+    /**
+     * @return the finishButton
+     */
+    public JButton getFinishButton() {
+	return finishButton;
+    }
+
     private void initFinishButton(){
 	finishButton = new JButton("Finish");
 	finishButton.setBounds(489, 598, 50, 50);
@@ -56,11 +63,11 @@ public class LearnFrame extends AbstractFrame {
 	//phrasePanel.setLayout(new GridLayout(2,1));
 	phrasePanel.setLayout(null);
 	phrasePanel.setOpaque(false);
-
+	//phrasePanel.setBounds(0, 0, 500, 500);
 
 	phraseScrollPanel = new JScrollPane();
 	phraseScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	phraseScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+	phraseScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 	phraseScrollPanel.setVisible(true);
 	phraseScrollPanel.getViewport().setOpaque(false);
 	phraseScrollPanel.setOpaque(false);
@@ -87,7 +94,7 @@ public class LearnFrame extends AbstractFrame {
 	    super();
 	    setLayout(null);
 	    phrase = p;
-	    
+
 	    chineseLabel = new JLabel(p.getChinese());
 	    //chineseLabel.setHorizontalAlignment(JLabel.CENTER);
 	    //TODO
@@ -95,13 +102,19 @@ public class LearnFrame extends AbstractFrame {
 	    chineseLabel.setBounds(0, 0, 235, 25);
 	    chineseLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	    chineseLabel.addMouseListener(new ChineseLabelAdapter());
-    
+
 	    Image i = Toolkit.getDefaultToolkit().getImage("resource/VoiceButton.png").getScaledInstance(25, 25, Image.SCALE_DEFAULT); 
 	    voiceButton = new JButton(new ImageIcon(i));
 	    voiceButton.setBounds(235, 0, 25, 25);
 	    //voiceButton = new JButton(new ImageIcon(FilenameUtils.separatorsToSystem("resource/VoiceButton.png")));
 	    voiceButton.setBorderPainted(false);
-	    
+	    voiceButton.addActionListener(new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+		    SoundEngine.playSound(phrase.getAudio());
+		}
+	    });
+
+
 	    englishLabel = new JLabel(p.getEnglish());
 	    englishLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	    englishLabel.setBounds(260, 0, 235, 25);

@@ -29,7 +29,7 @@ public class LessonController {
 	view.setVisible(true);
     }
 
-    private void initAllPhrases(){
+    public void initAllPhrases(){
 	view.clearPhraseTabelContent();
 	for(Phrase p : selectedLesson.getAllPhrases()){
 	    view.addPhrase(p);
@@ -42,6 +42,7 @@ public class LessonController {
     }
 
     private void addALlListeners(){
+	
 	view.getAddButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
 		String english = view.getEnglishTextField().getText();
@@ -67,12 +68,16 @@ public class LessonController {
 	view.getTestButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
 		new TestController(selectedLesson);
+		MainController.getMainController().setVisible(false);
+		selectedLesson.setNeededToRestore(true);
 	    }
 	});
 
 	view.getLearnButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
 		new LearnController(selectedLesson);
+		MainController.getMainController().setVisible(false);
+		selectedLesson.setNeededToRestore(true);
 	    }
 	});
 
