@@ -179,11 +179,11 @@ public abstract class AbstractFrame extends JFrame{
 	
     }
 
-    private JButton getExitButton(){
+    protected JButton getExitButton(){
 	return exitButton;
     }
 
-    private JButton getShrinkButton(){
+    protected JButton getShrinkButton(){
 	return shrinkButton;
     }
 
