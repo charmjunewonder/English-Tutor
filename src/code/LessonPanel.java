@@ -123,13 +123,23 @@ public class LessonPanel extends JPanel {
 	String date = p.getLastReviewTime();
 	String accuracy = "" + p.getAccuracy();
 	sum_phrase++;
-
+    
 	DefaultTableModel newTableModel = new DefaultTableModel(sum_phrase,5){
 	    @Override
 	    public boolean isCellEditable(int row, int column) {
 		return false;
 	    }
 	};
+	
+    String[] columnNames = new String[5];
+    columnNames[0] = "ÖÐÎÄ";
+    columnNames[1] = "English";
+    columnNames[2] = "Sound";
+    columnNames[3] = "Date";
+    columnNames[4] = "Accuracy";
+		
+	newTableModel.setColumnIdentifiers(columnNames);
+	
 	for(int i=0;i<sum_phrase-1;i++)
 	    for(int j=0;j<5;j++){
 		newTableModel.setValueAt(tableModel.getValueAt(i, j), i, j);
