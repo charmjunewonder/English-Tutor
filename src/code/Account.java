@@ -62,6 +62,11 @@ public class Account {
      * @return the isModify
      */
     public boolean isModify() {
+	for(Lesson l : lessons){
+	    if(l.isNeededToRestore()){
+		return true;
+	    }
+	}
 	return isModify;
     }
 
@@ -200,7 +205,7 @@ public class Account {
 		l = lessons.get(lessonRandomNum);
 		phraseCountOfLesson = l.getPhraseCount();
 	    }
-
+	    l.setNeededToRestore(true);
 	    int phraseRandomNum = random.nextInt(phraseCountOfLesson);
 	    Phrase p = l.getPhrase(phraseRandomNum);
 	    p.setLessonName(l.getLessonName());

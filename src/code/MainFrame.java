@@ -215,7 +215,6 @@ public class MainFrame extends AbstractFrame{
 	public void mouseClicked(MouseEvent e){
 	}
 	public void mousePressed(MouseEvent e){
-	    addLesson("Lesson_"+(sum_lesson+1));
 	}
     }
 

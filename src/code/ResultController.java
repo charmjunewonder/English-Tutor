@@ -11,15 +11,15 @@ public class ResultController {
     private ArrayList<Phrase> wrongPhrases;
     private ResultFrame view;
     private String[][] data;
-    private int questionCount;
+    private int score;
 
     public ResultController(ArrayList<Phrase> wrongPhrases, 
 	    ArrayList<QuestionType> questionTypes, 
 	    ArrayList<String> wrongAnswers, 
-	    int questionCount){
+	    int score){
 	int count = wrongPhrases.size();
 	this.wrongPhrases = wrongPhrases;
-	this.questionCount = questionCount;
+	this.score = score;
 	data = new String[count][4];
 
 	for(int i = 0; i < count; ++i){
@@ -41,7 +41,7 @@ public class ResultController {
 	    }
 	}
 
-	
+
 	view = new ResultFrame(data);
 	addListener();
 	setViewContent();
@@ -50,18 +50,22 @@ public class ResultController {
 
     public void addListener(){
 	view.getFinishButton().addActionListener(new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-			view.setVisible(false);
-			view.dispose();
-			MainController.getMainController().setVisible(true);
-		}
+	    public void actionPerformed(ActionEvent e){
+		view.setVisible(false);
+		view.dispose();
+		MainController main = MainController.getMainController();
+		main.getLessonController().initAllPhrases();
+		main.setVisible(true);
+	    }
 	});
+
+	view.addExitingReturnToMainController();
     }
 
     private void setViewContent(){
 	//view.getTitleLabel().setText("Result");
 	int wrongCount = wrongPhrases.size();
-	view.getScoreLabel().setText("Score: " + (questionCount - wrongCount) * 10);
+	view.getScoreLabel().setText("Score: " + score);
 	if(wrongCount > 80){
 	    view.getSuggestionTwoLabel().setText("Congraduration, you can learn next lesson");
 	} else if(wrongCount > 60){

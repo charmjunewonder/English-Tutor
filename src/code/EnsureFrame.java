@@ -1,6 +1,7 @@
 package code;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -25,8 +26,8 @@ public class EnsureFrame extends AbstractFrame{
     private static boolean isClicked;
 
     private static EnsureFrame frame;
-    
-    private EnsureFrame(){
+
+    public EnsureFrame(){
 	super(FilenameUtils.separatorsToSystem("resource/EnsureFrame2.png"));
 	initTextLabel();
 	initButtonPanel();
@@ -35,7 +36,7 @@ public class EnsureFrame extends AbstractFrame{
 	//exitButton.setEnabled(false);
 	removeExitAndShrinkButton();
     }
-    
+
     public static EnsureFrame getEnsureFrame(){
 	//TODO
 	if(frame == null){
@@ -65,6 +66,11 @@ public class EnsureFrame extends AbstractFrame{
 	ensure.getSecondButton().setText("Cancel");
 	ensure.getFirstButton().setText("Don't save");
 	ensure.getStatementLabel().setText(message);	
+	EventQueue.invokeLater(new Runnable() {
+	    public void run() {
+		ensure.setVisible(true);
+	    }
+	});
 	ensure.setVisible(true);
 	ensure.getThirdButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
@@ -92,9 +98,9 @@ public class EnsureFrame extends AbstractFrame{
 	});
 	while (!isClicked) {
 	    try{
-		   Thread.sleep(1000);
+		Thread.sleep(100);
 	    }catch(InterruptedException e){
-		
+
 	    }
 	}
 	return optionValue;
@@ -152,6 +158,7 @@ public class EnsureFrame extends AbstractFrame{
     public static void main(String args[]){
 	//EnsureFrame test = new EnsureFrame();
 	//test.setVisible(true);
-	EnsureFrame.showConfirmDialog("Do you want to save the changes ?");
+	int a = EnsureFrame.showConfirmDialog("Do you want to save the changes ?");
+	System.out.println(a);
     }
 }

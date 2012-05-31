@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -34,7 +36,7 @@ public abstract class AbstractFrame extends JFrame{
 	shrinkEnteredImage = new ImageIcon(FilenameUtils.separatorsToSystem("resource/shrink_green.png"));
 	initialize(filePath);
     }
-    
+
     protected AbstractFrame(String filePath, int exitWidth, int exitHeight, int shrinkWidth, int shrinkHeight){
 	super();
 	exitImage = new ImageIcon(
@@ -51,7 +53,7 @@ public abstract class AbstractFrame extends JFrame{
 		getScaledInstance(shrinkWidth, shrinkHeight, Image.SCALE_DEFAULT));
 	initialize(filePath);
     }
-    
+
     private void initialize(String filePath){
 	setUndecorated(true);
 	setBackground(new Color(0, true));
@@ -92,14 +94,14 @@ public abstract class AbstractFrame extends JFrame{
 		);
 	setCursor(cursor);
     }
-    
+
     protected void removeExitAndShrinkButton(){
 	contentPane.remove(exitButton);
 	contentPane.remove(shrinkButton);
     }
-    
+
     protected void setButtonSize(int exitWidth, int exitHeight, int shrinkWidth, int shrinkHeight){
-	
+
     }
 
     protected void initTitlePanel(){
@@ -124,32 +126,42 @@ public abstract class AbstractFrame extends JFrame{
 	contentPane.add(shrinkButton);
     }
 
+    protected void addExitingReturnToMainController(){
+	exitButton.addActionListener(new ActionListener(){
+	    public void actionPerformed(ActionEvent e){
+		MainController main = MainController.getMainController();
+		main.getLessonController().initAllPhrases();
+		main.setVisible(true);
+	    }
+	});
+    }
+
     /**
      * @param exitImage the exitImage to set
      */
     public void setExitImage(ImageIcon exitImage) {
-        this.exitImage = exitImage;
+	this.exitImage = exitImage;
     }
 
     /**
      * @param exitEnteredImage the exitEnteredImage to set
      */
     public void setExitEnteredImage(ImageIcon exitEnteredImage) {
-        this.exitEnteredImage = exitEnteredImage;
+	this.exitEnteredImage = exitEnteredImage;
     }
 
     /**
      * @param shrinkImage the shrinkImage to set
      */
     public void setShrinkImage(ImageIcon shrinkImage) {
-        this.shrinkImage = shrinkImage;
+	this.shrinkImage = shrinkImage;
     }
 
     /**
      * @param shrinkEnteredImage the shrinkEnteredImage to set
      */
     public void setShrinkEnteredImage(ImageIcon shrinkEnteredImage) {
-        this.shrinkEnteredImage = shrinkEnteredImage;
+	this.shrinkEnteredImage = shrinkEnteredImage;
     }
 
     private class FrameMouseListener implements MouseMotionListener{
@@ -172,35 +184,36 @@ public abstract class AbstractFrame extends JFrame{
     }
 
     private class ShrinkButtonAdapter extends MouseAdapter{
-	
+
 	public void mouseClicked(MouseEvent e){
 	    setExtendedState(JFrame.ICONIFIED);
 	}
-	
+
 	public void mouseEntered(MouseEvent e){
 	    shrinkButton.setIcon(shrinkEnteredImage);
 	}
-	
+
 	public void mouseExited(MouseEvent e){
 	    shrinkButton.setIcon(shrinkImage);
 	}
-	
+
     }
 
     private class ExitButtonAdapter extends MouseAdapter{
-	
+
 	public void mouseClicked(MouseEvent e){
+	    setVisible(false);
 	    dispose(); 
 	}
-	
+
 	public void mouseEntered(MouseEvent e){
 	    exitButton.setIcon(exitEnteredImage);
 	}
-	
+
 	public void mouseExited(MouseEvent e){
 	    exitButton.setIcon(exitImage);
 	}
-	
+
     }
 
     protected JButton getExitButton(){

@@ -101,6 +101,15 @@ public class HistoryPanel extends JPanel{
 	historyTable.getColumn("C").setCellRenderer(historyTable.getDefaultRenderer(Icon.class));	    
     }
 
+    public void clearHistoryTableContent(){
+	DefaultTableModel mtl = (DefaultTableModel)historyTable.getModel();
+	int row = mtl.getRowCount();
+	while(--row >= 0){
+	    mtl.removeRow(row);
+	}
+	sum_history = 0;
+    }
+    
     public JLabel getTitleLabel(){
 	return titleLabel;
     }

@@ -30,6 +30,20 @@ public class Lesson {
     private ArrayList<String> testResultTimes;
     private ArrayList<Integer> testResultScores;
 
+    /**
+     * @return the testResultTimes
+     */
+    public ArrayList<String> getTestResultTimes() {
+        return testResultTimes;
+    }
+
+    /**
+     * @return the testResultScores
+     */
+    public ArrayList<Integer> getTestResultScores() {
+        return testResultScores;
+    }
+
     /*private ArrayList<Phrase> deletePhrases;
     private ArrayList<Phrase> addPhrases; // list of phrases that will write to database if save the changes;
     private ArrayList<Phrase> testedOrLearnedPhrases;*/
@@ -118,7 +132,9 @@ public class Lesson {
 	    statement.executeUpdate("CREATE TABLE IF NOT EXISTS "+lessonName+" (English, Chinese, Audio, LastReviewTime, Accuracy, TestCount);");
 	    ResultSet rs = statement.executeQuery("SELECT * FROM " + lessonName +";");
 	    while (rs.next()) {
-		Phrase p = new Phrase(rs.getString("English"), rs.getString("Chinese"), rs.getString("Audio"));
+		Phrase p = new Phrase(rs.getString("English"), rs.getString("Chinese"),
+			rs.getString("Audio"), rs.getString("LastReviewTime"),
+			rs.getInt("Accuracy"), rs.getInt("TestCount"));
 		phrases.add(p);
 		phraseCount++;
 	    }
@@ -204,10 +220,12 @@ public class Lesson {
 
     public void addPhrase(Phrase p){
 	phrases.add(p);
+	this.isNeededToRestore = true;
     }
 
     public void deletePhrase(Phrase p){
 	phrases.remove(p);
+	this.isNeededToRestore = true;
     }
 
     /*private void addPhraseToDatabase(Phrase p) throws Exception{
@@ -268,7 +286,7 @@ public class Lesson {
     public void writeToDatabase(){
 	try{
 	    // phrase
-	    statement.executeUpdate("DROP TABLE IF EXISTS" + lessonName + ";");
+	    statement.executeUpdate("DROP TABLE IF EXISTS " + lessonName + ";");
 	    statement.executeUpdate("CREATE TABLE "+lessonName+" (English, Chinese, Audio, LastReviewTime, Accuracy, TestCount);");
 	    prep = connection.prepareStatement("INSERT INTO "+lessonName+" VALUES (?, ?, ?, ?, ?, ?);");
 	    Iterator<Phrase> itr = phrases.iterator();

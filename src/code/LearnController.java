@@ -3,6 +3,8 @@
  */
 package code;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -18,8 +20,9 @@ public class LearnController {
     public LearnController(Lesson lesson){
 	selectedLesson = lesson;
 	view = new LearnFrame();
-	
+
 	initAllPhrases();
+	addAllListener();
 
 	view.setVisible(true);
     }
@@ -28,6 +31,22 @@ public class LearnController {
 	for(Phrase p : selectedLesson.getAllPhrases()){
 	    view.addPhraseItem(p);
 	}
+    }
+
+    private void addAllListener(){
+
+	view.getFinishButton().addActionListener(new ActionListener(){
+	    public void actionPerformed(ActionEvent e){
+		MainController main = MainController.getMainController();
+		main.getLessonController().initAllPhrases();
+		main.setVisible(true);
+		view.setVisible(false);
+		view.dispose();
+		selectedLesson = null;
+	    }
+	});
+
+	view.addExitingReturnToMainController();
     }
 
     public static void main(String[] args) throws Exception {

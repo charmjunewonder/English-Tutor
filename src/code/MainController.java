@@ -23,7 +23,7 @@ public class MainController {
     //TODO
     public MainFrame view;
     private LessonController lessonController;
-    //private HistoryController historyController;
+    private HistoryController historyController;
 
     public static MainController getMainController(){
 	if (mainController == null) {
@@ -45,6 +45,14 @@ public class MainController {
     }
 
 
+    /**
+     * @return the lessonController
+     */
+    public LessonController getLessonController() {
+	return lessonController;
+    }
+
+
     public void update(Graphics g){
 	view.update(g);
     }
@@ -56,6 +64,7 @@ public class MainController {
     public void setAccount(Account account) {
 	this.account = account;
 	lessonController = new LessonController(account.getLesson(0));
+	historyController = new HistoryController(account.getLesson(0));
 	initAllLessons();
     }
 
@@ -66,23 +75,36 @@ public class MainController {
 	}
     }
 
+    private void saveOrNot(){
+	if(account.isModify()){
+	    //TODO
+	    int value = JOptionPane.showConfirmDialog(null,
+		    "Do you want to save you changes ?",
+		    "Log out",
+		    JOptionPane.YES_NO_CANCEL_OPTION);
+	    if(value == JOptionPane.CANCEL_OPTION){
+		return;
+	    } else if(value == JOptionPane.YES_OPTION){
+		account.writeToDatabase();
+	    }
+	}
+    }
+
     private void addListener(){
+	view.getExitButton().addActionListener(new ActionListener(){
+	    public void actionPerformed(ActionEvent e){
+		saveOrNot();
+		view.setVisible(false);
+		view.dispose();
+		System.exit(0);
+	    }
+	});
+
 	view.getLogoutButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
-		if(account.isModify()){
-		    int value = JOptionPane.showConfirmDialog(null,
-			    "Do you want to save you changes ?",
-			    "Log out",
-			    JOptionPane.YES_NO_CANCEL_OPTION);
-		    if(value == JOptionPane.CANCEL_OPTION){
-			return;
-		    } else if(value == JOptionPane.YES_OPTION){
-			account.writeToDatabase();
-		    }
-		}
+		saveOrNot();
 
 		new LoginController();
-
 		view.setVisible(false);
 		view.dispose();
 	    }
@@ -133,12 +155,13 @@ public class MainController {
 	    ListSelectionModel lsm = (ListSelectionModel)e.getSource();
 
 	    boolean isAdjusting = e.getValueIsAdjusting();
-            
-            //System.out.println("("+isAdjusting+","+firstIndex+","+lastIndex+","+minIndex+","+maxIndex+")");
+
+	    //System.out.println("("+isAdjusting+","+firstIndex+","+lastIndex+","+minIndex+","+maxIndex+")");
 	    if (!lsm.isSelectionEmpty() && !isAdjusting) {
 		int index = lsm.getMinSelectionIndex();
 		Lesson l = account.getLesson(index);
 		lessonController.setSelectedLesson(l);
+		historyController.setSelectedLesson(l);
 	    } 
 	}
     }

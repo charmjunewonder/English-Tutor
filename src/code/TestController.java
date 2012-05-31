@@ -7,7 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 import code.TestUnit.QuestionType;
@@ -20,14 +23,14 @@ public class TestController {
     public static final int ENGLISH_QUESTION_TYPE = 284;
     public static final int CHINESE_QUESTION_TYPE = 230;
     public static final int AUDIO_QUESTION_TYPE = 273;
-    
+
     private enum TestType{
 	TEST_ONE_LESSON, TEST_ALL_LESSONS
     }
     private enum TestState{
 	NEXT_PHRASE, FINISH_TEST
     }
-    
+
     private TestFrame view;
     private TestType testType;
     private TestState testState;
@@ -49,13 +52,13 @@ public class TestController {
 	selectedLesson = l;
 	initialize();
     }
-    
+
     public TestController(Account a){
 	testType = TestType.TEST_ALL_LESSONS;
 	account = a;
 	initialize();
     }
-    
+
     private void initialize(){
 	view = new TestFrame();
 	tenPhrases = new ArrayList<Phrase>();
@@ -71,7 +74,7 @@ public class TestController {
 	view.setVisible(true);
 	showNextPhrase();
     }
-    
+
     public void prepareTenPhrase(){
 	switch(testType){
 	case TEST_ONE_LESSON:
@@ -126,6 +129,7 @@ public class TestController {
 	    totalCorrectPhraseNum++;
 	    // TODO add some correct response
 	    //pressNextButton();
+	    currentPhrase.increaseAccuracy();
 	}
 	else{
 	    // wrong answer
@@ -134,8 +138,14 @@ public class TestController {
 	    wrongPhrases.add(currentPhrase);
 	    wrongAnswers.add(view.getAnswerTextField().getText());
 
+	    currentPhrase.decreaseAccuracy();
 	    //view.getCorrectAnswerLabel().setText(currentPhrase.getEnglish());
 	}
+	DateFormat dateFormat = new SimpleDateFormat("/MM/dd/yy");
+	Date date = new Date();
+	String dateString = dateFormat.format(date);
+	currentPhrase.setLastReviewTime(dateString);
+
     }
 
     public void updateViewPhrase(Phrase p){
@@ -162,7 +172,13 @@ public class TestController {
 	case FINISH_TEST:
 	    // TODO
 	    verifyAnswer();
-	    new ResultController(wrongPhrases, questionTypes, wrongAnswers, tenPhrases.size());
+	    DateFormat dateFormat = new SimpleDateFormat("/MM/dd/yy");
+	    Date date = new Date();
+	    String dateString = dateFormat.format(date);
+	    int score = (int) ((totalCorrectPhraseNum * 1.0 / tenPhrases.size()) * 100);
+	    selectedLesson.addTestResult(dateString, score);
+	    System.out.println(score);
+	    new ResultController(wrongPhrases, questionTypes, wrongAnswers, score);
 	    view.setVisible(false); //you can't see me!
 	    view.dispose(); //Destroy the JFrame object
 	    break;
@@ -182,14 +198,16 @@ public class TestController {
 		playSound(currentPhrase);	
 	    }			
 	});
+
+	view.addExitingReturnToMainController();
     }
-    
+
     public static void main(String[] args) throws Exception {
 
-   	Class.forName("org.sqlite.JDBC");
-   	Connection conn = DriverManager.getConnection("jdbc:sqlite:data/test.db");
-   	Lesson l = new Lesson(conn, 1);
+	Class.forName("org.sqlite.JDBC");
+	Connection conn = DriverManager.getConnection("jdbc:sqlite:data/test.db");
+	Lesson l = new Lesson(conn, 1);
 
-   	new TestController(l);
+	new TestController(l);
     }
 }
