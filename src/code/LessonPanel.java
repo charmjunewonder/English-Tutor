@@ -14,6 +14,8 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.commons.io.FilenameUtils;
 
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class LessonPanel extends JPanel {
     private JButton learnLessonButton,testLessonButton,deletePhraseButton,addPhraseButton;
@@ -86,6 +88,7 @@ public class LessonPanel extends JPanel {
 	phraseTable.setModel(tableModel);
 	phraseTable.setRowHeight(40);
 	phraseTable.setBounds(0, 0, 400, 450);
+	phraseTable.addMouseListener(new SoundAdapter());
 	phraseScrollPanel.setViewportView(phraseTable);
     }
 
@@ -123,6 +126,9 @@ public class LessonPanel extends JPanel {
 	String date = p.getLastReviewTime();
 	String accuracy = "" + p.getAccuracy();
 	sum_phrase++;
+
+    
+
 	
 	String[] columnNames = new String[5];
 	columnNames[0] = "ÖÐÎÄ";
@@ -131,30 +137,38 @@ public class LessonPanel extends JPanel {
 	columnNames[3] = "Date";
 	columnNames[4] = "Accuracy";
 	
+
 	DefaultTableModel newTableModel = new DefaultTableModel(sum_phrase,5){
 	    @Override
 	    public boolean isCellEditable(int row, int column) {
 		return false;
 	    }
 	};
+
 	newTableModel.setColumnIdentifiers(columnNames);
+
 	for(int i=0;i<sum_phrase-1;i++)
 	    for(int j=0;j<5;j++){
 		newTableModel.setValueAt(tableModel.getValueAt(i, j), i, j);
 	    }
-
+    
+	
 	phraseTable.setModel(newTableModel);
 	tableModel = newTableModel;
-
 	phraseTable.setValueAt(chinese, sum_phrase-1, 0);
 	phraseTable.setValueAt(english, sum_phrase-1, 1);
-	phraseTable.setValueAt(new ImageIcon(FilenameUtils.separatorsToSystem("resource/VoiceButton.png")), sum_phrase-1, 2);
+	if (p.getAudio()!=null) phraseTable.setValueAt(new ImageIcon(FilenameUtils.separatorsToSystem("resource/VoiceButton.png")), sum_phrase-1, 2);
+	                   else phraseTable.setValueAt(new ImageIcon(), sum_phrase-1, 2);
 	phraseTable.setValueAt(date, sum_phrase-1, 3);
 	phraseTable.setValueAt(accuracy, sum_phrase-1, 4);
 
 
 	phraseTable.getColumn("Sound").setCellEditor(phraseTable.getDefaultEditor(Icon.class));
 	phraseTable.getColumn("Sound").setCellRenderer(phraseTable.getDefaultRenderer(Icon.class));	 
+    
+	for(int i=0;i<sum_phrase;i++){
+	  if (phraseTable.getValueAt(i, 2).toString()=="") phraseTable.getComponentAt(i, 2).addMouseListener(new SoundAdapter());	
+	}
     }
 
     public void deletePhrase(int row){
@@ -206,7 +220,17 @@ public class LessonPanel extends JPanel {
     public JButton getDeleteButton(){
 	return deletePhraseButton;
     }
-
+    
+    private class SoundAdapter extends MouseAdapter{
+    	public void mousePressed(MouseEvent e){
+           for(int i=0;i<sum_phrase;i++){
+        	   if (phraseTable.isCellSelected(i, 2) && phraseTable.isColumnSelected(2) && phraseTable.getValueAt(i, 2).toString().charAt(0)!='j'){
+        		  // System.out.println("fuck");
+        	   }
+           }
+    	} 
+    }
+    
     public static void main(String args[]){
 	MainFrame test = new MainFrame();
 	LessonPanel p = new LessonPanel();
