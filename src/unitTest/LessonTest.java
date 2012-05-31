@@ -65,7 +65,7 @@ public class LessonTest {
      */
     @Test
     public void testLesson() throws Exception{
-	Lesson l = new Lesson(conn, "Lesson_0");
+	Lesson l = new Lesson(conn, "Lesson_0", false);
 	assertNotNull("new Lesson should not be null", l);
 	assertEquals("lesson should contains correct lesson name", l.getLessonName(), "Lesson_0");
     }
@@ -78,7 +78,7 @@ public class LessonTest {
     public void testAddAndGetPharse() throws Exception{
 	Statement statement = conn.createStatement();
 	statement.executeUpdate("drop table if exists Lesson_0;");
-	Lesson l = new Lesson(conn, "Lesson_0");
+	Lesson l = new Lesson(conn, "Lesson_0", false);
 	Phrase p = new Phrase("Hello", "你好", null);
 	l.addPhrase(p);
 	p = new Phrase("Nice Dream", "好梦", null);	

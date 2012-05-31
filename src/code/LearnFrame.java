@@ -83,6 +83,7 @@ public class LearnFrame extends AbstractFrame {
 	newPhrase.setOpaque(false);
 	newPhrase.setBounds(0, currentPhraseIndex++ * 25, 500, 30);
 	phrasePanel.add(newPhrase);
+	phrasePanel.setPreferredSize(phraseScrollPanel.getSize());
     }
 
     private class PhraseItemPanel extends JPanel{
@@ -104,8 +105,8 @@ public class LearnFrame extends AbstractFrame {
 	    chineseLabel.addMouseListener(new ChineseLabelAdapter());
 
 	    Image i = Toolkit.getDefaultToolkit().getImage("resource/VoiceButton.png").getScaledInstance(25, 25, Image.SCALE_DEFAULT); 
-	    voiceButton = new JButton(new ImageIcon(i));
-	    voiceButton.setBounds(235, 0, 25, 25);
+	    voiceButton = new JButton(new ImageIcon(Toolkit.getDefaultToolkit().getImage("resource/VoiceButton.png")));
+	    voiceButton.setBounds(235, 0, 30, 25);
 	    //voiceButton = new JButton(new ImageIcon(FilenameUtils.separatorsToSystem("resource/VoiceButton.png")));
 	    voiceButton.setBorderPainted(false);
 	    voiceButton.addActionListener(new ActionListener(){
@@ -117,7 +118,7 @@ public class LearnFrame extends AbstractFrame {
 
 	    englishLabel = new JLabel(p.getEnglish());
 	    englishLabel.setHorizontalAlignment(SwingConstants.CENTER);
-	    englishLabel.setBounds(260, 0, 235, 25);
+	    englishLabel.setBounds(265, 0, 235, 25);
 	    //englishLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
 	    englishLabel.setVisible(false);
 

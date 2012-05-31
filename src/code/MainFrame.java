@@ -113,12 +113,13 @@ public class MainFrame extends AbstractFrame{
 
     private void initLessonScrollPanel(){
 	lessonScrollPanel = new JScrollPane();
+	
 	lessonScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 	lessonScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	lessonScrollPanel.getViewport().setOpaque(false);
 	lessonScrollPanel.setOpaque(false);
-	lessonScrollPanel.setBounds(35, 80, 380, 500);
-	lessonScrollPanel.setBorder(BorderFactory.createMatteBorder(0,0,0,0,Color.RED));
+	lessonScrollPanel.setBounds(35, 80, 400, 500);
+	lessonScrollPanel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.white));
 	//lessonScrollPanel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.RED));
 	getContentPane().add(lessonScrollPanel);
     }
@@ -133,16 +134,17 @@ public class MainFrame extends AbstractFrame{
 		Component c = super.prepareRenderer(renderer, row, column);
 		//renderer.setBorder(new MatteBorder(1, 0, 1, 0, Color.RED));
 		JComponent jc = (JComponent)c;
-		jc.setBorder(BorderFactory.createMatteBorder(0,0,2,0,Color.white));
 		//  Color row based on a cell value
 		//  Alternate row color
 
 		if (isRowSelected(row)){
 		    jc.setBorder(BorderFactory.createMatteBorder(2,0,2,0,new Color(202, 76, 67)));
 		    jc.setBackground(new Color(0, true));
+		    jc.setForeground(Color.BLUE);
 		}
 		else{
-		    //c.setBackground(getBackground());
+		    //jc.setBorder(BorderFactory.createMatteBorder(0,0,2,0,Color.white));
+		    jc.setForeground(Color.black);
 		}
 		return c;
 	    }
@@ -155,6 +157,7 @@ public class MainFrame extends AbstractFrame{
 	lessonTable.setBackground(new Color(0, true));
 	lessonTable.setIntercellSpacing(new Dimension(0,0));
 	lessonTable.setShowVerticalLines(false);
+	lessonTable.setShowHorizontalLines(false);
 	lessonTable.setRowHeight(30);
 	lessonTable.setBorder(null);
 	lessonTable.getTableHeader().setPreferredSize(new Dimension(0,0));
@@ -189,16 +192,16 @@ public class MainFrame extends AbstractFrame{
     }
 
     private void initDefaultLabel(){
-	historyLabel = new JLabel("History");
+	historyLabel = new JLabel(new ImageIcon(FilenameUtils.separatorsToSystem("resource/History.png")));
 	historyLabel.setBounds(938, 60, 40, 80);
-	historyLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+	//historyLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
 	historyLabel.addMouseListener(new HistoryLabelAdapter());
 	getContentPane().add(historyLabel);
 
-	listLabel = new JLabel("List");
+	listLabel = new JLabel(new ImageIcon(FilenameUtils.separatorsToSystem("resource/Phrases.png")));
 	listLabel.setBounds(938, 210, 40, 80);
 	listLabel.addMouseListener(new ListLabelAdapter());
-	listLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+	//listLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
 	getContentPane().add(listLabel);
     }
 
@@ -285,6 +288,7 @@ public class MainFrame extends AbstractFrame{
 	historyPanel = HistoryPanel.getHistoryPanel();
 	if (lessonPanel != null) getContentPane().remove(lessonPanel);
 	repaint();
+	//historyPanel.setBounds(x, y, width, height)
 	getContentPane().add(historyPanel);
     }
 

@@ -5,10 +5,12 @@ package code;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import javax.swing.JPanel;
+import javax.swing.JTable;
 
 /**
  * @author Eric
@@ -34,15 +36,23 @@ public class LessonController {
 	for(Phrase p : selectedLesson.getAllPhrases()){
 	    view.addPhrase(p);
 	}
+
     }
-    
+
+    public void resetButtons(){
+	boolean bool = selectedLesson.isEnabled();
+	view.getTestButton().setEnabled(bool);
+	view.getLearnButton().setEnabled(bool);
+    }
+
     public void setSelectedLesson(Lesson l){
 	selectedLesson = l;
 	initAllPhrases();
+	resetButtons();
     }
 
     private void addALlListeners(){
-	
+
 	view.getAddButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
 		String english = view.getEnglishTextField().getText();
@@ -81,6 +91,20 @@ public class LessonController {
 	    }
 	});
 
+	view.getPhraseTable().addMouseListener(new SoundAdapter());
+
+    }
+
+    private class SoundAdapter extends MouseAdapter{
+	public void mousePressed(MouseEvent e){
+	    JTable phraseTable = view.getPhraseTable();
+	    int count = phraseTable.getRowCount();
+	    for(int i=0;i<count;i++){
+		if (phraseTable.isCellSelected(i, 2) && phraseTable.isColumnSelected(2) && phraseTable.getValueAt(i, 2).toString().charAt(0)!='j'){
+		    SoundEngine.playSound(selectedLesson.getPhrase(i).getAudio());
+		}
+	    }
+	} 
     }
 
     public static void main(String[] args) throws Exception {

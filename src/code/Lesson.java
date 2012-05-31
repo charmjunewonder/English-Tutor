@@ -16,6 +16,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 
+import org.apache.commons.io.FilenameUtils;
+
 public class Lesson {
     private ArrayList<Phrase> phrases;
     private Connection connection;
@@ -23,12 +25,16 @@ public class Lesson {
     private PreparedStatement prep;
     private String lessonName;
     private int phraseCount;
+    private boolean isEnabled;
     //private int needToInsertAfterIndex; // indicate where to insert when existing
+    private boolean isNeededToRestore;
 
     // there is no need to use Hash for times and scores for test result, 
     // we do not need to get one according to another, we just need to iterate them.
     private ArrayList<String> testResultTimes;
     private ArrayList<Integer> testResultScores;
+    private ArrayList<String> newTestResultTimes;
+    private ArrayList<Integer> newTestResultScores;
 
     /**
      * @return the testResultTimes
@@ -47,18 +53,15 @@ public class Lesson {
     /*private ArrayList<Phrase> deletePhrases;
     private ArrayList<Phrase> addPhrases; // list of phrases that will write to database if save the changes;
     private ArrayList<Phrase> testedOrLearnedPhrases;*/
-    private ArrayList<String> newTestResultTimes;
-    private ArrayList<Integer> newTestResultScores;
 
     //private boolean isLearnComplete;
     //private boolean isTested;
-    private boolean isNeededToRestore;
 
-    public Lesson(Connection connection, String lessonName) throws Exception{
+    public Lesson(Connection connection, String lessonName, boolean isEnabled) throws Exception{
 	this.connection = connection;
 	this.lessonName = lessonName;
 	this.phraseCount = 0;
-
+	this.isEnabled = isEnabled;
 	phrases = new ArrayList<Phrase>();
 	testResultTimes = new ArrayList<String>();
 	testResultScores = new ArrayList<Integer>();
@@ -84,6 +87,20 @@ public class Lesson {
 	loadDefaultLesson(index);
     }
 
+    /**
+     * @return the isPassed
+     */
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    /**
+     * @param isPassed the isPassed to set
+     */
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
+
     public void loadDefaultLesson(int index){
 	try{
 	    lessonName = "Lesson_" + index;
@@ -91,7 +108,8 @@ public class Lesson {
 	    statement.executeUpdate("create table if not exists " + lessonName + "(English, Chinese, Audio, LastReviewTime, Accuracy, TestCount);");	
 	    prep = connection.prepareStatement( "INSERT INTO "+lessonName+" VALUES (?, ?, ?, ?, ?, ?);");
 
-	    BufferedReader br = new BufferedReader(new FileReader("data/DefaultLessons/Lesson_" + index + ".csv"));
+	    BufferedReader br = new BufferedReader(new FileReader(
+		    FilenameUtils.separatorsToSystem("data/DefaultLessons/Lesson_" + index + ".csv")));
 	    String line;
 	    while ( (line=br.readLine()) != null)
 	    {
@@ -111,6 +129,8 @@ public class Lesson {
 	    connection.setAutoCommit(false);
 	    prep.executeBatch();
 	    connection.commit();
+
+	    statement.executeUpdate("CREATE TABLE IF NOT EXISTS "+lessonName+"_result (Time, Score);");
 
 	}catch(Exception e){
 	    //System.out.println(e.printStackTrace());
@@ -318,13 +338,15 @@ public class Lesson {
 	    connection.commit();
 
 	}catch(Exception e){
-	    System.out.println(e.toString());
+	    e.printStackTrace();
 	}
     }
 
     public void addTestResult(String time, int score){
 	newTestResultTimes.add(time);
 	newTestResultScores.add(score);
+	testResultTimes.add(time);
+	testResultScores.add(score);
     }
 
     public void deleteSelf(){

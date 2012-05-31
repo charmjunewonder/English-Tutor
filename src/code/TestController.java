@@ -177,7 +177,11 @@ public class TestController {
 	    String dateString = dateFormat.format(date);
 	    int score = (int) ((totalCorrectPhraseNum * 1.0 / tenPhrases.size()) * 100);
 	    selectedLesson.addTestResult(dateString, score);
-	    System.out.println(score);
+	    if(score >= 80){
+		MainController.getMainController().increaseEnabeLessonIndex();
+		this.selectedLesson.setEnabled(true);
+	    }
+	    //System.out.println(score);
 	    new ResultController(wrongPhrases, questionTypes, wrongAnswers, score);
 	    view.setVisible(false); //you can't see me!
 	    view.dispose(); //Destroy the JFrame object

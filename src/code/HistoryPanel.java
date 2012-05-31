@@ -16,6 +16,8 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 
 public class HistoryPanel extends JPanel{
     private JLabel titleLabel; 
@@ -51,16 +53,20 @@ public class HistoryPanel extends JPanel{
 
     private void initTitleLabel(){
 	titleLabel = new JLabel("History");
-	titleLabel.setBounds(180, 10, 80, 30);
+	titleLabel.setBounds(150, 0, 80, 100);
+	titleLabel.setFont(new Font("Adobe Caslon Pro Bold", Font.BOLD, 20));
 	add(titleLabel);
     }
 
     private void initHistoryScrollPanel(){
 	historyScrollPanel = new JScrollPane();
 
-	historyScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	historyScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 	historyScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	historyScrollPanel.setBounds(0, 50, 400, 550);
+	historyScrollPanel.setBounds(0, 40, 400, 550);
+	historyScrollPanel.getViewport().setOpaque(false);
+	historyScrollPanel.setOpaque(false);
+	historyScrollPanel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.white));
 
 
 	add(historyScrollPanel);
@@ -99,7 +105,18 @@ public class HistoryPanel extends JPanel{
 		    }*/
 	};
 	historyTable.setModel(tableModel);
+	historyTable.setOpaque(false);
+	historyTable.setBackground(new Color(0, true));
+	historyTable.setIntercellSpacing(new Dimension(0,0));
+	historyTable.setShowVerticalLines(false);
+	historyTable.setShowHorizontalLines(false);
+	historyTable.setRowSelectionAllowed(false);
+	//historyTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	historyTable.setRowHeight(25);
+	historyTable.setFont(new Font("Adobe Caslon Pro Bold", Font.BOLD, 20));
+	historyTable.getTableHeader().setFont(new Font("Adobe Caslon Pro Bold", Font.BOLD, 20));
 
+	historyTable.getTableHeader().setBackground(new Color(0, true));
 	historyTable.setBounds(0, 0, 400, 550);
 	historyScrollPanel.setViewportView(historyTable);
     }

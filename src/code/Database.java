@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.commons.io.FilenameUtils;
+
 /**
  * @author Eric
  * @version 0.1
@@ -24,7 +26,8 @@ public class Database {
     public Database(){
 	try{
 	    Class.forName("org.sqlite.JDBC");
-	    connection = DriverManager.getConnection("jdbc:sqlite:data/account_names.db");
+	    connection = DriverManager.getConnection(
+		    FilenameUtils.separatorsToSystem("jdbc:sqlite:data/account_names.db"));
 	    Statement statement = connection.createStatement();
 	    statement.executeUpdate("CREATE TABLE IF NOT EXISTS account_names (Name UNIQUE);");
 	    /* account names

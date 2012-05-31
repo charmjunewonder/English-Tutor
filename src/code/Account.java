@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 
+import org.apache.commons.io.FilenameUtils;
+
 /**
  * @author Eric
  * @version 0.1
@@ -20,8 +22,8 @@ public class Account {
     private ArrayList<Lesson> lessons;
     private HashSet<String> lessonNames;
 
-    private ArrayList<Lesson> deleteLesson;
-    private ArrayList<String> newLessonNames;
+    //private ArrayList<Lesson> deleteLesson;
+    //private ArrayList<String> newLessonNames;
 
     private boolean isModify;
 
@@ -44,14 +46,16 @@ public class Account {
 	this.name = name;
 	lessons = new ArrayList<Lesson>();
 	lessonNames = new HashSet<String>();
-	deleteLesson = new ArrayList<Lesson>();
-	newLessonNames = new ArrayList<String>();
+	//deleteLesson = new ArrayList<Lesson>();
+	//newLessonNames = new ArrayList<String>();
 
 	try{
 	    Class.forName("org.sqlite.JDBC");
-	    connection = DriverManager.getConnection("jdbc:sqlite:data/"+name+".db");
+	    connection = DriverManager.getConnection("jdbc:sqlite:" + 
+		    FilenameUtils.separatorsToSystem("data/"+name+".db"));
 	    Statement statement = connection.createStatement();
-	    statement.executeUpdate("CREATE TABLE IF NOT EXISTS lesson_names (Name UNIQUE);");	    
+	    statement.executeUpdate("CREATE TABLE IF NOT EXISTS lesson_names (Name UNIQUE, Enable);");
+	    //statement.executeUpdate("CREATE TABLE IF NOT EXISTS lesson_enable (Enable);");
 	}		
 	catch(Exception e){
 	    e.printStackTrace();
@@ -83,7 +87,7 @@ public class Account {
 		Lesson l = new Lesson(connection, i);
 		lessons.add(l);
 		lessonNames.add(l.getLessonName());
-		newLessonNames.add(l.getLessonName());
+		//newLessonNames.add(l.getLessonName());
 	    }
 	    writeToDatabase();
 	}catch(Exception e){
@@ -99,7 +103,8 @@ public class Account {
 	    ResultSet rs = statement.executeQuery("SELECT * FROM lesson_names;");
 	    while(rs.next()){
 		String lName = rs.getString("Name");
-		Lesson l = new Lesson(connection,  lName);
+		boolean bool = rs.getBoolean("Enable");
+		Lesson l = new Lesson(connection, lName, bool);
 		l.loadFromDatabase();
 		lessons.add(l);
 		lessonNames.add(lName);
@@ -117,25 +122,20 @@ public class Account {
     public void writeToDatabase(){
 	try{
 	    // lesson names
-	    Iterator<String> nameItr = newLessonNames.iterator();
-	    PreparedStatement prep = connection.prepareStatement("INSERT INTO lesson_names VALUES (?);");	
-	    while(nameItr.hasNext()){
-		prep.setString(1, nameItr.next());
+	    connection.createStatement().executeUpdate("drop table lesson_names;");
+	    connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS lesson_names (Name UNIQUE, Enable);");
+	    int count = lessons.size();
+	PreparedStatement prep = connection.prepareStatement("INSERT INTO lesson_names VALUES (?, ?);");
+	    int index = 0;
+	    for(int i = 0; i < count; ++i){
+		prep.setString(1, lessons.get(index).getLessonName());
+		//boolean b = lessons.get(index).isEnabled();
+		prep.setBoolean(2, lessons.get(index++).isEnabled());
 		prep.addBatch();
 	    }
-	    newLessonNames.clear();
 	    connection.setAutoCommit(false);
 	    prep.executeBatch();
 	    connection.commit();
-
-	    // delete lessons
-	    Iterator<Lesson> deleteItr = deleteLesson.iterator();
-	    Statement statement = connection.createStatement();
-	    while(deleteItr.hasNext()){
-		Lesson l = deleteItr.next();
-		l.deleteSelf();
-		statement.executeUpdate("DELETE FROM lesson_names WHERE Name = " + l.getLessonName() + ";");
-	    }
 
 	    // load lesson to database
 	    Iterator<Lesson> lessonItr = lessons.iterator();
@@ -157,7 +157,7 @@ public class Account {
     public void deleteLesson(Lesson l){
 	isModify = true;
 	lessons.remove(l);
-	deleteLesson.add(l);
+	//deleteLesson.add(l);
     }
 
     public void deleteLesson(int index){
@@ -168,9 +168,9 @@ public class Account {
     public void createNewLesson(String lessonName) throws Exception{
 	if (lessonNames.add(lessonName)){
 	    isModify = true;
-	    Lesson l = new Lesson(connection, lessonName);
+	    Lesson l = new Lesson(connection, lessonName, false);
 	    addLesson(l);
-	    newLessonNames.add(lessonName);
+	    //newLessonNames.add(lessonName);
 	} else{
 	    throw new Exception("This lesson name exists, please use another name");
 	}

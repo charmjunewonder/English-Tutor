@@ -79,7 +79,7 @@ public class LoginController {
 			account.loadLessonsFromDatabase();
 		    }
 		    final Account accountFinal = account;
-		    
+
 		    //EnsureFrame ensureFrame = new EnsureFrame();
 		    //EnsureFrame.showMessageDialog(name + " has already existed. Please use another name.");
 
@@ -116,9 +116,9 @@ public class LoginController {
 
 		} catch(InvalidFileNameException ifne){
 		    EnsureFrame.showMessageDialog("<html><Center>" + 
-			    				"<p>A filename cannot contain following characters:</p>" +
-			    				"<p> \\ / : * ? \" < > |</p>" +
-			    				"</Center></html>");
+			    "<p>A filename cannot contain following characters:</p>" +
+			    "<p> \\ / : * ? \" < > |</p>" +
+			    "</Center></html>");
 		} catch(SQLException sqle){
 		    //JOptionPane.showMessageDialog(null, "Please use another name.", name + " exists", JOptionPane.ERROR_MESSAGE);
 		    EnsureFrame.showMessageDialog(name + " has already existed. Please use another name.");
@@ -129,7 +129,12 @@ public class LoginController {
 
 	    }
 	});
-	
+
+	view.getExitButton().addActionListener(new ActionListener(){
+	    public void actionPerformed(ActionEvent e){
+		System.exit(0);
+	    }
+	});
     }
 
 }

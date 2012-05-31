@@ -12,6 +12,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+
 /**
  * @author Eric
  *
@@ -24,6 +25,7 @@ public class MainController {
     public MainFrame view;
     private LessonController lessonController;
     private HistoryController historyController;
+    private int currentEnableLessonIndex;
 
     public static MainController getMainController(){
 	if (mainController == null) {
@@ -42,6 +44,19 @@ public class MainController {
 	addListener();
 	addJtableListener();
 	//view.setVisible(true);
+    }
+
+    public void increaseEnabeLessonIndex(){
+	currentEnableLessonIndex++;
+	account.getLesson(currentEnableLessonIndex).setEnabled(true);
+    }
+
+
+    /**
+     * @return the historyController
+     */
+    public HistoryController getHistoryController() {
+	return historyController;
     }
 
 
@@ -65,6 +80,7 @@ public class MainController {
 	this.account = account;
 	lessonController = new LessonController(account.getLesson(0));
 	historyController = new HistoryController(account.getLesson(0));
+	account.getLesson(0).setEnabled(true);
 	initAllLessons();
     }
 
@@ -75,38 +91,42 @@ public class MainController {
 	}
     }
 
-    private void saveOrNot(){
-	if(account.isModify()){
-	    //TODO
-	    int value = JOptionPane.showConfirmDialog(null,
-		    "Do you want to save you changes ?",
-		    "Log out",
-		    JOptionPane.YES_NO_CANCEL_OPTION);
-	    if(value == JOptionPane.CANCEL_OPTION){
-		return;
-	    } else if(value == JOptionPane.YES_OPTION){
-		account.writeToDatabase();
-	    }
-	}
-    }
-
     private void addListener(){
 	view.getExitButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
-		saveOrNot();
-		view.setVisible(false);
-		view.dispose();
-		System.exit(0);
+		if(account.isModify()){
+		    int value = JOptionPane.showConfirmDialog(null,
+			    "Do you want to save you changes ?",
+			    "Log out",
+			    JOptionPane.YES_NO_CANCEL_OPTION);
+		    if(value == JOptionPane.CANCEL_OPTION){
+			return;
+		    } else if(value == JOptionPane.YES_OPTION){
+			account.writeToDatabase();
+		    }
+		    view.setVisible(false);
+		    view.dispose();
+		    System.exit(0);
+		}
 	    }
 	});
 
 	view.getLogoutButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
-		saveOrNot();
-
-		new LoginController();
+		if(account.isModify()){
+		    int value = JOptionPane.showConfirmDialog(null,
+			    "Do you want to save you changes ?",
+			    "Log out",
+			    JOptionPane.YES_NO_CANCEL_OPTION);
+		    if(value == JOptionPane.CANCEL_OPTION){
+			return;
+		    } else if(value == JOptionPane.YES_OPTION){
+			account.writeToDatabase();
+		    }
+		} 		    
 		view.setVisible(false);
 		view.dispose();
+		new LoginController();
 	    }
 	});
 
@@ -138,6 +158,7 @@ public class MainController {
 		setVisible(false);
 	    }
 	});
+
 
     }
 

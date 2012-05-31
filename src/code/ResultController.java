@@ -55,6 +55,7 @@ public class ResultController {
 		view.dispose();
 		MainController main = MainController.getMainController();
 		main.getLessonController().initAllPhrases();
+		main.getHistoryController().initAllHistory();
 		main.setVisible(true);
 	    }
 	});

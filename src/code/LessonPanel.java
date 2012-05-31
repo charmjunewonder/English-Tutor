@@ -1,5 +1,6 @@
 package code;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -14,6 +15,9 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.commons.io.FilenameUtils;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -68,9 +72,15 @@ public class LessonPanel extends JPanel {
 
     private void initPhraseScrollPanel(){
 	phraseScrollPanel = new JScrollPane();
+
 	phraseScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 	phraseScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	phraseScrollPanel.setBounds(0, 50, 400, 450);
+
+	phraseScrollPanel.getViewport().setOpaque(false);
+	phraseScrollPanel.setOpaque(false);
+	phraseScrollPanel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.white));
+
+	phraseScrollPanel.setBounds(15, 50, 400, 450);
 	add(phraseScrollPanel);
     }
 
@@ -86,9 +96,19 @@ public class LessonPanel extends JPanel {
 	tableModel.setColumnIdentifiers(columnNames);
 	phraseTable = new JTable();
 	phraseTable.setModel(tableModel);
-	phraseTable.setRowHeight(40);
-	phraseTable.setBounds(0, 0, 400, 450);
-	phraseTable.addMouseListener(new SoundAdapter());
+	phraseTable.setRowHeight(25);
+	phraseTable.setBounds(0, 0, 350, 450);
+
+	phraseTable.setOpaque(false);
+	phraseTable.setBackground(new Color(0, true));
+	phraseTable.setIntercellSpacing(new Dimension(0,0));
+	phraseTable.setShowVerticalLines(false);
+	phraseTable.setShowHorizontalLines(false);
+	//phraseTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	//phraseTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+	//lessonTable.getColumnModel().getColumn(1).setMinWidth(350);
+	//lessonTable.getColumnModel().getColumn(2).setPreferredWidth(27);
+
 	phraseScrollPanel.setViewportView(phraseTable);
     }
 
@@ -127,16 +147,16 @@ public class LessonPanel extends JPanel {
 	String accuracy = "" + p.getAccuracy();
 	sum_phrase++;
 
-    
 
-	
+
+
 	String[] columnNames = new String[5];
 	columnNames[0] = "ÖÐÎÄ";
 	columnNames[1] = "English";
 	columnNames[2] = "Sound";
 	columnNames[3] = "Date";
 	columnNames[4] = "Accuracy";
-	
+
 
 	DefaultTableModel newTableModel = new DefaultTableModel(sum_phrase,5){
 	    @Override
@@ -151,24 +171,26 @@ public class LessonPanel extends JPanel {
 	    for(int j=0;j<5;j++){
 		newTableModel.setValueAt(tableModel.getValueAt(i, j), i, j);
 	    }
-    
-	
+
+
 	phraseTable.setModel(newTableModel);
 	tableModel = newTableModel;
 	phraseTable.setValueAt(chinese, sum_phrase-1, 0);
 	phraseTable.setValueAt(english, sum_phrase-1, 1);
+
+	Image i = Toolkit.getDefaultToolkit().getImage("resource/VoiceButton.png").
+		getScaledInstance(25, 25, Image.SCALE_DEFAULT); 
+
 	if (p.getAudio()!=null) phraseTable.setValueAt(new ImageIcon(FilenameUtils.separatorsToSystem("resource/VoiceButton.png")), sum_phrase-1, 2);
-	                   else phraseTable.setValueAt(new ImageIcon(), sum_phrase-1, 2);
+	else phraseTable.setValueAt(new ImageIcon(), sum_phrase-1, 2);
 	phraseTable.setValueAt(date, sum_phrase-1, 3);
 	phraseTable.setValueAt(accuracy, sum_phrase-1, 4);
 
 
 	phraseTable.getColumn("Sound").setCellEditor(phraseTable.getDefaultEditor(Icon.class));
 	phraseTable.getColumn("Sound").setCellRenderer(phraseTable.getDefaultRenderer(Icon.class));	 
-    
-	for(int i=0;i<sum_phrase;i++){
-	  if (phraseTable.getValueAt(i, 2).toString()=="") phraseTable.getComponentAt(i, 2).addMouseListener(new SoundAdapter());	
-	}
+
+
     }
 
     public void deletePhrase(int row){
@@ -220,17 +242,9 @@ public class LessonPanel extends JPanel {
     public JButton getDeleteButton(){
 	return deletePhraseButton;
     }
-    
-    private class SoundAdapter extends MouseAdapter{
-    	public void mousePressed(MouseEvent e){
-           for(int i=0;i<sum_phrase;i++){
-        	   if (phraseTable.isCellSelected(i, 2) && phraseTable.isColumnSelected(2) && phraseTable.getValueAt(i, 2).toString().charAt(0)!='j'){
-        		  // System.out.println("fuck");
-        	   }
-           }
-    	} 
-    }
-    
+
+
+
     public static void main(String args[]){
 	MainFrame test = new MainFrame();
 	LessonPanel p = new LessonPanel();

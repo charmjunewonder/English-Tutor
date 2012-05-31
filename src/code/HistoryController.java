@@ -19,7 +19,7 @@ public class HistoryController {
 	initAllHistory();
     }
     
-    private void initAllHistory(){
+    public void initAllHistory(){
 	view.clearHistoryTableContent();
 	ArrayList<Integer> scores = selectedLesson.getTestResultScores();
 	ArrayList<String> times = selectedLesson.getTestResultTimes();
