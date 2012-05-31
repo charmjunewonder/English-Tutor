@@ -1,6 +1,7 @@
 package code;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -9,17 +10,18 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import org.apache.commons.io.FilenameUtils;
 
 public class MainFrame extends AbstractFrame{
-    private JPanel lessons;
     private JTable lessonTable;
     private JScrollPane lessonScrollPanel;
     private JButton logoutButton, testAllButton, addLessonButton, deleteLessonButton;
@@ -115,26 +117,55 @@ public class MainFrame extends AbstractFrame{
 	lessonScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	lessonScrollPanel.getViewport().setOpaque(false);
 	lessonScrollPanel.setOpaque(false);
-	lessonScrollPanel.setBounds(40, 80, 400, 500);
-	lessonScrollPanel.setBorder(null);
+	lessonScrollPanel.setBounds(35, 80, 380, 500);
+	lessonScrollPanel.setBorder(BorderFactory.createMatteBorder(0,0,0,0,Color.RED));
+	//lessonScrollPanel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.RED));
 	getContentPane().add(lessonScrollPanel);
     }
 
     private void initLessonTable(){
 	tableModel = new DefaultTableModel(0,3);
-	lessonTable = new JTable();
+
+	lessonTable = new JTable(){
+	    public Component prepareRenderer(
+		    TableCellRenderer renderer, int row, int column)
+	    {
+		Component c = super.prepareRenderer(renderer, row, column);
+		//renderer.setBorder(new MatteBorder(1, 0, 1, 0, Color.RED));
+		JComponent jc = (JComponent)c;
+		jc.setBorder(BorderFactory.createMatteBorder(0,0,2,0,Color.white));
+		//  Color row based on a cell value
+		//  Alternate row color
+
+		if (isRowSelected(row)){
+		    jc.setBorder(BorderFactory.createMatteBorder(2,0,2,0,new Color(202, 76, 67)));
+		    jc.setBackground(new Color(0, true));
+		}
+		else{
+		    //c.setBackground(getBackground());
+		}
+		return c;
+	    }
+	};
+
+
 	lessonTable.setModel(tableModel);
-	lessonTable.setBounds(0, 0, 392, 500);
+	lessonTable.setBounds(0, 0, 380, 500);
 	lessonTable.setOpaque(false);
 	lessonTable.setBackground(new Color(0, true));
 	lessonTable.setIntercellSpacing(new Dimension(0,0));
 	lessonTable.setShowVerticalLines(false);
-	lessonTable.setRowHeight(45);
+	lessonTable.setRowHeight(30);
+	lessonTable.setBorder(null);
 	lessonTable.getTableHeader().setPreferredSize(new Dimension(0,0));
 	ListSelectionModel listSelectionModel = lessonTable.getSelectionModel();
 	listSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	
 	lessonTable.getTableHeader().setVisible(false);
+
+	//lessonTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	//lessonTable.getColumnModel().getColumn(0).setPreferredWidth(27);
+	//lessonTable.getColumnModel().getColumn(1).setMinWidth(350);
+	//lessonTable.getColumnModel().getColumn(2).setPreferredWidth(27);
 
 	lessonScrollPanel.setViewportView(lessonTable);	
     }
