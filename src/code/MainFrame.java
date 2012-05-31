@@ -2,29 +2,27 @@ package code;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.table.TableColumn;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel; 
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
-import javax.swing.Icon;
 import org.apache.commons.io.FilenameUtils;
 
 public class MainFrame extends AbstractFrame{
     private JPanel lessons;
     private JTable lessonTable;
     private JScrollPane lessonScrollPanel;
-    private JButton logoutButton,testAllButton,addLessonButton,deleteLessonButton;
-    private JLabel titleLabel,historyLabel,listLabel;
+    private JButton logoutButton, testAllButton, addLessonButton, deleteLessonButton;
+    private JLabel titleLabel, historyLabel, listLabel;
     private HistoryPanel historyPanel;
     private LessonPanel lessonPanel;
     private DefaultTableModel tableModel;
@@ -140,53 +138,38 @@ public class MainFrame extends AbstractFrame{
     }
 
     private void initDefaultLabel(){
-<<<<<<< HEAD
 	historyLabel = new JLabel("History");
-	historyLabel.setBounds(940, 90, 50, 50);
+	historyLabel.setBounds(938, 60, 40, 80);
+	historyLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
 	historyLabel.addMouseListener(new HistoryLabelAdapter());
 	getContentPane().add(historyLabel);
 
 	listLabel = new JLabel("List");
-	listLabel.setBounds(940, 210, 50, 50);
-	//listLabel.addMouseListener(new ListLabelAdapter());
+	listLabel.setBounds(938, 210, 40, 80);
+	listLabel.addMouseListener(new ListLabelAdapter());
+	listLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
 	getContentPane().add(listLabel);
-=======
-    	historyLabel = new JLabel("History");
-    	historyLabel.setBounds(940, 90, 50, 50);
-    	historyLabel.addMouseListener(new HistoryLabelAdapter());
-    	getContentPane().add(historyLabel);
-    	
-    	listLabel = new JLabel("List");
-    	listLabel.setBounds(940, 210, 50, 50);
-    	listLabel.addMouseListener(new ListLabelAdapter());
-    	getContentPane().add(listLabel);
->>>>>>> 8dbf0f7be9d504554fd8e21895e425ec05d667ac
     }
-    
+
     private void initHistoryPanel(){
-    	historyPanel = new HistoryPanel();
-    	//historyPanel.setOpaque(false);
-    	getContentPane().add(historyPanel);
+	historyPanel = HistoryPanel.getHistoryPanel();
+	//historyPanel.setOpaque(false);
+	getContentPane().add(historyPanel);
     }
-    
+
     private void initLessonPanel(){
-    	lessonPanel = new LessonPanel();
+	lessonPanel = LessonPanel.getLessonPanel();
     }
-    
+
     public void addLesson(String lessonName){
 	sum_lesson++;
-<<<<<<< HEAD
 
-	DefaultTableModel newTableModel = new DefaultTableModel(sum_lesson,3);
-=======
-    
-    DefaultTableModel newTableModel = new DefaultTableModel(sum_lesson,3){
-    	@Override
-		public boolean isCellEditable(int row, int column) {
-		  return false;
-		}
-    };
->>>>>>> 8dbf0f7be9d504554fd8e21895e425ec05d667ac
+	DefaultTableModel newTableModel = new DefaultTableModel(sum_lesson,3){
+	    @Override
+	    public boolean isCellEditable(int row, int column) {
+		return false;
+	    }
+	};
 	for(int i=0;i<sum_lesson-1;i++)
 	    for(int j=0;j<3;j++){
 		newTableModel.setValueAt(tableModel.getValueAt(i, j), i, j);
@@ -194,7 +177,7 @@ public class MainFrame extends AbstractFrame{
 	lessonTable.setModel(newTableModel);
 	tableModel = newTableModel;
 
-	lessonTable.setValueAt(new ImageIcon(FilenameUtils.separatorsToSystem("resource/LockLabel.png")), sum_lesson-1, 0);
+	lessonTable.setValueAt(new ImageIcon(FilenameUtils.separatorsToSystem("resource/Lock.png")), sum_lesson-1, 0);
 	lessonTable.setValueAt(lessonName, sum_lesson-1, 1);
 	lessonTable.setValueAt("", sum_lesson-1, 2);
 
@@ -205,7 +188,7 @@ public class MainFrame extends AbstractFrame{
 	lessonTable.getColumn("C").setCellRenderer(lessonTable.getDefaultRenderer(Icon.class));
 
     }
-    
+
     public void deleteLesson(int rowToRemove){
 	((DefaultTableModel)lessonTable.getModel()).removeRow(rowToRemove);
     }
@@ -223,54 +206,44 @@ public class MainFrame extends AbstractFrame{
 	    if (lessonTable.getValueAt(i, 1).equals(lessonName)){
 		lessonTable.setValueAt("", sum_lesson-1, 0);
 		lessonTable.setValueAt(lessonName, sum_lesson-1, 1);
-		lessonTable.setValueAt(new ImageIcon(FilenameUtils.separatorsToSystem("resource/SmileLabel.png")), sum_lesson-1, 2);
+		lessonTable.setValueAt(new ImageIcon(FilenameUtils.separatorsToSystem("resource/Smile.png")), sum_lesson-1, 2);
 	    }
 	}
     }
 
     private class HistoryLabelAdapter extends MouseAdapter{
-<<<<<<< HEAD
+
 	public void mouseClicked(MouseEvent e){
 	}
 	public void mousePressed(MouseEvent e){
-	    //historyPanel.set
+	    buildHistoryPanel();
 	}
     }
 
-
-=======
-    	public void mouseClicked(MouseEvent e){
-        }
-        public void mousePressed(MouseEvent e){
-           buildHistoryPanel();
-        }
-    }
-    
     private class ListLabelAdapter extends MouseAdapter{
-    	public void mouseClicked(MouseEvent e){
-        }
-        public void mousePressed(MouseEvent e){
-           buildLessonPanel();
-        }
+	public void mouseClicked(MouseEvent e){
+	}
+	public void mousePressed(MouseEvent e){
+	    buildLessonPanel();
+	}
     }
-    
+
     private void buildHistoryPanel(){
-  
-    	historyPanel = new HistoryPanel();
-    	if (lessonPanel != null) getContentPane().remove(lessonPanel);
-    	repaint();
-    	getContentPane().add(historyPanel);
+
+	historyPanel = HistoryPanel.getHistoryPanel();
+	if (lessonPanel != null) getContentPane().remove(lessonPanel);
+	repaint();
+	getContentPane().add(historyPanel);
     }
-    
+
     private void buildLessonPanel(){
-    	lessonPanel = new LessonPanel();
-    	if (historyPanel != null) getContentPane().remove(historyPanel);
-    	repaint();
-    	getContentPane().add(lessonPanel);
+	lessonPanel = LessonPanel.getLessonPanel();
+	if (historyPanel != null) getContentPane().remove(historyPanel);
+	repaint();
+	getContentPane().add(lessonPanel);
     }
-    
-    
->>>>>>> 8dbf0f7be9d504554fd8e21895e425ec05d667ac
+
+
     public static void main(String args[]){
 	MainFrame test = new MainFrame();
 	test.setVisible(true);
