@@ -70,9 +70,7 @@ public class LoginController {
 		    if(view.getUserComboBox().getSelectedIndex() == -1){
 			JTextComponent tc = (JTextComponent)view.getUserComboBox().getEditor().getEditorComponent();
 			name = tc.getText();
-			database.createAccount(name);
-
-			account = new Account(name);
+			account = database.createAccount(name);
 			account.loadDefaultLessons();
 		    } else{
 			name = (String) view.getUserComboBox().getSelectedItem();
@@ -116,6 +114,11 @@ public class LoginController {
 			}
 		    });
 
+		} catch(InvalidFileNameException ifne){
+		    EnsureFrame.showMessageDialog("<html><Center>" + 
+			    				"<p>A filename cannot contain following characters:</p>" +
+			    				"<p> \\ / : * ? \" < > |</p>" +
+			    				"</Center></html>");
 		} catch(SQLException sqle){
 		    //JOptionPane.showMessageDialog(null, "Please use another name.", name + " exists", JOptionPane.ERROR_MESSAGE);
 		    EnsureFrame.showMessageDialog(name + " has already existed. Please use another name.");

@@ -109,7 +109,11 @@ public class LessonPanel extends JPanel {
 	add(deletePhraseButton);
     }
 
-    public void addPhrase(String chinese, String english, String date, String accuracy){
+    public void addPhrase(Phrase p){
+	String chinese = p.getChinese();
+	String english = p.getEnglish();
+	String date = p.getLastReviewTime();
+	String accuracy = "" + p.getAccuracy();
 	sum_phrase++;
 
 	DefaultTableModel newTableModel = new DefaultTableModel(sum_phrase,5){
@@ -135,6 +139,32 @@ public class LessonPanel extends JPanel {
 
 	phraseTable.getColumn("C").setCellEditor(phraseTable.getDefaultEditor(Icon.class));
 	phraseTable.getColumn("C").setCellRenderer(phraseTable.getDefaultRenderer(Icon.class));	 
+    }
+    
+    public void deletePhrase(int row){
+	((DefaultTableModel)phraseTable.getModel()).removeRow(row);
+	sum_phrase--;
+    }
+    
+    public void clearPhraseTabelContent(){
+	DefaultTableModel mtl = (DefaultTableModel)phraseTable.getModel();
+	int row = mtl.getRowCount();
+	while(--row >= 0){
+	    mtl.removeRow(row);
+	}
+	sum_phrase = 0;
+    }
+    
+    public void clearEnglishChineseTextField(){
+	chineseTextField.setText("");
+	englishTextField.setText("");
+    }
+
+    /**
+     * @return the phraseTable
+     */
+    public JTable getPhraseTable() {
+        return phraseTable;
     }
 
     public JTextField getChineseTextField(){
@@ -165,8 +195,8 @@ public class LessonPanel extends JPanel {
 	MainFrame test = new MainFrame();
 	LessonPanel p = new LessonPanel();
 	test.getContentPane().add(p);
-	p.addPhrase("你好", "hi", "05/21", "80%");
-	p.addPhrase("你好衰", "hello", "05/21", "100%");
+	//p.addPhrase("你好", "hi", "05/21", "80%");
+	//p.addPhrase("你好衰", "hello", "05/21", "100%");
 	test.setVisible(true);
     }
 }

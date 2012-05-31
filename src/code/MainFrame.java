@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.io.FilenameUtils;
@@ -43,6 +44,20 @@ public class MainFrame extends AbstractFrame{
 	initLessonPanel();
 	initTestAllButton();
 	initDefaultLabel();
+    }
+
+    /**
+     * @return the historyPanel
+     */
+    public HistoryPanel getHistoryPanel() {
+        return historyPanel;
+    }
+
+    /**
+     * @return the lessonPanel
+     */
+    public LessonPanel getLessonPanel() {
+        return lessonPanel;
     }
 
     /**
@@ -186,6 +201,9 @@ public class MainFrame extends AbstractFrame{
 
 	//lessonTable.getColumn("C").setCellEditor(lessonTable.getDefaultEditor(Icon.class));
 	lessonTable.getColumn("C").setCellRenderer(lessonTable.getDefaultRenderer(Icon.class));
+
+	ListSelectionModel listSelectionModel = lessonTable.getSelectionModel();
+        listSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
     }
 

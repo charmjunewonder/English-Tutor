@@ -1,11 +1,14 @@
 package code;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -100,7 +103,9 @@ public class EnsureFrame extends AbstractFrame{
     private void initTextLabel(){
 	statementLabel = new JLabel();
 	statementLabel.setOpaque(false);
-	statementLabel.setBounds(350, 315, 400, 20);
+	statementLabel.setBounds(300, 315, 360, 40);
+	//statementLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+	statementLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	getContentPane().add(statementLabel);
     }
 

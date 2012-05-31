@@ -22,23 +22,39 @@ public class Account {
 
     private ArrayList<Lesson> deleteLesson;
     private ArrayList<String> newLessonNames;
-    
+
     private boolean isModify;
 
-    public Account(String name){
+    public Account(String name) 
+	    throws InvalidFileNameException{
+
+	if(name.contains("\\") ||
+		name.contains("/") ||
+		name.contains(":") ||
+		name.contains("*") ||
+		name.contains("?") ||
+		name.contains("\"") ||
+		name.contains("<") ||
+		name.contains(">") ||
+		name.contains("|") ||
+		name.contains("?") ){
+	    throw new InvalidFileNameException();
+	}
+
+	this.name = name;
+	lessons = new ArrayList<Lesson>();
+	lessonNames = new HashSet<String>();
+	deleteLesson = new ArrayList<Lesson>();
+	newLessonNames = new ArrayList<String>();
+
 	try{
-	    this.name = name;
-	    lessons = new ArrayList<Lesson>();
-	    lessonNames = new HashSet<String>();
-	    deleteLesson = new ArrayList<Lesson>();
-	    newLessonNames = new ArrayList<String>();
 	    Class.forName("org.sqlite.JDBC");
 	    connection = DriverManager.getConnection("jdbc:sqlite:data/"+name+".db");
 	    Statement statement = connection.createStatement();
 	    statement.executeUpdate("CREATE TABLE IF NOT EXISTS lesson_names (Name UNIQUE);");	    
 	}		
 	catch(Exception e){
-	    System.out.println(e.toString());
+	    e.printStackTrace();
 	}
     }
 
@@ -46,14 +62,14 @@ public class Account {
      * @return the isModify
      */
     public boolean isModify() {
-        return isModify;
+	return isModify;
     }
 
     /**
      * @param isModify the isModify to set
      */
     public void setModify(boolean isModify) {
-        this.isModify = isModify;
+	this.isModify = isModify;
     }
 
     public void loadDefaultLessons(){
@@ -66,7 +82,7 @@ public class Account {
 	    }
 	    writeToDatabase();
 	}catch(Exception e){
-	    System.out.println(e.toString());
+	    e.printStackTrace();
 	}
     }    
 
@@ -85,10 +101,10 @@ public class Account {
 	    }
 	    rs.close();
 	}catch(Exception e){
-	    System.out.println(e.toString());
+	    e.printStackTrace();
 	}
     }
-    
+
     public Lesson getLesson(int index){
 	return lessons.get(index);
     }
@@ -102,6 +118,7 @@ public class Account {
 		prep.setString(1, nameItr.next());
 		prep.addBatch();
 	    }
+	    newLessonNames.clear();
 	    connection.setAutoCommit(false);
 	    prep.executeBatch();
 	    connection.commit();
@@ -124,7 +141,7 @@ public class Account {
 		}
 	    }
 	}catch(Exception e){
-	    System.out.println(e.toString());
+	    e.printStackTrace();
 	}
     }
 
@@ -137,7 +154,7 @@ public class Account {
 	lessons.remove(l);
 	deleteLesson.add(l);
     }
-    
+
     public void deleteLesson(int index){
 	Lesson l = getLesson(index);
 	deleteLesson(l);
@@ -179,9 +196,9 @@ public class Account {
 	    int phraseCountOfLesson = 0;
 	    Lesson l = null;
 	    while(phraseCountOfLesson <= 0){
-		    int lessonRandomNum = random.nextInt(lessonCount);
-		    l = lessons.get(lessonRandomNum);
-		    phraseCountOfLesson = l.getPhraseCount();
+		int lessonRandomNum = random.nextInt(lessonCount);
+		l = lessons.get(lessonRandomNum);
+		phraseCountOfLesson = l.getPhraseCount();
 	    }
 
 	    int phraseRandomNum = random.nextInt(phraseCountOfLesson);
@@ -212,7 +229,7 @@ public class Account {
 		l.deleteSelf();
 	    }
 	}catch(Exception e){
-	    System.out.println(e.toString());
+	    e.printStackTrace();
 	}
     }
 }

@@ -8,17 +8,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  * @author Eric
  *
  */
 public class MainController {
+    private static MainController mainController;
 
     private Account account;
     //TODO
     public MainFrame view;
-    private static MainController mainController;
+    private LessonController lessonController;
+    //private HistoryController historyController;
 
     public static MainController getMainController(){
 	if (mainController == null) {
@@ -34,9 +39,8 @@ public class MainController {
 
     private MainController(){
 	view = new MainFrame();
-
 	addListener();
-
+	addJtableListener();
 	//view.setVisible(true);
     }
 
@@ -50,7 +54,8 @@ public class MainController {
      * @param account the account to set
      */
     public void setAccount(Account account) {
-        this.account = account;
+	this.account = account;
+	lessonController = new LessonController(account.getLesson(0));
 	initAllLessons();
     }
 
@@ -114,8 +119,28 @@ public class MainController {
 
     }
 
+    private void addJtableListener(){
+	ListSelectionModel listSelectionModel = view.getLessonTable().getSelectionModel();
+	listSelectionModel.addListSelectionListener(new ListSelectionHandler());
+    }
+
     public void setVisible(boolean visible){
 	view.setVisible(visible);
+    }
+
+    class ListSelectionHandler implements ListSelectionListener {
+	public void valueChanged(ListSelectionEvent e) { 
+	    ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+
+	    boolean isAdjusting = e.getValueIsAdjusting();
+            
+            //System.out.println("("+isAdjusting+","+firstIndex+","+lastIndex+","+minIndex+","+maxIndex+")");
+	    if (!lsm.isSelectionEmpty() && !isAdjusting) {
+		int index = lsm.getMinSelectionIndex();
+		Lesson l = account.getLesson(index);
+		lessonController.setSelectedLesson(l);
+	    } 
+	}
     }
 
 }

@@ -50,14 +50,15 @@ public class Database {
 	}
     }
 
-    public void createAccount(String name) throws SQLException{
+    public Account createAccount(String name)
+	    throws SQLException, InvalidFileNameException{
 	//Statement statement = connection.createStatement();
+	Account a = new Account(name);
 	PreparedStatement prep = connection.prepareStatement("INSERT INTO account_names VALUES (?)");
 	prep.setString(1, name);
 	prep.executeUpdate();
 
-	Account a = new Account(name);
-	a.loadDefaultLessons();
+	return a;
     }
 
     public void deleteAccount(int index){

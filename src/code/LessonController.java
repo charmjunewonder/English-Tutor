@@ -17,11 +17,11 @@ import javax.swing.JPanel;
 public class LessonController {
 
     private Lesson selectedLesson;
-    private JPanel view; //TODO
+    private LessonPanel view;
 
     public LessonController(Lesson lesson){
 	selectedLesson = lesson;
-	view = new JPanel(); //TODO
+	view = LessonPanel.getLessonPanel();
 
 	initAllPhrases();
 	addALlListeners();
@@ -30,24 +30,37 @@ public class LessonController {
     }
 
     private void initAllPhrases(){
+	view.clearPhraseTabelContent();
 	for(Phrase p : selectedLesson.getAllPhrases()){
-	    view.addPhraseItem(p);
+	    view.addPhrase(p);
 	}
+    }
+    
+    public void setSelectedLesson(Lesson l){
+	selectedLesson = l;
+	initAllPhrases();
     }
 
     private void addALlListeners(){
 	view.getAddButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
-		Phrase p = new Phrase(view.getEnglishTextField().getText(), 
-					view.getChineseTextField().getText(), null);
+		String english = view.getEnglishTextField().getText();
+		String chinese = view.getChineseTextField().getText();
+		if(english.equals("") && chinese.equals("")) return;
+		Phrase p = new Phrase(english, chinese, null);
 		selectedLesson.addPhrase(p);
+		view.addPhrase(p);
+		view.clearEnglishChineseTextField();
 	    }
 	});
 
 	view.getDeleteButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
-		Phrase p = selectedLesson.getPhrase(view.getTabel().getSelectedRow());
+		int index = view.getPhraseTable().getSelectedRow();
+		if(index == -1) return;
+		Phrase p = selectedLesson.getPhrase(index);
 		selectedLesson.deletePhrase(p);
+		view.deletePhrase(index);
 	    }
 	});
 
