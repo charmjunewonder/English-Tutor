@@ -73,7 +73,15 @@ public class LessonPanel extends JPanel {
     }
 
     private void initPhraseTable(){
+    String[] columnNames = new String[5];
+    columnNames[0] = "ÖÐÎÄ";
+    columnNames[1] = "English";
+    columnNames[2] = "Sound";
+    columnNames[3] = "Date";
+    columnNames[4] = "Accuracy";
+    	
 	tableModel = new DefaultTableModel(0, 5);
+	tableModel.setColumnIdentifiers(columnNames);
 	phraseTable = new JTable();
 	phraseTable.setModel(tableModel);
 	phraseTable.setRowHeight(40);
