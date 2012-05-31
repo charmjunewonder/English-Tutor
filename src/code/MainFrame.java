@@ -1,33 +1,45 @@
 package code;
 
-//import java.awt.BorderLayout;
 import java.awt.Color;
-//import java.awt.GridLayout;
-
+import java.util.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel; 
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.Icon;
 import org.apache.commons.io.FilenameUtils;
 
 public class MainFrame extends AbstractFrame{
-    private JPanel leftPanel,rightPanel,titlePanel,testAllPanel,lessonPanel,buttonPanel,lessons;
-    private JScrollPane lessonScrollPanel;
+    private JPanel lessons;
+    private JTable lessonTable;
+	private JScrollPane lessonScrollPanel;
     private JButton logoutButton,testAllButton,addLessonButton,deleteLessonButton;
-    private JLabel titleLabel;
+    private JLabel titleLabel,historyLabel,listLabel;
+    private DefaultTableModel tableModel;
     private int sum_lesson;
-
+    
     public MainFrame(){
 	super(FilenameUtils.separatorsToSystem("resource/MainFrame.png"));
 	sum_lesson=0;
-	initMainFrameLayout();
-	initPanel();
-	initTitlePanel();
+	getExitButton().setBounds(getWidth()-90,17,30,30);
+	getShrinkButton().setBounds(getWidth()-140, 22, 50, 20);
+	initTitleLabel();
+	initLogoutButton();
 	initLessonScrollPanel();
-	initLessonPanel();
-	initTestAllPanel();
+	
+	initLessonTable();
+	initLessonButton();
+	initTestAllButton();
+	initDefaultLabel();
     }
 
     /**
@@ -57,123 +69,129 @@ public class MainFrame extends AbstractFrame{
     public JButton getDeleteLessonButton() {
         return deleteLessonButton;
     }
-
-    private void initMainFrameLayout(){
-	getMainPanel().setLayout(new GridLayout(1,2));
+    
+    
+    private void initLogoutButton(){
+    	logoutButton = new JButton(new ImageIcon("resource/LogoutButton.PNG"));
+        logoutButton.setBounds(20,20,50,30);
+        logoutButton.setBorderPainted(false);
+        getContentPane().add(logoutButton);
     }
-
-    private void initPanel(){
-	leftPanel = new JPanel();
-	leftPanel.setLayout(new BorderLayout());
-	rightPanel = new JPanel();
-	rightPanel.setOpaque(false);
-	getMainPanel().add(leftPanel);
-	getMainPanel().add(rightPanel);
+    
+    private void initTitleLabel(){
+    	titleLabel = new JLabel("English Tutor");
+        titleLabel.setBounds(200,10,80,100);
+        getContentPane().add(titleLabel);
     }
-
-    private void initTitlePanel(){
-
-	logoutButton = new JButton(new ImageIcon(FilenameUtils.separatorsToSystem("resource/LogoutButton.PNG")));
-	logoutButton.setBackground(new Color(0,0,0,0));
-	titleLabel = new JLabel("English Tutor");
-
-	titlePanel = new JPanel();
-	titlePanel.setLayout(new GridLayout(1,4));
-	titlePanel.setOpaque(false);
-	leftPanel.setOpaque(false);
-	titlePanel.add(logoutButton);
-	titlePanel.add(new JLabel());
-	titlePanel.add(titleLabel);
-	titlePanel.add(new JLabel());
-	leftPanel.add(titlePanel,BorderLayout.NORTH);
-    }
-
+    
     private void initLessonScrollPanel(){
 	lessonScrollPanel = new JScrollPane();
-	lessonScrollPanel.setVisible(true);
 	lessonScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 	lessonScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	leftPanel.add(lessonScrollPanel,BorderLayout.CENTER);
+	lessonScrollPanel.setBounds(40, 80, 400, 500);
+	getContentPane().add(lessonScrollPanel);
     }
-
-    private void initLessonPanel(){
-	lessons = new JPanel();
-	lessonPanel = new JPanel();
-	lessonPanel.setLayout(new BorderLayout());
-
-	buttonPanel = new JPanel();
-	buttonPanel.setLayout(new GridLayout(1,5));
-
-	addLessonButton = new JButton("add");
-	deleteLessonButton = new JButton("delete");
-
-	buttonPanel.add(addLessonButton);
-	buttonPanel.add(deleteLessonButton);
-	buttonPanel.add(new JLabel());
-	buttonPanel.add(new JLabel());
-	buttonPanel.add(new JLabel());
-
-	lessonPanel.add(lessons,BorderLayout.CENTER);
-	lessonPanel.add(buttonPanel,BorderLayout.SOUTH);
-	lessonScrollPanel.setViewportView(lessonPanel);
+    
+    private void initLessonTable(){
+    tableModel = new DefaultTableModel(0,3);
+    lessonTable = new JTable();
+    lessonTable.setModel(tableModel);
+    lessonTable.setBounds(0, 0, 392, 500);
+    
+    lessonScrollPanel.setViewportView(lessonTable);	
+    lessonTable.setRowHeight(60);
     }
-
-
-    private void initTestAllPanel(){
-	testAllPanel = new JPanel();
-	testAllPanel.setOpaque(false);
-	testAllPanel.setLayout(new GridLayout(2,5));
-	testAllPanel.add(new JLabel());
-	testAllPanel.add(new JLabel());
-	testAllButton = new JButton("Test All");
-	testAllPanel.add(testAllButton);
-	testAllPanel.add(new JLabel());
-	testAllPanel.add(new JLabel());
-	testAllPanel.add(new JLabel());
-	testAllPanel.add(new JLabel());
-	testAllPanel.add(new JLabel());
-	testAllPanel.add(new JLabel());
-	testAllPanel.add(new JLabel());
-	leftPanel.add(testAllPanel,BorderLayout.SOUTH);
+    
+    private void initLessonButton(){
+    addLessonButton = new JButton("add");
+    addLessonButton.setBounds(40, 580, 60, 30);
+    addLessonButton.addMouseListener(new AddLessonButtonAdapter());
+    
+    deleteLessonButton = new JButton("delete");
+    deleteLessonButton.setBounds(100, 580, 80, 30);
+    
+    getContentPane().add(addLessonButton);
+    getContentPane().add(deleteLessonButton);
+    }
+    
+    private void initTestAllButton(){
+    	testAllButton = new JButton("Test All");
+    	testAllButton.setBounds(185, 600, 80, 40);
+    	getContentPane().add(testAllButton);
+    }
+    
+    private void initDefaultLabel(){
+    	historyLabel = new JLabel("History");
+    	historyLabel.setBounds(940, 90, 50, 50);
+    	historyLabel.addMouseListener(new HistoryLabelAdapter());
+    	getContentPane().add(historyLabel);
+    	
+    	listLabel = new JLabel("List");
+    	listLabel.setBounds(940, 210, 50, 50);
+    	//listLabel.addMouseListener(new ListLabelAdapter());
+    	getContentPane().add(listLabel);
     }
 
     public void addLesson(String lessonName){
 	sum_lesson++;
-	LessonItemPanel newLesson = new LessonItemPanel(lessonName);
-	lessons.setLayout(new GridLayout(sum_lesson,1));
-	lessons.add(newLesson);
+    
+    DefaultTableModel newTableModel = new DefaultTableModel(sum_lesson,3);
+	for(int i=0;i<sum_lesson-1;i++)
+		for(int j=0;j<3;j++){
+           newTableModel.setValueAt(tableModel.getValueAt(i, j), i, j);
+		}
+    lessonTable.setModel(newTableModel);
+	tableModel = newTableModel;
+    
+	lessonTable.setValueAt(new ImageIcon(FilenameUtils.separatorsToSystem("resource/LockLabel.png")), sum_lesson-1, 0);
+    lessonTable.setValueAt(lessonName, sum_lesson-1, 1);
+    lessonTable.setValueAt("", sum_lesson-1, 2);
+  
+    lessonTable.getColumn("A").setCellEditor(lessonTable.getDefaultEditor(Icon.class));
+    lessonTable.getColumn("A").setCellRenderer(lessonTable.getDefaultRenderer(Icon.class));
+    
+    lessonTable.getColumn("C").setCellEditor(lessonTable.getDefaultEditor(Icon.class));
+    lessonTable.getColumn("C").setCellRenderer(lessonTable.getDefaultRenderer(Icon.class));
+
     }
 
     public void deleteLesson(String lessonName){
 
     }
-
-    private class LessonItemPanel extends JPanel{
-	private JLabel lockLabel,lessonNameLabel,smileLabel;
-
-	private LessonItemPanel(String lessonName) {
-	    super();
-	    setLayout(new GridLayout(1,5));
-	    lockLabel = new JLabel(new ImageIcon(FilenameUtils.separatorsToSystem("resource/LockLabel.png")));
-	    lessonNameLabel  = new JLabel(lessonName);
-	    smileLabel = new JLabel(new ImageIcon(FilenameUtils.separatorsToSystem("resource/SmileLabel.png")));
-	    //smileLabel.setVisible(false);
-
-	    add(lockLabel);
-	    add(new JLabel());
-	    add(lessonNameLabel);
-	    add(new JLabel());
-	    add(smileLabel);
-	}
-
-	public void setLearnedStatue(){
-	    lockLabel.setVisible(false);
-	    smileLabel.setVisible(true);
-	}
+    
+    
+    private class AddLessonButtonAdapter extends MouseAdapter{
+    public void mouseClicked(MouseEvent e){
     }
+    public void mousePressed(MouseEvent e){
+       addLesson("Lesson_"+(sum_lesson+1));
+    }
+    }
+    
+    public void setLearnedStatue(String lessonName){
+	    for(int i=0; i<sum_lesson; i++){
+    	   if (lessonTable.getValueAt(i, 1).equals(lessonName)){
+    		    lessonTable.setValueAt("", sum_lesson-1, 0);
+    		    lessonTable.setValueAt(lessonName, sum_lesson-1, 1);
+    		    lessonTable.setValueAt(new ImageIcon(FilenameUtils.separatorsToSystem("resource/SmileLabel.png")), sum_lesson-1, 2);
+    	   }
+	    }
+	}
+    
+    private class HistoryLabelAdapter extends MouseAdapter{
+    	public void mouseClicked(MouseEvent e){
+        }
+        public void mousePressed(MouseEvent e){
+           //historyPanel.set
+        }
+    }
+    
     
     public static void main(String args[]){
     	MainFrame test = new MainFrame();
     	test.setVisible(true);
+    	test.addLesson("lesson_1");
+    	test.setLearnedStatue("lesson_1");
+    	test.addLesson("lesson_2");
     }
 }
