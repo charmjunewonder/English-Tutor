@@ -24,6 +24,8 @@ public class MainFrame extends AbstractFrame{
 	private JScrollPane lessonScrollPanel;
     private JButton logoutButton,testAllButton,addLessonButton,deleteLessonButton;
     private JLabel titleLabel,historyLabel,listLabel;
+    private HistoryPanel historyPanel;
+    private LessonPanel lessonPanel;
     private DefaultTableModel tableModel;
     private int sum_lesson;
     
@@ -38,6 +40,8 @@ public class MainFrame extends AbstractFrame{
 	
 	initLessonTable();
 	initLessonButton();
+	initHistoryPanel();
+	initLessonPanel();
 	initTestAllButton();
 	initDefaultLabel();
     }
@@ -128,14 +132,29 @@ public class MainFrame extends AbstractFrame{
     	
     	listLabel = new JLabel("List");
     	listLabel.setBounds(940, 210, 50, 50);
-    	//listLabel.addMouseListener(new ListLabelAdapter());
+    	listLabel.addMouseListener(new ListLabelAdapter());
     	getContentPane().add(listLabel);
     }
-
+    
+    private void initHistoryPanel(){
+    	historyPanel = new HistoryPanel();
+    	//historyPanel.setOpaque(false);
+    	getContentPane().add(historyPanel);
+    }
+    
+    private void initLessonPanel(){
+    	lessonPanel = new LessonPanel();
+    }
+    
     public void addLesson(String lessonName){
 	sum_lesson++;
     
-    DefaultTableModel newTableModel = new DefaultTableModel(sum_lesson,3);
+    DefaultTableModel newTableModel = new DefaultTableModel(sum_lesson,3){
+    	@Override
+		public boolean isCellEditable(int row, int column) {
+		  return false;
+		}
+    };
 	for(int i=0;i<sum_lesson-1;i++)
 		for(int j=0;j<3;j++){
            newTableModel.setValueAt(tableModel.getValueAt(i, j), i, j);
@@ -182,8 +201,31 @@ public class MainFrame extends AbstractFrame{
     	public void mouseClicked(MouseEvent e){
         }
         public void mousePressed(MouseEvent e){
-           //historyPanel.set
+           buildHistoryPanel();
         }
+    }
+    
+    private class ListLabelAdapter extends MouseAdapter{
+    	public void mouseClicked(MouseEvent e){
+        }
+        public void mousePressed(MouseEvent e){
+           buildLessonPanel();
+        }
+    }
+    
+    private void buildHistoryPanel(){
+  
+    	historyPanel = new HistoryPanel();
+    	if (lessonPanel != null) getContentPane().remove(lessonPanel);
+    	repaint();
+    	getContentPane().add(historyPanel);
+    }
+    
+    private void buildLessonPanel(){
+    	lessonPanel = new LessonPanel();
+    	if (historyPanel != null) getContentPane().remove(historyPanel);
+    	repaint();
+    	getContentPane().add(lessonPanel);
     }
     
     

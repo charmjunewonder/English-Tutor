@@ -59,7 +59,12 @@ public class HistoryPanel extends JPanel{
 	 public void addHistory(String time,int mark){
 		 sum_history++;
 		    
-		 DefaultTableModel newTableModel = new DefaultTableModel(sum_history,3);
+		 DefaultTableModel newTableModel = new DefaultTableModel(sum_history,3){
+	  		   @Override
+			   public boolean isCellEditable(int row, int column) {
+			      return false;
+			   }
+		 };
 		 for(int i=0;i<sum_history-1;i++)
 			for(int j=0;j<3;j++){
 		        newTableModel.setValueAt(tableModel.getValueAt(i, j), i, j);

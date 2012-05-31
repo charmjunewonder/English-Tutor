@@ -99,7 +99,12 @@ public class LessonPanel extends JPanel {
 	public void addPhrase(String chinese, String english, String date, String accuracy){
 		 sum_phrase++;
 		    
-		 DefaultTableModel newTableModel = new DefaultTableModel(sum_phrase,5);
+		 DefaultTableModel newTableModel = new DefaultTableModel(sum_phrase,5){
+			   @Override
+			   public boolean isCellEditable(int row, int column) {
+			      return false;
+			   }
+		 };
 		 for(int i=0;i<sum_phrase-1;i++)
 			for(int j=0;j<5;j++){
 		        newTableModel.setValueAt(tableModel.getValueAt(i, j), i, j);
@@ -113,7 +118,8 @@ public class LessonPanel extends JPanel {
 		 phraseTable.setValueAt(new ImageIcon(FilenameUtils.separatorsToSystem("resource/VoiceButton.png")), sum_phrase-1, 2);
 		 phraseTable.setValueAt(date, sum_phrase-1, 3);
 	     phraseTable.setValueAt(accuracy, sum_phrase-1, 4);
-		 
+	     
+	     
 		 phraseTable.getColumn("C").setCellEditor(phraseTable.getDefaultEditor(Icon.class));
 		 phraseTable.getColumn("C").setCellRenderer(phraseTable.getDefaultRenderer(Icon.class));	 
 	}
