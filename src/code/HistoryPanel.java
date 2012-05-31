@@ -1,17 +1,21 @@
 package code;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import org.apache.commons.io.FilenameUtils;
 
 import java.awt.Color;
+import java.awt.Component;
 
 public class HistoryPanel extends JPanel{
     private JLabel titleLabel; 
@@ -53,18 +57,49 @@ public class HistoryPanel extends JPanel{
 
     private void initHistoryScrollPanel(){
 	historyScrollPanel = new JScrollPane();
-	historyScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+    historyScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 	historyScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	historyScrollPanel.setBounds(0, 50, 400, 550);
+	
+	
 	add(historyScrollPanel);
     }
 
     private void initHistoryTable(){
-
+    String[] columnNames = new String[3];
+	columnNames[0] = "Date";
+	columnNames[1] = "Mark";
+	columnNames[2] = "Color";
+	
+	
 	tableModel = new DefaultTableModel(0,3);
-	historyTable = new JTable();
-	historyTable.setModel(tableModel);
+	tableModel.setColumnIdentifiers(columnNames);
+	historyTable = new JTable(){
+		/*    
+		public Component prepareRenderer(
+			    TableCellRenderer renderer, int row, int column)
+		    {
+			Component c = super.prepareRenderer(renderer, row, column);
+			JComponent jc = (JComponent)c;
+			jc.setBorder(BorderFactory.createMatteBorder(0,0,3,0,Color.white));
 
+
+			if (isRowSelected(row)){
+			}
+			else{
+			}
+
+			return c;
+		    }
+		  *//*  
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }*/
+	};
+	historyTable.setModel(tableModel);
+	
 	historyTable.setBounds(0, 0, 400, 550);
 	historyScrollPanel.setViewportView(historyTable);
     }
@@ -78,6 +113,14 @@ public class HistoryPanel extends JPanel{
 		return false;
 	    }
 	};
+	
+    String[] columnNames = new String[3];
+	columnNames[0] = "Date";
+	columnNames[1] = "Mark";
+	columnNames[2] = "Color";
+	
+	newTableModel.setColumnIdentifiers(columnNames);
+	
 	for(int i=0;i<sum_history-1;i++)
 	    for(int j=0;j<3;j++){
 		newTableModel.setValueAt(tableModel.getValueAt(i, j), i, j);
@@ -97,8 +140,8 @@ public class HistoryPanel extends JPanel{
 	}
 
 
-	historyTable.getColumn("C").setCellEditor(historyTable.getDefaultEditor(Icon.class));
-	historyTable.getColumn("C").setCellRenderer(historyTable.getDefaultRenderer(Icon.class));	    
+	historyTable.getColumn("Color").setCellEditor(historyTable.getDefaultEditor(Icon.class));
+	historyTable.getColumn("Color").setCellRenderer(historyTable.getDefaultRenderer(Icon.class));	    
     }
 
     public void clearHistoryTableContent(){
@@ -117,7 +160,7 @@ public class HistoryPanel extends JPanel{
     public JTable getHistoryTable(){
 	return historyTable;
     }
-
+    
     public static void main(String args[]){
 	MainFrame test = new MainFrame();
 	HistoryPanel p = new HistoryPanel();

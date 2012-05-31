@@ -129,8 +129,10 @@ public class MainFrame extends AbstractFrame{
 	lessonTable.setBackground(new Color(0, true));
 	lessonTable.setIntercellSpacing(new Dimension(0,0));
 	lessonTable.setShowVerticalLines(false);
-	lessonTable.setRowHeight(30);
-
+	lessonTable.setRowHeight(45);
+	lessonTable.getTableHeader().setPreferredSize(new Dimension(0,0));
+    lessonTable.getTableHeader().setVisible(false);
+	
 	lessonScrollPanel.setViewportView(lessonTable);	
     }
 
@@ -264,8 +266,8 @@ public class MainFrame extends AbstractFrame{
     public static void main(String args[]){
 	MainFrame test = new MainFrame();
 	test.setVisible(true);
-	test.addLesson("lesson_1");
-	test.setLearnedStatue("lesson_1");
-	test.addLesson("lesson_2");
+	test.addLesson("Lesson_1");
+	test.setLearnedStatue("Lesson_1");
+	test.addLesson("Lesson_2");
     }
 }
