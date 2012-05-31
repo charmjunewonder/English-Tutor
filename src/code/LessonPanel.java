@@ -23,7 +23,7 @@ public class LessonPanel extends JPanel {
     private JTable phraseTable;
     private JLabel chineseLabel,englishLabel;
     private int sum_phrase;
-    
+
     private static LessonPanel lessonPanel;
 
     public static LessonPanel getLessonPanel(){
@@ -36,7 +36,7 @@ public class LessonPanel extends JPanel {
 	}
 	return lessonPanel;
     }
-    
+
     private LessonPanel(){
 	super();
 	setLayout(null);
@@ -73,13 +73,13 @@ public class LessonPanel extends JPanel {
     }
 
     private void initPhraseTable(){
-    String[] columnNames = new String[5];
-    columnNames[0] = "中文";
-    columnNames[1] = "English";
-    columnNames[2] = "Sound";
-    columnNames[3] = "Date";
-    columnNames[4] = "Accuracy";
-    	
+	String[] columnNames = new String[5];
+	columnNames[0] = "中文";
+	columnNames[1] = "English";
+	columnNames[2] = "Sound";
+	columnNames[3] = "Date";
+	columnNames[4] = "Accuracy";
+
 	tableModel = new DefaultTableModel(0, 5);
 	tableModel.setColumnIdentifiers(columnNames);
 	phraseTable = new JTable();
@@ -123,13 +123,21 @@ public class LessonPanel extends JPanel {
 	String date = p.getLastReviewTime();
 	String accuracy = "" + p.getAccuracy();
 	sum_phrase++;
-
+	
+	String[] columnNames = new String[5];
+	columnNames[0] = "中文";
+	columnNames[1] = "English";
+	columnNames[2] = "Sound";
+	columnNames[3] = "Date";
+	columnNames[4] = "Accuracy";
+	
 	DefaultTableModel newTableModel = new DefaultTableModel(sum_phrase,5){
 	    @Override
 	    public boolean isCellEditable(int row, int column) {
 		return false;
 	    }
 	};
+	newTableModel.setColumnIdentifiers(columnNames);
 	for(int i=0;i<sum_phrase-1;i++)
 	    for(int j=0;j<5;j++){
 		newTableModel.setValueAt(tableModel.getValueAt(i, j), i, j);
@@ -145,15 +153,15 @@ public class LessonPanel extends JPanel {
 	phraseTable.setValueAt(accuracy, sum_phrase-1, 4);
 
 
-	phraseTable.getColumn("C").setCellEditor(phraseTable.getDefaultEditor(Icon.class));
-	phraseTable.getColumn("C").setCellRenderer(phraseTable.getDefaultRenderer(Icon.class));	 
+	phraseTable.getColumn("Sound").setCellEditor(phraseTable.getDefaultEditor(Icon.class));
+	phraseTable.getColumn("Sound").setCellRenderer(phraseTable.getDefaultRenderer(Icon.class));	 
     }
-    
+
     public void deletePhrase(int row){
 	((DefaultTableModel)phraseTable.getModel()).removeRow(row);
 	sum_phrase--;
     }
-    
+
     public void clearPhraseTabelContent(){
 	DefaultTableModel mtl = (DefaultTableModel)phraseTable.getModel();
 	int row = mtl.getRowCount();
@@ -162,7 +170,7 @@ public class LessonPanel extends JPanel {
 	}
 	sum_phrase = 0;
     }
-    
+
     public void clearEnglishChineseTextField(){
 	chineseTextField.setText("");
 	englishTextField.setText("");
@@ -172,7 +180,7 @@ public class LessonPanel extends JPanel {
      * @return the phraseTable
      */
     public JTable getPhraseTable() {
-        return phraseTable;
+	return phraseTable;
     }
 
     public JTextField getChineseTextField(){

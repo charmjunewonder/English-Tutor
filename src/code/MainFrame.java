@@ -50,14 +50,14 @@ public class MainFrame extends AbstractFrame{
      * @return the historyPanel
      */
     public HistoryPanel getHistoryPanel() {
-        return historyPanel;
+	return historyPanel;
     }
 
     /**
      * @return the lessonPanel
      */
     public LessonPanel getLessonPanel() {
-        return lessonPanel;
+	return lessonPanel;
     }
 
     /**
@@ -131,8 +131,11 @@ public class MainFrame extends AbstractFrame{
 	lessonTable.setShowVerticalLines(false);
 	lessonTable.setRowHeight(45);
 	lessonTable.getTableHeader().setPreferredSize(new Dimension(0,0));
-    lessonTable.getTableHeader().setVisible(false);
+	ListSelectionModel listSelectionModel = lessonTable.getSelectionModel();
+	listSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	
+	lessonTable.getTableHeader().setVisible(false);
+
 	lessonScrollPanel.setViewportView(lessonTable);	
     }
 
@@ -171,11 +174,11 @@ public class MainFrame extends AbstractFrame{
     private void initHistoryPanel(){
 	historyPanel = HistoryPanel.getHistoryPanel();
 	//historyPanel.setOpaque(false);
-	getContentPane().add(historyPanel);
     }
 
     private void initLessonPanel(){
 	lessonPanel = LessonPanel.getLessonPanel();
+	getContentPane().add(lessonPanel);
     }
 
     public void addLesson(String lessonName){
@@ -204,8 +207,7 @@ public class MainFrame extends AbstractFrame{
 	//lessonTable.getColumn("C").setCellEditor(lessonTable.getDefaultEditor(Icon.class));
 	lessonTable.getColumn("C").setCellRenderer(lessonTable.getDefaultRenderer(Icon.class));
 
-	ListSelectionModel listSelectionModel = lessonTable.getSelectionModel();
-        listSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
 
     }
 
