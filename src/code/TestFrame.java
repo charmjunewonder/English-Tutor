@@ -109,6 +109,7 @@ public class TestFrame extends AbstractFrame{
     private void initQuestionLabel(){
 	questionLabel = new JLabel();
 	questionLabel.setBounds(152, 215, 300, 40);
+	questionLabel.setFont(new Font("Scanserif",Font.PLAIN,10));
 	questionLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
 	questionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	getContentPane().add(questionLabel);	

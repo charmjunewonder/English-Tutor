@@ -18,6 +18,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import code.Database;
+import code.InvalidFileNameException;
 /**
  * @author charmjunewonder
  *
@@ -62,7 +63,7 @@ public class DatabaseTest {
      * Test method for {@link code.Database#createAccount(java.lang.String)}.
      */
     @Test
-    public void testCreateAccount(){
+    public void testCreateAccount()throws InvalidFileNameException{
 	Database database = new Database(conn);
 	try{
 	    database.createAccount("Eric");

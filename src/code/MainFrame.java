@@ -102,6 +102,9 @@ public class MainFrame extends AbstractFrame{
 	logoutButton = new JButton(new ImageIcon("resource/LogoutButton.png"));
 	logoutButton.setBounds(20,20,73,32);
 	logoutButton.setBorderPainted(false);
+	logoutButton.setToolTipText("logout");
+	logoutButton.setOpaque(false);
+	logoutButton.setBackground(new Color(0,0,0,0));
 	getContentPane().add(logoutButton);
     }
 
@@ -242,7 +245,7 @@ public class MainFrame extends AbstractFrame{
 	lessonTable.getColumn("C").setCellRenderer(lessonTable.getDefaultRenderer(Icon.class));
 
 
-
+    
     }
 
     public void deleteLesson(int rowToRemove){

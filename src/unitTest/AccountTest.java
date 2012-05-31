@@ -16,6 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import code.Account;
+import code.InvalidFileNameException;
 import code.Lesson;
 
 /**
@@ -61,14 +62,14 @@ public class AccountTest {
      * Test method for {@link code.Account#Account(java.lang.String)}.
      */
     @Test
-    public void testAccount() {
+    public void testAccount() throws InvalidFileNameException{
 	Account a = new Account("test");
 	assertNotNull("new Account should not be null", a);
 	assertEquals("account should contains correct account name", a.getName(), "test");
     }
     
     @Test
-    public void testLoadDefaultLesson(){
+    public void testLoadDefaultLesson() throws InvalidFileNameException{
 	Account a = new Account("test");
 	a.loadDefaultLessons();
 	Lesson l = a.getLesson(1);

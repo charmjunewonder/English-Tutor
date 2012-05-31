@@ -104,10 +104,11 @@ public class MainController {
 		    } else if(value == JOptionPane.YES_OPTION){
 			account.writeToDatabase();
 		    }
-		    view.setVisible(false);
-		    view.dispose();
-		    System.exit(0);
-		}
+
+		}		
+		view.setVisible(false);
+		view.dispose();
+		System.exit(0);
 	    }
 	});
 
