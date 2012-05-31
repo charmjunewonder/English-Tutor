@@ -1,19 +1,23 @@
 
 package code;
 
-import java.awt.GridLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -22,7 +26,7 @@ public class LearnFrame extends AbstractFrame {
     private JPanel phrasePanel;
     private JButton finishButton;
     private JScrollPane phraseScrollPanel;
-    private int sum;
+    private int sum, currentPhraseIndex;
 
     public LearnFrame(){
 	super(FilenameUtils.separatorsToSystem("resource/Learn.png"));
@@ -34,7 +38,10 @@ public class LearnFrame extends AbstractFrame {
 
     private void initTitleLabel(){
 	titleLabel = new JLabel("Learning");
-	titleLabel.setBounds(235,52,96,31);
+	titleLabel.setBounds(200,40,200,50);
+	titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	//titleLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+	titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
 	getContentPane().add(titleLabel);
     }
 
@@ -46,7 +53,8 @@ public class LearnFrame extends AbstractFrame {
 
     private void initPhraseScrollPanel(){
 	phrasePanel = new JPanel();
-	phrasePanel.setLayout(new GridLayout(10,1));
+	//phrasePanel.setLayout(new GridLayout(2,1));
+	phrasePanel.setLayout(null);
 	phrasePanel.setOpaque(false);
 
 
@@ -59,13 +67,14 @@ public class LearnFrame extends AbstractFrame {
 	phraseScrollPanel.setBorder(null);
 	phraseScrollPanel.setViewportView(phrasePanel);
 
-	phraseScrollPanel.setBounds(52, 107, 483, 450);
+	phraseScrollPanel.setBounds(42, 107, 500, 450);
 	getContentPane().add(phraseScrollPanel);
     }
 
     public void addPhraseItem(Phrase p){
 	PhraseItemPanel newPhrase = new PhraseItemPanel(p);
 	newPhrase.setOpaque(false);
+	newPhrase.setBounds(0, currentPhraseIndex++ * 25, 500, 30);
 	phrasePanel.add(newPhrase);
     }
 
@@ -76,24 +85,39 @@ public class LearnFrame extends AbstractFrame {
 
 	public PhraseItemPanel(Phrase p){
 	    super();
-	    setLayout(new GridLayout(1,5));
+	    setLayout(null);
 	    phrase = p;
-	    voiceButton = new JButton(new ImageIcon(FilenameUtils.separatorsToSystem("resource/VoiceButton.png")));
+	    
 	    chineseLabel = new JLabel(p.getChinese());
-	    chineseLabel.setVisible(false);
+	    //chineseLabel.setHorizontalAlignment(JLabel.CENTER);
+	    //TODO
+	    //chineseLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+	    chineseLabel.setBounds(0, 0, 235, 25);
+	    chineseLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	    chineseLabel.addMouseListener(new ChineseLabelAdapter());
+    
+	    Image i = Toolkit.getDefaultToolkit().getImage("resource/VoiceButton.png").getScaledInstance(25, 25, Image.SCALE_DEFAULT); 
+	    voiceButton = new JButton(new ImageIcon(i));
+	    voiceButton.setBounds(235, 0, 25, 25);
+	    //voiceButton = new JButton(new ImageIcon(FilenameUtils.separatorsToSystem("resource/VoiceButton.png")));
+	    voiceButton.setBorderPainted(false);
+	    
 	    englishLabel = new JLabel(p.getEnglish());
-	    englishLabel.addMouseListener(new EnglishLabelAdapter());
+	    englishLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	    englishLabel.setBounds(260, 0, 235, 25);
+	    //englishLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+	    englishLabel.setVisible(false);
 
 	    add(englishLabel);
-	    add(new JLabel());
+	    //add(new JLabel());
 	    add(voiceButton);
-	    add(new JLabel());
+	    //add(new JLabel());
 	    add(chineseLabel);
 	}
 
-	private class EnglishLabelAdapter extends MouseAdapter{
+	private class ChineseLabelAdapter extends MouseAdapter{
 	    public void mouseClicked(MouseEvent e){
-		chineseLabel.setVisible(true);
+		englishLabel.setVisible(true);
 		DateFormat dateFormat = new SimpleDateFormat("/MM/dd/yy");
 		Date date = new Date();
 		String dateString = dateFormat.format(date);

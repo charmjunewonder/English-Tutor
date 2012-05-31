@@ -24,9 +24,13 @@ public class EnsureFrame extends AbstractFrame{
     private static EnsureFrame frame;
     
     private EnsureFrame(){
-	super(FilenameUtils.separatorsToSystem("resource/EnsureFrame1.png"));
+	super(FilenameUtils.separatorsToSystem("resource/EnsureFrame2.png"));
 	initTextLabel();
 	initButtonPanel();
+	//exitButton.setBounds(600, 250, 30, 30);
+	//shrinkButton.setBounds(550, 255, 50, 20);
+	//exitButton.setEnabled(false);
+	removeExitAndShrinkButton();
     }
     
     public static EnsureFrame getEnsureFrame(){
@@ -96,7 +100,7 @@ public class EnsureFrame extends AbstractFrame{
     private void initTextLabel(){
 	statementLabel = new JLabel();
 	statementLabel.setOpaque(false);
-	statementLabel.setBounds(50,150,400,20);
+	statementLabel.setBounds(350, 315, 400, 20);
 	getContentPane().add(statementLabel);
     }
 
@@ -120,7 +124,7 @@ public class EnsureFrame extends AbstractFrame{
 	buttonPanel.add(secondButton);
 	buttonPanel.add(thirdButton);
 
-	buttonPanel.setBounds(20, 230, 400, 150);
+	buttonPanel.setBounds(270, 400, 400, 150);
 	getContentPane().add(buttonPanel);
     }
 

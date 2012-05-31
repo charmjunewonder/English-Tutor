@@ -1,16 +1,13 @@
 package code;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferStrategy;
 import java.sql.SQLException;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 import javax.swing.text.JTextComponent;
 
 public class LoginController {
@@ -53,8 +50,8 @@ public class LoginController {
 
 	    //Font.deriveFont(font, 30); 
 	    JLabel titleLabel = view.getTitleLabel();
-	    titleLabel.setText("<html> <p>English</p> <p>Tutor</p> </html>");
-	    titleLabel.setFont(new Font("Academy Engraved LET", Font.BOLD, 30));
+	    titleLabel.setText("<html><Center> <p>English</p> <p>Tutor</p> </Center></html>");
+	    titleLabel.setFont(new Font("Blackmoor LET", Font.BOLD, 72));
 	    titleLabel.setForeground(Color.YELLOW);
 	}catch(Exception e){
 	    e.printStackTrace();

@@ -1,18 +1,27 @@
 package code;
 
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Color;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class TestFrame extends AbstractFrame{
-    private JLabel titleLabel,questionTitleLabel, questionLabel, answerLabel,processLabel[],processFeather;
-    private JTextField answerTextField,questionTextField;
-    private JButton nextButton,soundButton;
-    private int now,sum;
+    private final String romanNumberals[] = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
+    private final int totalCountOfProgress = 10;
+    private final Font font = new Font("Adobe Caslon Pro Bold", Font.BOLD, 20);
+    
+    private JLabel titleLabel, questionTitleLabel, questionLabel, answerLabel, processLabel[], processFeather;
+    private JTextField answerTextField, questionTextField;
+    private JButton nextButton, soundButton;
+    private int now, progressTotalLength;
+
 
     public TestFrame(){
 	super("resource/TestFrame.png");
@@ -26,7 +35,7 @@ public class TestFrame extends AbstractFrame{
 	initProcessLabel();
 	initProcessFeather();
 	now=0;
-	sum=9;
+	progressTotalLength = romanNumberals[0].length();
     }
     
     /**
@@ -80,28 +89,32 @@ public class TestFrame extends AbstractFrame{
 
     private void initTitleLabel(){
 	titleLabel = new JLabel("Test");
-	titleLabel.setBounds(250, 80, 50, 20);
+	titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
+	titleLabel.setBounds(220, 80, 100, 100);
 	getContentPane().add(titleLabel);
     }
 
     private void initSoundButton(){
 	soundButton = new JButton(new ImageIcon("resource/VoiceButton.png"));
-	soundButton.setBackground(new Color(0,0,0,0));
+	soundButton.setBackground(new Color(0, 0, 0, 0));
 	soundButton.setBorderPainted(false);
 	soundButton.setOpaque(false);
-	soundButton.setBounds(20, 150, 50, 50);
+	soundButton.setBounds(424, 263, 50, 50);
 	getContentPane().add(soundButton);
     }
 
     private void initQuestionLabel(){
 	questionLabel = new JLabel();
-	questionLabel.setBounds(130, 180, 300, 40);
+	questionLabel.setBounds(152, 215, 300, 40);
+	questionLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+	questionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	getContentPane().add(questionLabel);	
     }
 
     private void initQuestionTitleLabel(){
 	questionTitleLabel = new JLabel("Question:");
-	questionTitleLabel.setBounds(80, 180, 300, 50);
+	questionTitleLabel.setBounds(42, 210, 300, 50);
+	questionTitleLabel.setFont(font);
 	getContentPane().add(questionTitleLabel);
     }
 
@@ -114,49 +127,56 @@ public class TestFrame extends AbstractFrame{
 
     private void initAnswerLabel(){
 	answerLabel = new JLabel("Answer:");
-	answerLabel.setBounds(80,235,300,50);
+	answerLabel.setFont(font);
+	answerLabel.setBounds(42, 319, 300, 50);
 	getContentPane().add(answerLabel);
     }
 
     private void initAnswerTextField(){
 	answerTextField = new JTextField();
-	answerTextField.setBounds(130, 240, 300, 40);
+	answerTextField.setBounds(152, 323, 300, 40);
 	answerTextField.setEditable(true);
 	getContentPane().add(answerTextField);
     }
 
     private void initNextButton(){
-	nextButton = new JButton(new ImageIcon("resource/next.png"));
-	nextButton.setBackground(new Color(0,0,0,0));
+	nextButton = new JButton(new ImageIcon("resource/NextButton.png"));
+	nextButton.setBackground(new Color(0, 0, 0, 0));
 	nextButton.setOpaque(false);
 	nextButton.setBorderPainted(false);
-	nextButton.setBounds(400, 400, 100, 100);
+	nextButton.setBounds(400, 478, 100, 100);
 	nextButton.addMouseListener(new NextButtonMouseAdapter());
 	getContentPane().add(nextButton);
     }
 
     private void initProcessLabel(){
 	processLabel = new JLabel[11];
-	for(int i=0;i<10;i++){
-	    processLabel[i] = new JLabel((i+1)+"");
-	    processLabel[i].setBounds(50+i*30,500,15,15);
+	//int distances[] = {20, 40, 60, 40, 
+	int totalLength = 0;
+	Font font = new Font("Chalkduster", Font.BOLD, 25);
+	for(int i=0; i<10; i++){
+	    processLabel[i] = new JLabel(romanNumberals[i]);
+	    if(i-1 >= 0)
+		totalLength += romanNumberals[i-1].length()*21;
+	    processLabel[i].setBounds(15 + totalLength, 450, 100, 20);
 	    processLabel[i].setVisible(false);
+	    processLabel[i].setFont(font);
 	    getContentPane().add(processLabel[i]);
 	}
 	processLabel[0].setVisible(true);
     }
 
     private void initProcessFeather(){
-	processFeather = new JLabel(new ImageIcon("resource/processFeather.png"));
-	processFeather.setBounds(40, 410, 100, 90);
+	processFeather = new JLabel(new ImageIcon("resource/Feather.png"));
+	processFeather.setBounds(25, 390, 100, 90);
 	getContentPane().add(processFeather);
     }
 
     private void nextQuestionMotion(){
-	if (now<sum) {
-	    processFeather.setBounds(45+(now+1)*30,410,100,90);
-	    processLabel[now+1].setVisible(true);
-	    now++;
+	if (now < totalCountOfProgress - 1) {
+	    progressTotalLength += romanNumberals[now+1].length()*20; 
+	    processFeather.setBounds(20+progressTotalLength, 390, 100, 90);
+	    processLabel[++now].setVisible(true);
 	}
     }
 

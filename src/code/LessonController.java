@@ -38,21 +38,31 @@ public class LessonController {
     private void addALlListeners(){
 	view.getAddButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
-
+		Phrase p = new Phrase(view.getEnglishTextField().getText(), 
+					view.getChineseTextField().getText(), null);
+		selectedLesson.addPhrase(p);
 	    }
 	});
+
 	view.getDeleteButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
+		Phrase p = selectedLesson.getPhrase(view.getTabel().getSelectedRow());
+		selectedLesson.deletePhrase(p);
 	    }
 	});
+
 	view.getTestButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
+		new TestController(selectedLesson);
 	    }
 	});
+
 	view.getLearnButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
+		new LearnController(selectedLesson);
 	    }
 	});
+
     }
 
     public static void main(String[] args) throws Exception {

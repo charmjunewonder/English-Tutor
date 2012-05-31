@@ -21,18 +21,24 @@ import org.apache.commons.io.FilenameUtils;
 public abstract class AbstractFrame extends JFrame{
     private int lastx,lasty;
     private ImageIcon backgroundImageIcon;
-    private JButton exitButton,shrinkButton;
+    protected JButton exitButton,shrinkButton;
     private ImagePanel contentPane;
     private Cursor cursor;
+    protected ImageIcon exitImage, exitEnteredImage, shrinkImage, shrinkEnteredImage;
 
     protected AbstractFrame(String filePath){
 	super();
 	setUndecorated(true);
-	setBackground(new Color(0,0,0,0));
+	setBackground(new Color(0, true));
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	addMouseMotionListener(new FrameMouseListener());
 
 	lastx = lasty = -1;
+	
+	exitImage = new ImageIcon(FilenameUtils.separatorsToSystem("resource/x_black.png"));
+	exitEnteredImage = new ImageIcon(FilenameUtils.separatorsToSystem("resource/x_red.png"));
+	shrinkImage = new ImageIcon(FilenameUtils.separatorsToSystem("resource/shrink_black.png"));
+	shrinkEnteredImage = new ImageIcon(FilenameUtils.separatorsToSystem("resource/shrink_green.png"));
 
 	initBackgroundImage(filePath);
 	initBounds();
@@ -43,21 +49,21 @@ public abstract class AbstractFrame extends JFrame{
     }
 
     private void initBackgroundImage(String filePath){
-    	backgroundImageIcon = new ImageIcon(filePath);
+	backgroundImageIcon = new ImageIcon(filePath);
     }
-    
+
     private void initBounds(){
-    	setBounds(0,0,backgroundImageIcon.getIconWidth(),backgroundImageIcon.getIconHeight());
-        
+	setBounds(0,0,backgroundImageIcon.getIconWidth(),backgroundImageIcon.getIconHeight());
+
     }
-    
+
     private void initContentPane(){
-    	contentPane = new ImagePanel(backgroundImageIcon.getImage());
-    	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-    	setContentPane(contentPane);
-    	contentPane.setLayout(null);
+	contentPane = new ImagePanel(backgroundImageIcon.getImage());
+	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+	setContentPane(contentPane);
+	contentPane.setLayout(null);
     }
-    
+
     private void initCursor(){
 	ImageIcon icon = new ImageIcon(FilenameUtils.separatorsToSystem("resource/cursor.png"));
 	cursor = Toolkit.getDefaultToolkit().createCustomCursor(
@@ -66,9 +72,14 @@ public abstract class AbstractFrame extends JFrame{
 		);
 	setCursor(cursor);
     }
+    
+    public void removeExitAndShrinkButton(){
+	contentPane.remove(exitButton);
+	contentPane.remove(shrinkButton);
+    }
 
-    private void initTitlePanel(){
-	exitButton = new JButton(new ImageIcon(FilenameUtils.separatorsToSystem("resource/x_white.png")));
+    public void initTitlePanel(){
+	exitButton = new JButton(exitImage);
 	exitButton.addMouseListener(new ExitButtonAdapter());
 	exitButton.setToolTipText("Exit");
 	exitButton.setBorderPainted(false);
@@ -76,9 +87,9 @@ public abstract class AbstractFrame extends JFrame{
 	exitButton.setOpaque(false);
 	exitButton.setBounds(getWidth()-50,17,30,30);
 	exitButton.setBorderPainted(false);
-    contentPane.add(exitButton);
-    
-	shrinkButton = new JButton(new ImageIcon(FilenameUtils.separatorsToSystem("resource/shrink_white.png")));
+	contentPane.add(exitButton);
+
+	shrinkButton = new JButton(shrinkImage);
 	shrinkButton.addMouseListener(new ShrinkButtonAdapter());
 	shrinkButton.setToolTipText("Shrink");
 	shrinkButton.setBorderPainted(false);
@@ -87,6 +98,34 @@ public abstract class AbstractFrame extends JFrame{
 	shrinkButton.setBounds(getWidth()-100, 22, 50, 20);
 	shrinkButton.setBorderPainted(false);
 	contentPane.add(shrinkButton);
+    }
+
+    /**
+     * @param exitImage the exitImage to set
+     */
+    public void setExitImage(ImageIcon exitImage) {
+        this.exitImage = exitImage;
+    }
+
+    /**
+     * @param exitEnteredImage the exitEnteredImage to set
+     */
+    public void setExitEnteredImage(ImageIcon exitEnteredImage) {
+        this.exitEnteredImage = exitEnteredImage;
+    }
+
+    /**
+     * @param shrinkImage the shrinkImage to set
+     */
+    public void setShrinkImage(ImageIcon shrinkImage) {
+        this.shrinkImage = shrinkImage;
+    }
+
+    /**
+     * @param shrinkEnteredImage the shrinkEnteredImage to set
+     */
+    public void setShrinkEnteredImage(ImageIcon shrinkEnteredImage) {
+        this.shrinkEnteredImage = shrinkEnteredImage;
     }
 
     private class FrameMouseListener implements MouseMotionListener{
@@ -109,27 +148,35 @@ public abstract class AbstractFrame extends JFrame{
     }
 
     private class ShrinkButtonAdapter extends MouseAdapter{
+	
 	public void mouseClicked(MouseEvent e){
 	    setExtendedState(JFrame.ICONIFIED);
 	}
+	
 	public void mouseEntered(MouseEvent e){
-	    shrinkButton.setIcon(new ImageIcon(FilenameUtils.separatorsToSystem("resource/shrink_green.png")));
+	    shrinkButton.setIcon(shrinkEnteredImage);
 	}
+	
 	public void mouseExited(MouseEvent e){
-	    shrinkButton.setIcon(new ImageIcon(FilenameUtils.separatorsToSystem("resource/shrink_white.png")));
+	    shrinkButton.setIcon(shrinkImage);
 	}
+	
     }
 
     private class ExitButtonAdapter extends MouseAdapter{
+	
 	public void mouseClicked(MouseEvent e){
 	    dispose(); 
 	}
+	
 	public void mouseEntered(MouseEvent e){
-	    exitButton.setIcon(new ImageIcon(FilenameUtils.separatorsToSystem("resource/x_red.png")));
+	    exitButton.setIcon(exitEnteredImage);
 	}
+	
 	public void mouseExited(MouseEvent e){
-	    exitButton.setIcon(new ImageIcon(FilenameUtils.separatorsToSystem("resource/x_white.png")));
+	    exitButton.setIcon(exitImage);
 	}
+	
     }
 
     private JButton getExitButton(){
@@ -139,15 +186,15 @@ public abstract class AbstractFrame extends JFrame{
     private JButton getShrinkButton(){
 	return shrinkButton;
     }
-    
+
     private class ImagePanel extends JPanel {
-    	private Image image;
-    	public ImagePanel(Image image) {
-    	this.image = image;
-    	}
-    	@Override
-    	protected void paintComponent(Graphics g) {
-    	g.drawImage(image, 0, 0, null);
-    	}
+	private Image image;
+	public ImagePanel(Image image) {
+	    this.image = image;
+	}
+	@Override
+	protected void paintComponent(Graphics g) {
+	    g.drawImage(image, 0, 0, null);
+	}
     }
 }

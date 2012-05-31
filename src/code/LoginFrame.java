@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import org.apache.commons.io.FilenameUtils;
 
 public class LoginFrame extends AbstractFrame{
-    private JLabel titleLabel, IDLabel, summaryLabel;
+    private JLabel titleLabel, idLabel, summaryLabel;
     private JPanel summaryPanel;
     private JComboBox userComboBox;
     private JButton loginButton;
@@ -68,28 +68,30 @@ public class LoginFrame extends AbstractFrame{
     
     private void initTitleLabel(){
     	titleLabel = new JLabel("English Tutor");
-    	titleLabel.setBounds(570, 71, 275, 204);
+    	titleLabel.setBounds(610, 71, 275, 204);
     	getContentPane().add(titleLabel);
     }
     
     private void initUserComboBox(){
-    	IDLabel = new JLabel("ID");
-    	IDLabel.setForeground(Color.WHITE);
-    	IDLabel.setBounds(580, 330, 50, 50);
-    	getContentPane().add(IDLabel);
+    	idLabel = new JLabel("ID");
+    	Font newButtonFont=new Font("Arial", Font.BOLD, 20);  
+    	idLabel.setFont(newButtonFont);
+    	idLabel.setForeground(Color.WHITE);
+    	idLabel.setBounds(580, 330, 100, 50);
+    	getContentPane().add(idLabel);
     	userComboBox = new JComboBox();
     	userComboBox.setEditable(true);
-    	userComboBox.setBounds(609, 330, 197, 50);
+    	userComboBox.setBounds(609, 330, 197, 20);
     	getContentPane().add(userComboBox);
     }
     
     private void initLoginButton(){
     	loginButton = new JButton("LOG IN");
     	loginButton.setBorderPainted(false);
-    	Font newButtonFont=new Font("Arial", Font.BOLD, 12);  
+    	Font newButtonFont=new Font("Arial", Font.BOLD, 30);  
     	loginButton.setFont(newButtonFont);
-    	loginButton.setForeground(Color.red);
-        loginButton.setBounds(786, 438, 80, 46);
+    	loginButton.setForeground(Color.yellow);
+        loginButton.setBounds(730, 438, 200, 46);
         getContentPane().add(loginButton);
     }
 
