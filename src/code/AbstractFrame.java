@@ -28,17 +28,37 @@ public abstract class AbstractFrame extends JFrame{
 
     protected AbstractFrame(String filePath){
 	super();
+	exitImage = new ImageIcon(FilenameUtils.separatorsToSystem("resource/x_black.png"));
+	exitEnteredImage = new ImageIcon(FilenameUtils.separatorsToSystem("resource/x_red.png"));
+	shrinkImage = new ImageIcon(FilenameUtils.separatorsToSystem("resource/shrink_black.png"));
+	shrinkEnteredImage = new ImageIcon(FilenameUtils.separatorsToSystem("resource/shrink_green.png"));
+	initialize(filePath);
+    }
+    
+    protected AbstractFrame(String filePath, int exitWidth, int exitHeight, int shrinkWidth, int shrinkHeight){
+	super();
+	exitImage = new ImageIcon(
+		Toolkit.getDefaultToolkit().getImage("resource/x_black.png").
+		getScaledInstance(exitWidth, exitHeight, Image.SCALE_DEFAULT));
+	exitEnteredImage = new ImageIcon(
+		Toolkit.getDefaultToolkit().getImage("resource/x_red.png").
+		getScaledInstance(exitWidth, exitHeight, Image.SCALE_DEFAULT));
+	shrinkImage = new ImageIcon(
+		Toolkit.getDefaultToolkit().getImage("resource/shrink_black.png").
+		getScaledInstance(shrinkWidth, shrinkHeight, Image.SCALE_DEFAULT));
+	shrinkEnteredImage = new ImageIcon(
+		Toolkit.getDefaultToolkit().getImage("resource/shrink_green.png").
+		getScaledInstance(shrinkWidth, shrinkHeight, Image.SCALE_DEFAULT));
+	initialize(filePath);
+    }
+    
+    private void initialize(String filePath){
 	setUndecorated(true);
 	setBackground(new Color(0, true));
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	addMouseMotionListener(new FrameMouseListener());
 
 	lastx = lasty = -1;
-	
-	exitImage = new ImageIcon(FilenameUtils.separatorsToSystem("resource/x_black.png"));
-	exitEnteredImage = new ImageIcon(FilenameUtils.separatorsToSystem("resource/x_red.png"));
-	shrinkImage = new ImageIcon(FilenameUtils.separatorsToSystem("resource/shrink_black.png"));
-	shrinkEnteredImage = new ImageIcon(FilenameUtils.separatorsToSystem("resource/shrink_green.png"));
 
 	initBackgroundImage(filePath);
 	initBounds();
@@ -73,12 +93,16 @@ public abstract class AbstractFrame extends JFrame{
 	setCursor(cursor);
     }
     
-    public void removeExitAndShrinkButton(){
+    protected void removeExitAndShrinkButton(){
 	contentPane.remove(exitButton);
 	contentPane.remove(shrinkButton);
     }
+    
+    protected void setButtonSize(int exitWidth, int exitHeight, int shrinkWidth, int shrinkHeight){
+	
+    }
 
-    public void initTitlePanel(){
+    protected void initTitlePanel(){
 	exitButton = new JButton(exitImage);
 	exitButton.addMouseListener(new ExitButtonAdapter());
 	exitButton.setToolTipText("Exit");

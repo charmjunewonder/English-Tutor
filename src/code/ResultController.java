@@ -52,6 +52,8 @@ public class ResultController {
 	view.getFinishButton().addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			view.setVisible(false);
+			view.dispose();
+			MainController.getMainController().setVisible(true);
 		}
 	});
     }

@@ -1,13 +1,15 @@
 package code;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferStrategy;
 import java.sql.SQLException;
 
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import javax.swing.text.JTextComponent;
 
 public class LoginController {
@@ -81,7 +83,7 @@ public class LoginController {
 		    final Account accountFinal = account;
 		    
 		    //EnsureFrame ensureFrame = new EnsureFrame();
-		    EnsureFrame.showMessageDialog(name + " has already existed. Please use another name.");
+		    //EnsureFrame.showMessageDialog(name + " has already existed. Please use another name.");
 
 		    /*MainController main = new MainController(account);
 		    //TODO
@@ -89,10 +91,11 @@ public class LoginController {
 		    view.setVisible(false);
 		    view.dispose();
 		    main.setVisible(true);*/
-		    /*EventQueue.invokeLater(new Runnable() {
+		    EventQueue.invokeLater(new Runnable() {
 			public void run() {
 			    try {
-				MainController main = new MainController(accountFinal);
+				MainController main = MainController.getMainController();
+				main.setAccount(accountFinal);
 
 				//view.createBufferStrategy(2);
 				BufferStrategy myStrategy = view.getBufferStrategy();
@@ -111,11 +114,13 @@ public class LoginController {
 				e.printStackTrace();
 			    }
 			}
-		    });*/
+		    });
 
 		} catch(SQLException sqle){
 		    //JOptionPane.showMessageDialog(null, "Please use another name.", name + " exists", JOptionPane.ERROR_MESSAGE);
-		    //new EnsureFrame()
+		    EnsureFrame.showMessageDialog(name + " has already existed. Please use another name.");
+		} catch(Exception exception){
+		    exception.printStackTrace();
 		}
 
 

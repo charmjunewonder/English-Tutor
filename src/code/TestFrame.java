@@ -24,7 +24,7 @@ public class TestFrame extends AbstractFrame{
 
 
     public TestFrame(){
-	super("resource/TestFrame.png");
+	super("resource/ResultFrame.png", 20, 20, 30, 12);
 	initTitleLabel();
 	initSoundButton();
 	initQuestionLabel();
@@ -36,6 +36,9 @@ public class TestFrame extends AbstractFrame{
 	initProcessFeather();
 	now=0;
 	progressTotalLength = romanNumberals[0].length();
+	
+	exitButton.setBounds(getWidth()-35, 0, 30, 30);
+	shrinkButton.setBounds(getWidth()-75, 5, 50, 20);
     }
     
     /**

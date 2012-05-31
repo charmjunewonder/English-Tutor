@@ -25,7 +25,7 @@ public class TestController {
 	TEST_ONE_LESSON, TEST_ALL_LESSONS
     }
     private enum TestState{
-	VERIFY_ANSWER, FINISH_TEST
+	NEXT_PHRASE, FINISH_TEST
     }
     
     private TestFrame view;
@@ -45,6 +45,18 @@ public class TestController {
     private ArrayList<String> wrongAnswers;
 
     public TestController(Lesson l){
+	testType = TestType.TEST_ONE_LESSON;
+	selectedLesson = l;
+	initialize();
+    }
+    
+    public TestController(Account a){
+	testType = TestType.TEST_ALL_LESSONS;
+	account = a;
+	initialize();
+    }
+    
+    private void initialize(){
 	view = new TestFrame();
 	tenPhrases = new ArrayList<Phrase>();
 	questionTypes = new ArrayList<QuestionType>();
@@ -52,9 +64,7 @@ public class TestController {
 	wrongAnswers = new ArrayList<String>();
 
 	currentPhraseIndex = -1;
-	testType = TestType.TEST_ONE_LESSON;
-	testState = TestState.VERIFY_ANSWER;
-	selectedLesson = l;
+	testState = TestState.NEXT_PHRASE;
 	soundEngine = new SoundEngine();
 	addActionListener();
 
@@ -141,7 +151,7 @@ public class TestController {
      */
     private void pressNextButton(){
 	switch(testState){
-	case VERIFY_ANSWER:
+	case NEXT_PHRASE:
 	    verifyAnswer();
 	    clearComponent();
 	    showNextPhrase();
@@ -151,6 +161,7 @@ public class TestController {
 	    break;
 	case FINISH_TEST:
 	    // TODO
+	    verifyAnswer();
 	    new ResultController(wrongPhrases, questionTypes, wrongAnswers, tenPhrases.size());
 	    view.setVisible(false); //you can't see me!
 	    view.dispose(); //Destroy the JFrame object

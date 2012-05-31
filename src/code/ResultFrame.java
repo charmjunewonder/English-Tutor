@@ -25,7 +25,7 @@ public class ResultFrame extends AbstractFrame{
     private JButton finishButton;
 
     public ResultFrame(Object[][] rowData){
-	super("resource/ResultFrame.png");
+	super("resource/ResultFrame.png", 20, 20, 30, 12);
 	initTitleLabel();
 	initScoreLabel();
 	initResultTable(rowData);
@@ -33,15 +33,7 @@ public class ResultFrame extends AbstractFrame{
 	initSuggestionTwoLabel();
 	initFinishButton();
 	exitButton.setBounds(getWidth()-35, 0, 30, 30);
-	shrinkButton.setBounds(getWidth()-85, 5, 50, 20);
-	exitImage = new ImageIcon(
-		Toolkit.getDefaultToolkit().getImage("resource/x_black.png").getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-	exitEnteredImage = new ImageIcon(
-		Toolkit.getDefaultToolkit().getImage("resource/x_red.png").getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-	shrinkImage = new ImageIcon(
-		Toolkit.getDefaultToolkit().getImage("resource/shrink_black.png").getScaledInstance(30, 12, Image.SCALE_DEFAULT));
-	shrinkEnteredImage = new ImageIcon(
-		Toolkit.getDefaultToolkit().getImage("resource/shrink_green.png").getScaledInstance(30, 12, Image.SCALE_DEFAULT));
+	shrinkButton.setBounds(getWidth()-75, 5, 50, 20);
     }
     private void initTitleLabel(){
 	titleLabel = new JLabel("Result");

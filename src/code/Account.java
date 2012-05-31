@@ -137,6 +137,11 @@ public class Account {
 	lessons.remove(l);
 	deleteLesson.add(l);
     }
+    
+    public void deleteLesson(int index){
+	Lesson l = getLesson(index);
+	deleteLesson(l);
+    }
 
     public void createNewLesson(String lessonName) throws Exception{
 	if (lessonNames.add(lessonName)){
@@ -170,10 +175,16 @@ public class Account {
 	    count = 10;
 	}
 
-	for(int i = 0; i < count; ++i){
-	    int lessonRandomNum = random.nextInt() % count;
-	    Lesson l = lessons.get(lessonRandomNum);
-	    int phraseRandomNum = random.nextInt() % l.getPhraseCount();
+	for(int i = 0; i < count; ++i){ // choose random phrase in random lesson
+	    int phraseCountOfLesson = 0;
+	    Lesson l = null;
+	    while(phraseCountOfLesson <= 0){
+		    int lessonRandomNum = random.nextInt(lessonCount);
+		    l = lessons.get(lessonRandomNum);
+		    phraseCountOfLesson = l.getPhraseCount();
+	    }
+
+	    int phraseRandomNum = random.nextInt(phraseCountOfLesson);
 	    Phrase p = l.getPhrase(phraseRandomNum);
 	    p.setLessonName(l.getLessonName());
 	    phrases.add(p);

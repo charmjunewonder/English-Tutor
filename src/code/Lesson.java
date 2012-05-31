@@ -90,7 +90,7 @@ public class Lesson {
 		prep.setString(2, values[1]);
 		prep.setString(3, values[2]);
 		prep.addBatch();
-
+		phraseCount++;
 	    }
 	    br.close();
 
@@ -120,6 +120,7 @@ public class Lesson {
 	    while (rs.next()) {
 		Phrase p = new Phrase(rs.getString("English"), rs.getString("Chinese"), rs.getString("Audio"));
 		phrases.add(p);
+		phraseCount++;
 	    }
 	    rs.close();
 
@@ -177,11 +178,11 @@ public class Lesson {
 	return phrases;
     }
 
-    public HashSet<Integer> getRandomNumSet(int num, int range){
+    public static HashSet<Integer> getRandomNumSet(int num, int range){
 	HashSet<Integer> randomNums = new HashSet<Integer>(num);
 	Random random = new Random();
 	while(randomNums.size() < num){
-	    int randomNum = random.nextInt(range) + 1;
+	    int randomNum = random.nextInt(range);
 	    if(randomNum < 0) randomNum = -randomNum;
 	    randomNums.add(new Integer(randomNum));
 	}
@@ -235,8 +236,8 @@ public class Lesson {
 	return p;
     }*/
 
-    public Phrase getPhrase(int row){
-	return phrases.get(row-1);
+    public Phrase getPhrase(int index){
+	return phrases.get(index);
     }
 
     public ArrayList<Phrase> getAllPhrases(){

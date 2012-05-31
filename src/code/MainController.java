@@ -16,21 +16,42 @@ import javax.swing.JOptionPane;
 public class MainController {
 
     private Account account;
+    //TODO
     public MainFrame view;
+    private static MainController mainController;
 
-    public MainController(Account a){
-	account = a;
+    public static MainController getMainController(){
+	if (mainController == null) {
+	    synchronized (MainController.class) {
+		if (mainController == null) {
+		    mainController = new MainController();
+		}
+	    }
+	}
+	return mainController;
+    }
+
+
+    private MainController(){
 	view = new MainFrame();
 
-	initAllLessons();
 	addListener();
 
 	//view.setVisible(true);
     }
-    
-    
+
+
     public void update(Graphics g){
 	view.update(g);
+    }
+
+
+    /**
+     * @param account the account to set
+     */
+    public void setAccount(Account account) {
+        this.account = account;
+	initAllLessons();
     }
 
 
@@ -66,6 +87,7 @@ public class MainController {
 	    public void actionPerformed(ActionEvent ae){
 		String name = JOptionPane.showInputDialog("Please input a name");
 		try{
+		    if(name == null || name.equals("")) throw new Exception("not valid lesson name");
 		    account.createNewLesson(name);
 		    view.addLesson(name);
 		}catch(Exception e){
@@ -76,13 +98,17 @@ public class MainController {
 
 	view.getDeleteLessonButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
-		
+		int row = view.getLessonTable().getSelectedRow();
+		if(row == -1) return;
+		account.deleteLesson(row);
+		view.deleteLesson(row);
 	    }
 	});
-	
+
 	view.getTestAllButton().addActionListener(new ActionListener(){
 	    public void actionPerformed(ActionEvent e){
-		
+		new TestController(account);
+		setVisible(false);
 	    }
 	});
 
