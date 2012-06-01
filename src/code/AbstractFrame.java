@@ -1,4 +1,25 @@
+/*
+ * @(#) Abstract.java 1.1 2012/05/18
+ *
+ * Copyright (c) 2002 Northeastern University Software college Group Three.
+ * All rights reserved.
+ *
+ */
+
+
 package code;
+
+/**
+ * AbstractFrame - The abstract frame of the frames in the learnEngilsh system.
+ * <p>
+ * It provides the general methods of the frames in the learnEnglish system. The class which
+ * wants to use it should extends it.
+ * 
+ * @author Luo Yaoshen
+ * @version 1.2
+ * @see JFrame
+ */
+
 
 import java.awt.Image;
 import java.awt.Graphics;

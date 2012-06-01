@@ -28,6 +28,13 @@ public class LoginFrame extends AbstractFrame {
 	}
 
 	/**
+	 * @return the deleteButton
+	 */
+	public JButton getDeleteButton() {
+		return deleteButton;
+	}
+
+	/**
 	 * @return the titleLabel
 	 */
 	public JLabel getTitleLabel() {
