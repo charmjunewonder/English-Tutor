@@ -1,6 +1,12 @@
-/**
+/*
+ * LessonController.java 1.1 2012/6/1
  * 
+ * Copyright (c) 2012 Northeastern University Software Engineering College
+ * Software International 1001 Group Three
+ * 
+ * All rights reserved.
  */
+
 package controller;
 
 import java.awt.event.ActionEvent;
@@ -12,26 +18,35 @@ import java.sql.DriverManager;
 
 import javax.swing.JTable;
 
-import program.SoundEngine;
-
-
-import view.LessonPanel;
-
-
-
 import model.Lesson;
 import model.Phrase;
+import program.SoundEngine;
+import view.LessonPanel;
 
 /**
+ * A class controls the view which show all the phrases of the selected lesson
+ * and add/delete phrase. Besides, it add some ActionListeners to the view.
+ * 
  * @author Eric
- *
+ * @version 1.1
+ * @see model.Lesson;
+ * @see model.Phrase;
+ * @see program.SoundEngine;
+ * @see view.LessonPanel;
  */
 public class LessonController {
 
     private Lesson selectedLesson;
     private LessonPanel view;
 
-    public LessonController(Lesson lesson){
+    /**
+     * Create a new instance of LessonController and let the view set up the
+     * data. , and add some AcitonListeners to the component of the view.
+     * Initially the view is visible.
+     * 
+     * @param lesson the lesson to show and modify.
+     */
+    public LessonController(Lesson lesson) {
 	selectedLesson = lesson;
 	view = LessonPanel.getLessonPanel();
 
@@ -41,33 +56,52 @@ public class LessonController {
 	view.setVisible(true);
     }
 
-    public void initAllPhrases(){
-	view.clearPhraseTabelContent();
-	for(Phrase p : selectedLesson.getAllPhrases()){
-	    view.addPhrase(p);
-	}
-
-    }
-
-    public void resetButtons(){
-	boolean bool = selectedLesson.isEnabled();
-	view.getTestButton().setEnabled(bool);
-	view.getLearnButton().setEnabled(bool);
-    }
-
-    public void setSelectedLesson(Lesson l){
+    /**
+     * Set the selectedLesson and then let view set up the data. It also tell
+     * the view to check the button is enable.
+     * 
+     * @param l lesson to set
+     * */
+    public void setSelectedLesson(Lesson l) {
 	selectedLesson = l;
 	initAllPhrases();
 	resetButtons();
     }
 
-    private void addALlListeners(){
+    /**
+     * Let the view set up the data.
+     */
+    public void initAllPhrases() {
+	// firstly tell the view clear its history content.
+	view.clearPhraseTabelContent();
 
-	view.getAddButton().addActionListener(new ActionListener(){
-	    public void actionPerformed(ActionEvent e){
+	for (Phrase p : selectedLesson.getAllPhrases()) {
+	    view.addPhrase(p);
+	}
+
+    }
+
+    /**
+     * Tell the view to check the button is enable.
+     */
+    public void resetButtons() {
+	boolean bool = selectedLesson.isEnable();
+	view.getTestButton().setEnabled(bool);
+	view.getLearnButton().setEnabled(bool);
+    }
+
+    /**
+     * Add some listeners to the view
+     */
+    private void addALlListeners() {
+
+	// Add phrase listener
+	view.getAddButton().addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
 		String english = view.getEnglishTextField().getText();
 		String chinese = view.getChineseTextField().getText();
-		if(english.equals("") && chinese.equals("")) return;
+		if (english.equals("") && chinese.equals(""))
+		    return;
 		Phrase p = new Phrase(english, chinese, null);
 		selectedLesson.addPhrase(p);
 		view.addPhrase(p);
@@ -75,52 +109,68 @@ public class LessonController {
 	    }
 	});
 
-	view.getDeleteButton().addActionListener(new ActionListener(){
-	    public void actionPerformed(ActionEvent e){
+	// Delete phrase listener
+	view.getDeleteButton().addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
 		int index = view.getPhraseTable().getSelectedRow();
-		if(index == -1) return;
+		if (index == -1)
+		    return;
 		Phrase p = selectedLesson.getPhrase(index);
 		selectedLesson.deletePhrase(p);
 		view.deletePhrase(index);
 	    }
 	});
 
-	view.getTestButton().addActionListener(new ActionListener(){
-	    public void actionPerformed(ActionEvent e){
+	// Test lesson listener
+	view.getTestButton().addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
 		new TestController(selectedLesson);
 		MainController.getMainController().setVisible(false);
 		selectedLesson.setNeededToRestore(true);
 	    }
 	});
 
-	view.getLearnButton().addActionListener(new ActionListener(){
-	    public void actionPerformed(ActionEvent e){
+	// Learn lesson listener
+	view.getLearnButton().addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
 		new LearnController(selectedLesson);
 		MainController.getMainController().setVisible(false);
 		selectedLesson.setNeededToRestore(true);
 	    }
 	});
 
+	// Sound listener
 	view.getPhraseTable().addMouseListener(new SoundAdapter());
 
     }
 
-    private class SoundAdapter extends MouseAdapter{
-	public void mousePressed(MouseEvent e){
+    /**
+     * A class to sound when the user press the sound column in the table
+     * 
+     * @author Luo Yaoshen
+     * @author Eric
+     * @see program.SoundEngine
+     */
+    private class SoundAdapter extends MouseAdapter {
+	public void mousePressed(MouseEvent e) {
 	    JTable phraseTable = view.getPhraseTable();
 	    int count = phraseTable.getRowCount();
-	    for(int i=0;i<count;i++){
-		if (phraseTable.isCellSelected(i, 2) && phraseTable.isColumnSelected(2) && phraseTable.getValueAt(i, 2).toString().charAt(0)!='j'){
-		    SoundEngine.playSound(selectedLesson.getPhrase(i).getAudio());
+	    for (int i = 0; i < count; i++) {
+		if (phraseTable.isCellSelected(i, 2)
+			&& phraseTable.isColumnSelected(2)
+			&& phraseTable.getValueAt(i, 2).toString().charAt(0) != 'j') {
+		    SoundEngine.playSound(selectedLesson.getPhrase(i)
+			    .getAudio());
 		}
 	    }
-	} 
+	}
     }
 
     public static void main(String[] args) throws Exception {
 	Class.forName("org.sqlite.JDBC");
-	Connection conn = DriverManager.getConnection("jdbc:sqlite:data/lesson_test.db");
-	Lesson l = new Lesson(conn, 1);	
+	Connection conn = DriverManager
+		.getConnection("jdbc:sqlite:data/lesson_test.db");
+	Lesson l = new Lesson(conn, 1);
 
 	new LessonController(l);
     }

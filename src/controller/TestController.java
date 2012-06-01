@@ -1,6 +1,12 @@
-/**
+/*
+ * TestController.java 1.1 2012/6/1
  * 
+ * Copyright (c) 2012 Northeastern University Software Engineering College
+ * Software International 1001 Group Three
+ * 
+ * All rights reserved.
  */
+
 package controller;
 
 import java.awt.event.ActionEvent;
@@ -13,58 +19,87 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
-import program.SoundEngine;
-
 import model.Account;
 import model.Lesson;
 import model.Phrase;
+import program.SoundEngine;
 import view.TestFrame;
 
 /**
- * @author charmjunewonder
- *
+ * A class controls the view which tests phrase by phrase. After a test, it will
+ * calculate the score and create result view to show the score.
+ * 
+ * @author Eric
+ * @version 1.1
+ * @see model.Account;
+ * @see model.Lesson;
+ * @see model.Phrase;
+ * @see program.SoundEngine;
+ * @see view.TestFrame;
  */
 public class TestController {
+    // constants to identify the type of the question
     public static final int ENGLISH_QUESTION_TYPE = 284;
     public static final int CHINESE_QUESTION_TYPE = 230;
     public static final int AUDIO_QUESTION_TYPE = 273;
 
-    private enum TestType{
+    // enum to identify the type of the test
+    private enum TestType {
 	TEST_ONE_LESSON, TEST_ALL_LESSONS
     }
-    private enum TestState{
+
+    // enum to identify the state of test
+    private enum TestState {
 	NEXT_PHRASE, FINISH_TEST
     }
 
     private TestFrame view;
+
     private TestType testType;
     private TestState testState;
-    private Lesson selectedLesson;
+    private int currentQuestionType;
     private int currentPhraseIndex;
     private int totalCorrectPhraseNum;
-    private Account account;
-    private ArrayList<Phrase> tenPhrases;
-    private Phrase currentPhrase;
-    private SoundEngine soundEngine;
 
-    private int currentQuestionType;
+    private Account account;
+    private Phrase currentPhrase;
+    private Lesson selectedLesson;
+
+    private ArrayList<Phrase> tenPhrases;
     private ArrayList<Integer> questionTypes;
     private ArrayList<Phrase> wrongPhrases;
     private ArrayList<String> wrongAnswers;
 
-    public TestController(Lesson l){
+    /**
+     * Create an instance of TestController to test one lesson. Initially the
+     * view is visible
+     * 
+     * @param l the current lesson
+     */
+    public TestController(Lesson l) {
 	testType = TestType.TEST_ONE_LESSON;
 	selectedLesson = l;
+
 	initialize();
     }
 
-    public TestController(Account a){
+    /**
+     * Create an instance of TestController to all the lessons which have
+     * learned. Initially the view is visible
+     * 
+     * @param a the account to test
+     */
+    public TestController(Account a) {
 	testType = TestType.TEST_ALL_LESSONS;
 	account = a;
+
 	initialize();
     }
 
-    private void initialize(){
+    /**
+     * Initialize the TestController
+     */
+    private void initialize() {
 	view = new TestFrame();
 	tenPhrases = new ArrayList<Phrase>();
 	questionTypes = new ArrayList<Integer>();
@@ -73,15 +108,17 @@ public class TestController {
 
 	currentPhraseIndex = -1;
 	testState = TestState.NEXT_PHRASE;
-	soundEngine = new SoundEngine();
 	addActionListener();
 
 	view.setVisible(true);
 	showNextPhrase();
     }
 
-    public void prepareTenPhrase(){
-	switch(testType){
+    /**
+     * According to the test type, prepare no more than ten phrases
+     */
+    private void prepareTenPhrase() {
+	switch (testType) {
 	case TEST_ONE_LESSON:
 	    tenPhrases = selectedLesson.getRandomTenPhrase();
 	    break;
@@ -91,21 +128,28 @@ public class TestController {
 	}
     }
 
-    public void showNextPhrase(){
-	if(tenPhrases.size() == 0){
+    /**
+     * Show the next phrase and randomly choose the type of the test.
+     */
+    public void showNextPhrase() {
+	// prepare the test
+	if (tenPhrases.size() == 0) {
 	    this.prepareTenPhrase();
 	}
-	int index = currentPhraseIndex +1;
-	if(index > tenPhrases.size()-1 || index < 0) return;
+	int index = currentPhraseIndex + 1;
+	// is finished?
+	if (index > tenPhrases.size() - 1 || index < 0)
+	    return;
 
 	Phrase p = tenPhrases.get(++currentPhraseIndex);
-	if(p == null)	return;
+	if (p == null)
+	    return;
 
 	currentPhrase = p;
 
 	Random ran = new Random();
 	int rnum = ran.nextInt(3);
-	switch(rnum){
+	switch (rnum) {
 	case 0: // show Chinese
 	    currentQuestionType = TestController.CHINESE_QUESTION_TYPE;
 	    view.getQuestionLabel().setText(p.getChinese());
@@ -116,105 +160,112 @@ public class TestController {
 	    break;
 	case 2: // speak English
 	    currentQuestionType = TestController.AUDIO_QUESTION_TYPE;
-	    playSound(p);
+	    SoundEngine.playSound(p.getAudio());
 	    break;
 	}
     }
 
-    private void clearComponent(){
-	//view.getCorrectAnswerLabel().setText("");
+    /**
+     * before showing next phrase, clear the label component
+     */
+    private void clearComponent() {
+	// view.getCorrectAnswerLabel().setText("");
 	view.getQuestionLabel().setText("");
 	view.getAnswerTextField().setText("");
     }
 
-    private void verifyAnswer(){
-	//testState = TestState.NEXT_PHRASE;
-	if(currentPhrase.getEnglish().equals(view.getAnswerTextField().getText())){
-	    // correct answer
+    /**
+     * verify the answer is correct or not
+     */
+    private void verifyAnswer() {
+	// correct answer
+	if (currentPhrase.getEnglish().equals(
+		view.getAnswerTextField().getText())) {
 	    totalCorrectPhraseNum++;
-	    // TODO add some correct response
-	    //pressNextButton();
 	    currentPhrase.increaseAccuracy();
-	}
-	else{
+
 	    // wrong answer
-	    //TODO
+	} else {
 	    questionTypes.add(currentQuestionType);
 	    wrongPhrases.add(currentPhrase);
 	    wrongAnswers.add(view.getAnswerTextField().getText());
 
 	    currentPhrase.decreaseAccuracy();
-	    //view.getCorrectAnswerLabel().setText(currentPhrase.getEnglish());
 	}
-	DateFormat dateFormat = new SimpleDateFormat("/MM/dd/yy");
+	// set the phrase to be tested
+	DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
 	Date date = new Date();
 	String dateString = dateFormat.format(date);
 	currentPhrase.setLastReviewTime(dateString);
 
     }
 
-    public void updateViewPhrase(Phrase p){
-	view.getAnswerTextField().setText(p.getChinese());
-    }	
-
-    public void playSound(Phrase p){
-	soundEngine.playSound(p.getAudio());
-    }	
-
     /**
-     * 
+     * the action when press the next button
      */
-    private void pressNextButton(){
-	switch(testState){
+    private void pressNextButton() {
+
+	switch (testState) {
 	case NEXT_PHRASE:
 	    verifyAnswer();
+	    // before showing next phrase, clear the label component
 	    clearComponent();
 	    showNextPhrase();
-	    if(currentPhraseIndex == tenPhrases.size()-1){
+	    // it's time to finish the test
+	    if (currentPhraseIndex == tenPhrases.size() - 1) {
 		testState = TestState.FINISH_TEST;
 	    }
 	    break;
 	case FINISH_TEST:
-	    // TODO
 	    verifyAnswer();
+	    // generate the result
 	    DateFormat dateFormat = new SimpleDateFormat("/MM/dd/yy");
 	    Date date = new Date();
 	    String dateString = dateFormat.format(date);
 	    int score = (int) ((totalCorrectPhraseNum * 1.0 / tenPhrases.size()) * 100);
 	    selectedLesson.addTestResult(dateString, score);
-	    if(score >= 80){
+	    // next lesson can be learned and tested from now on
+	    if (score >= 80) {
 		MainController.getMainController().increaseEnabeLessonIndex();
-		this.selectedLesson.setEnabled(true);
+		this.selectedLesson.setEnable(true);
 	    }
-	    //System.out.println(score);
-	    new ResultController(wrongPhrases, questionTypes, wrongAnswers, score);
-	    view.setVisible(false); //you can't see me!
-	    view.dispose(); //Destroy the JFrame object
+	    // create a result view to show the result
+	    new ResultController(wrongPhrases, questionTypes, wrongAnswers,
+		    score);
+	    view.setVisible(false); // you can't see me!
+	    view.dispose(); // Destroy the JFrame object
 	    break;
 	}
     }
 
-    private void addActionListener(){
-	view.getNextButton().addActionListener(new ActionListener(){
-	    public void actionPerformed(ActionEvent e){
+    /**
+     * Add some listeners to the view
+     */
+    private void addActionListener() {
+
+	// Next phrase listener
+	view.getNextButton().addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
 		pressNextButton();
 	    }
 	});
 
-
-	view.getSoundButton().addActionListener(new ActionListener(){
-	    public void actionPerformed(ActionEvent e){
-		playSound(currentPhrase);	
-	    }			
+	// sound listener
+	view.getSoundButton().addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+		SoundEngine.playSound(currentPhrase.getAudio());
+	    }
 	});
 
+	// when exiting, back to main frame
 	view.addExitingReturnToMainController();
     }
 
     public static void main(String[] args) throws Exception {
 
 	Class.forName("org.sqlite.JDBC");
-	Connection conn = DriverManager.getConnection("jdbc:sqlite:data/test.db");
+	Connection conn = DriverManager
+		.getConnection("jdbc:sqlite:data/test.db");
 	Lesson l = new Lesson(conn, 1);
 
 	new TestController(l);
