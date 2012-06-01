@@ -1,5 +1,24 @@
+/*
+ * ResultFrame.java 1.1 2012/10/18
+ *
+ * Copyright (c) 2012 Northeastern University Software Engineering College
+ * Software International 1001 Group Three
+ *
+ * All rights reserved.
+ *
+ */
+
 package view;
 
+/**
+ * ResultFrame - The result frame of the learnEnglish system.
+ * <p>
+ * Generate the result frame.
+ * 
+ * @author Luo Yaoshen
+ * @version 1.2
+ * @see view.AbstractFrame
+ */
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -17,7 +36,6 @@ import javax.swing.table.TableCellRenderer;
 
 import org.apache.commons.io.FilenameUtils;
 
-
 public class ResultFrame extends AbstractFrame {
 
 	private JTable resultTable;
@@ -25,18 +43,9 @@ public class ResultFrame extends AbstractFrame {
 			suggestionTwoLabel;
 	private JButton finishButton;
 
-	public ResultFrame(Object[][] rowData) {
-		super("resource/ResultFrame.png", 20, 20, 30, 12);
-		initTitleLabel();
-		initScoreLabel();
-		initResultTable(rowData);
-		initSuggestionOneLabel();
-		initSuggestionTwoLabel();
-		initFinishButton();
-		exitButton.setBounds(getWidth() - 35, 0, 30, 30);
-		shrinkButton.setBounds(getWidth() - 75, 5, 50, 20);
-	}
-
+	/**
+	 * To initialize the title label of the result frame.
+	 */
 	private void initTitleLabel() {
 		titleLabel = new JLabel("Result");
 		titleLabel.setBounds(200, 60, 200, 100);
@@ -44,6 +53,9 @@ public class ResultFrame extends AbstractFrame {
 		getContentPane().add(titleLabel);
 	}
 
+	/**
+	 * To initialize the score label of the result frame
+	 */
 	private void initScoreLabel() {
 		scoreLabel = new JLabel("SCORE:");
 		scoreLabel.setBounds(43, 145, 100, 30);
@@ -51,6 +63,12 @@ public class ResultFrame extends AbstractFrame {
 		getContentPane().add(scoreLabel);
 	}
 
+	/**
+	 * To initialize the result table of the result frame
+	 * 
+	 * @param rowData
+	 *            the data of the result table
+	 */
 	private void initResultTable(Object[][] rowData) {
 		String[] name = new String[4];
 		name[0] = "Lesson";
@@ -96,6 +114,9 @@ public class ResultFrame extends AbstractFrame {
 		getContentPane().add(resultTable);
 	}
 
+	/**
+	 * To initialize the suggestionOneLabel
+	 */
 	private void initSuggestionOneLabel() {
 		suggestionOneLabel = new JLabel();
 		suggestionOneLabel.setOpaque(false);
@@ -106,6 +127,9 @@ public class ResultFrame extends AbstractFrame {
 		getContentPane().add(suggestionOneLabel);
 	}
 
+	/**
+	 * To initialize the suggestionTwoLabel
+	 */
 	private void initSuggestionTwoLabel() {
 		suggestionTwoLabel = new JLabel();
 		suggestionTwoLabel.setOpaque(false);
@@ -116,11 +140,32 @@ public class ResultFrame extends AbstractFrame {
 		getContentPane().add(suggestionTwoLabel);
 	}
 
+	/**
+	 * To initialize the finish button of the resultFrame
+	 */
 	private void initFinishButton() {
 		finishButton = new JButton("Finish");
 		finishButton.setBackground(new Color(0, 0, 0, 0));
-		finishButton.setBounds(394, 478, 50, 50);
+		finishButton.setBounds(394, 478, 70, 35);
 		getContentPane().add(finishButton);
+	}
+
+	/**
+	 * To constructs an instance of the result frame
+	 * 
+	 * @param rowData
+	 *            the data of the result frame
+	 */
+	public ResultFrame(Object[][] rowData) {
+		super("resource/ResultFrame.png", 20, 20, 30, 12);
+		initTitleLabel();
+		initScoreLabel();
+		initResultTable(rowData);
+		initSuggestionOneLabel();
+		initSuggestionTwoLabel();
+		initFinishButton();
+		exitButton.setBounds(getWidth() - 35, 0, 30, 30);
+		shrinkButton.setBounds(getWidth() - 75, 5, 50, 20);
 	}
 
 	/**

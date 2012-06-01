@@ -1,4 +1,24 @@
+/*
+ * LearnFrame.java 1.1 2012/10/18
+ *
+ * Copyright (c) 2012 Northeastern University Software Engineering College
+ * Software International 1001 Group Three
+ *
+ * All rights reserved.
+ *
+ */
+
 package view;
+
+/**
+ * LearnFrame - The learn frame of the learnEnglish system.
+ * <p>
+ * Generate the learn frame.
+ * 
+ * @author Luo Yaoshen
+ * @version 1.2
+ * @see view.AbstractFrame
+ */
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -26,8 +46,6 @@ import org.apache.commons.io.FilenameUtils;
 
 import program.SoundEngine;
 
-
-
 public class LearnFrame extends AbstractFrame {
 	private JLabel titleLabel;
 	private JPanel phrasePanel;
@@ -35,32 +53,9 @@ public class LearnFrame extends AbstractFrame {
 	private JScrollPane phraseScrollPanel;
 	private int sum, currentPhraseIndex, dimensionX, dimensionY;
 
-	public LearnFrame() {
-		super(FilenameUtils.separatorsToSystem("resource/Learn.png"));
-		initTitleLabel();
-		initPhraseScrollPanel();
-		initFinishButton();
-		sum = 0;
-	}
-
-	private void initTitleLabel() {
-		titleLabel = new JLabel("Learning");
-		titleLabel.setBounds(200, 40, 200, 50);
-		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
-		getContentPane().add(titleLabel);
-	}
-
-	private void initFinishButton() {
-		finishButton = new JButton("Finish");
-		finishButton.setBounds(489, 598, 80, 40);
-		getContentPane().add(finishButton);
-	}
-
-	public JButton getFinishButton() {
-		return finishButton;
-	}
-
+	/**
+	 * To initialize the phrase scroll panel of the learn frame.
+	 */
 	private void initPhraseScrollPanel() {
 		phrasePanel = new JPanel();
 		dimensionY = 500;
@@ -84,7 +79,30 @@ public class LearnFrame extends AbstractFrame {
 	}
 
 	/**
+	 * To initialize the title label.
+	 */
+	private void initTitleLabel() {
+		titleLabel = new JLabel("Learning");
+		titleLabel.setBounds(200, 40, 200, 50);
+		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
+		getContentPane().add(titleLabel);
+	}
+
+	/**
+	 * To initialize the finish button.
+	 */
+	private void initFinishButton() {
+		finishButton = new JButton("Finish");
+		finishButton.setBounds(489, 598, 80, 40);
+		getContentPane().add(finishButton);
+	}
+
+	/**
+	 * To add phrase item of the learn frame.
+	 * 
 	 * @param p
+	 *            the special phrase
 	 */
 	public void addPhraseItem(Phrase p) {
 		PhraseItemPanel newPhrase = new PhraseItemPanel(p);
@@ -95,6 +113,32 @@ public class LearnFrame extends AbstractFrame {
 		phrasePanel.setPreferredSize(new Dimension(dimensionY, dimensionX));
 	}
 
+	/**
+	 * Constructs an instance of the learn frame.
+	 */
+	public LearnFrame() {
+		super(FilenameUtils.separatorsToSystem("resource/Learn.png"));
+		initTitleLabel();
+		initPhraseScrollPanel();
+		initFinishButton();
+		sum = 0;
+	}
+
+	/**
+	 * To get the finish button of the learn frame.
+	 * 
+	 * @return the finish button
+	 */
+	public JButton getFinishButton() {
+		return finishButton;
+	}
+
+	/**
+	 * The inner class of the learnFrame
+	 * 
+	 * @author Luo Yaoshen
+	 * 
+	 */
 	private class PhraseItemPanel extends JPanel {
 		private JLabel chineseLabel, englishLabel;
 		private JButton voiceButton;
@@ -135,6 +179,12 @@ public class LearnFrame extends AbstractFrame {
 			add(chineseLabel);
 		}
 
+		/**
+		 * The inner class of the LearnFrame
+		 * 
+		 * @author Luo Yaoshen
+		 * 
+		 */
 		private class ChineseLabelAdapter extends MouseAdapter {
 			public void mouseClicked(MouseEvent e) {
 				englishLabel.setVisible(true);
