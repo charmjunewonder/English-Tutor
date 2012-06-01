@@ -56,6 +56,103 @@ public class LessonPanel extends JPanel {
 	private static LessonPanel lessonPanel;
 
 	/**
+	 * To get the singleton of the lessonPanel
+	 * 
+	 * @return the singleton of the lessonPanel
+	 */
+	public static LessonPanel getLessonPanel() {
+		if (lessonPanel == null) {
+			synchronized (LessonPanel.class) {
+				if (lessonPanel == null) {
+					lessonPanel = new LessonPanel();
+				}
+			}
+		}
+		return lessonPanel;
+	}
+
+	/**
+	 * To generate the singleton of the lessonPanel.
+	 */
+	private LessonPanel() {
+		super();
+		setLayout(null);
+		setBackground(new Color(0, 0, 0, 0));
+		setOpaque(false);
+		setBounds(500, 40, 400, 600);
+
+		initLearnLessonButton();
+		initTestLessonButton();
+		initPhraseScrollPanel();
+		initPhraseTable();
+		initAddPhrase();
+		initDeletePhraseButton();
+
+		sum_phrase = 0;
+	}
+
+	/**
+	 * @return the phraseTable
+	 */
+	public JTable getPhraseTable() {
+		return phraseTable;
+	}
+
+	/**
+	 * To get the Chinese text field of the lesson panel
+	 * 
+	 * @return the ChineseTextField
+	 */
+	public JTextField getChineseTextField() {
+		return chineseTextField;
+	}
+
+	/**
+	 * To get the English text field
+	 * 
+	 * @return the englishTextField
+	 */
+	public JTextField getEnglishTextField() {
+		return englishTextField;
+	}
+
+	/**
+	 * To get the learn button of the lesson panel
+	 * 
+	 * @return the learn button
+	 */
+	public JButton getLearnButton() {
+		return learnLessonButton;
+	}
+
+	/**
+	 * To get the test button of the lesson panel
+	 * 
+	 * @return the test button of the lesson panel
+	 */
+	public JButton getTestButton() {
+		return testLessonButton;
+	}
+
+	/**
+	 * To get the add button of the lesson panel
+	 * 
+	 * @return the add button
+	 */
+	public JButton getAddButton() {
+		return addPhraseButton;
+	}
+
+	/**
+	 * To get the delete button
+	 * 
+	 * @return the delete button
+	 */
+	public JButton getDeleteButton() {
+		return deletePhraseButton;
+	}
+
+	/**
 	 * To initialize the learn lesson button of the lesson panel.
 	 */
 	private void initLearnLessonButton() {
@@ -243,103 +340,6 @@ public class LessonPanel extends JPanel {
 	public void clearEnglishChineseTextField() {
 		chineseTextField.setText("");
 		englishTextField.setText("");
-	}
-
-	/**
-	 * To get the singleton of the lessonPanel
-	 * 
-	 * @return the singleton of the lessonPanel
-	 */
-	public static LessonPanel getLessonPanel() {
-		if (lessonPanel == null) {
-			synchronized (LessonPanel.class) {
-				if (lessonPanel == null) {
-					lessonPanel = new LessonPanel();
-				}
-			}
-		}
-		return lessonPanel;
-	}
-
-	/**
-	 * To generate the singleton of the lessonPanel.
-	 */
-	private LessonPanel() {
-		super();
-		setLayout(null);
-		setBackground(new Color(0, 0, 0, 0));
-		setOpaque(false);
-		setBounds(500, 40, 400, 600);
-
-		initLearnLessonButton();
-		initTestLessonButton();
-		initPhraseScrollPanel();
-		initPhraseTable();
-		initAddPhrase();
-		initDeletePhraseButton();
-
-		sum_phrase = 0;
-	}
-
-	/**
-	 * @return the phraseTable
-	 */
-	public JTable getPhraseTable() {
-		return phraseTable;
-	}
-
-	/**
-	 * To get the Chinese text field of the lesson panel
-	 * 
-	 * @return the ChineseTextField
-	 */
-	public JTextField getChineseTextField() {
-		return chineseTextField;
-	}
-
-	/**
-	 * To get the English text field
-	 * 
-	 * @return the englishTextField
-	 */
-	public JTextField getEnglishTextField() {
-		return englishTextField;
-	}
-
-	/**
-	 * To get the learn button of the lesson panel
-	 * 
-	 * @return the learn button
-	 */
-	public JButton getLearnButton() {
-		return learnLessonButton;
-	}
-
-	/**
-	 * To get the test button of the lesson panel
-	 * 
-	 * @return the test button of the lesson panel
-	 */
-	public JButton getTestButton() {
-		return testLessonButton;
-	}
-
-	/**
-	 * To get the add button of the lesson panel
-	 * 
-	 * @return the add button
-	 */
-	public JButton getAddButton() {
-		return addPhraseButton;
-	}
-
-	/**
-	 * To get the delete button
-	 * 
-	 * @return the delete button
-	 */
-	public JButton getDeleteButton() {
-		return deletePhraseButton;
 	}
 
 	public static void main(String args[]) {

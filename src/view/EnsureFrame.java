@@ -1,5 +1,5 @@
 /*
- * EnsureFrame.java 1.1 2012/10/18
+ * EnsureFrame.java 1.2 2012/10/18
  *
  * Copyright (c) 2012 Northeastern University Software Engineering College
  * Software International 1001 Group Three
@@ -138,43 +138,6 @@ public class EnsureFrame extends AbstractFrame {
 	}
 
 	/**
-	 * Initialize the text label of the ensure frame.
-	 */
-	private void initTextLabel() {
-		statementLabel = new JLabel();
-		statementLabel.setOpaque(false);
-		statementLabel.setBounds(300, 315, 360, 40);
-		statementLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		getContentPane().add(statementLabel);
-	}
-
-	/**
-	 * Initialize the button panel.
-	 */
-	private void initButtonPanel() {
-		buttonPanel = new JPanel();
-		buttonPanel.setOpaque(false);
-
-		firstButton = new JButton();
-		secondButton = new JButton();
-		thirdButton = new JButton();
-
-		firstButton.setBorderPainted(false);
-		secondButton.setBorderPainted(false);
-		thirdButton.setBorderPainted(false);
-		firstButton.setContentAreaFilled(false);
-		secondButton.setContentAreaFilled(false);
-		thirdButton.setContentAreaFilled(false);
-
-		buttonPanel.add(firstButton);
-		buttonPanel.add(secondButton);
-		buttonPanel.add(thirdButton);
-
-		buttonPanel.setBounds(270, 400, 400, 150);
-		getContentPane().add(buttonPanel);
-	}
-
-	/**
 	 * Constructs an instance of the ensure frame.
 	 */
 	public EnsureFrame() {
@@ -218,6 +181,43 @@ public class EnsureFrame extends AbstractFrame {
 	 */
 	private JButton getThirdButton() {
 		return thirdButton;
+	}
+
+	/**
+	 * Initialize the text label of the ensure frame.
+	 */
+	private void initTextLabel() {
+		statementLabel = new JLabel();
+		statementLabel.setOpaque(false);
+		statementLabel.setBounds(300, 315, 360, 40);
+		statementLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		getContentPane().add(statementLabel);
+	}
+
+	/**
+	 * Initialize the button panel.
+	 */
+	private void initButtonPanel() {
+		buttonPanel = new JPanel();
+		buttonPanel.setOpaque(false);
+
+		firstButton = new JButton();
+		secondButton = new JButton();
+		thirdButton = new JButton();
+
+		firstButton.setBorderPainted(false);
+		secondButton.setBorderPainted(false);
+		thirdButton.setBorderPainted(false);
+		firstButton.setContentAreaFilled(false);
+		secondButton.setContentAreaFilled(false);
+		thirdButton.setContentAreaFilled(false);
+
+		buttonPanel.add(firstButton);
+		buttonPanel.add(secondButton);
+		buttonPanel.add(thirdButton);
+
+		buttonPanel.setBounds(270, 400, 400, 150);
+		getContentPane().add(buttonPanel);
 	}
 
 	public static void main(String args[]) {

@@ -1,5 +1,5 @@
 /*
- * LearnFrame.java 1.1 2012/10/18
+ * LearnFrame.java 1.2 2012/10/18
  *
  * Copyright (c) 2012 Northeastern University Software Engineering College
  * Software International 1001 Group Three
@@ -53,6 +53,28 @@ public class LearnFrame extends AbstractFrame {
 	private JScrollPane phraseScrollPanel;
 	private int sum, currentPhraseIndex, dimensionX, dimensionY;
 
+	
+
+	/**
+	 * Constructs an instance of the learn frame.
+	 */
+	public LearnFrame() {
+		super(FilenameUtils.separatorsToSystem("resource/Learn.png"));
+		initTitleLabel();
+		initPhraseScrollPanel();
+		initFinishButton();
+		sum = 0;
+	}
+
+	/**
+	 * To get the finish button of the learn frame.
+	 * 
+	 * @return the finish button
+	 */
+	public JButton getFinishButton() {
+		return finishButton;
+	}
+    
 	/**
 	 * To initialize the phrase scroll panel of the learn frame.
 	 */
@@ -112,27 +134,7 @@ public class LearnFrame extends AbstractFrame {
 		dimensionX += 25;
 		phrasePanel.setPreferredSize(new Dimension(dimensionY, dimensionX));
 	}
-
-	/**
-	 * Constructs an instance of the learn frame.
-	 */
-	public LearnFrame() {
-		super(FilenameUtils.separatorsToSystem("resource/Learn.png"));
-		initTitleLabel();
-		initPhraseScrollPanel();
-		initFinishButton();
-		sum = 0;
-	}
-
-	/**
-	 * To get the finish button of the learn frame.
-	 * 
-	 * @return the finish button
-	 */
-	public JButton getFinishButton() {
-		return finishButton;
-	}
-
+	
 	/**
 	 * The inner class of the learnFrame
 	 * 
@@ -178,7 +180,9 @@ public class LearnFrame extends AbstractFrame {
 			add(voiceButton);
 			add(chineseLabel);
 		}
-
+        
+		
+		
 		/**
 		 * The inner class of the LearnFrame
 		 * 

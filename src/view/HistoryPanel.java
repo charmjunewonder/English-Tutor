@@ -1,5 +1,5 @@
 /*
- * HistoryPanel.java 1.1 2012/10/18
+ * HistoryPanel.java 1.2 2012/10/18
  *
  * Copyright (c) 2012 Northeastern University Software Engineering College
  * Software International 1001 Group Three
@@ -48,6 +48,59 @@ public class HistoryPanel extends JPanel {
 
 	private static HistoryPanel historyPanel;
 
+	
+
+	/**
+	 * To get the instance of the HistoryPanel.
+	 * 
+	 * @return an instance of the HistoryPanel
+	 */
+	public static HistoryPanel getHistoryPanel() {
+		if (historyPanel == null) {
+			synchronized (HistoryPanel.class) {
+				if (historyPanel == null) {
+					historyPanel = new HistoryPanel();
+				}
+			}
+		}
+		return historyPanel;
+	}
+
+	/**
+	 * Generate the singleton of the HistoryPanel.
+	 */
+	private HistoryPanel() {
+		super();
+		setBounds(500, 50, 400, 600);
+		setBackground(new Color(0, 0, 0, 0));
+		setOpaque(false);
+		setLayout(null);
+
+		initTitleLabel();
+		initHistoryScrollPanel();
+		initHistoryTable();
+
+		sum_history = 0;
+	}
+
+	/**
+	 * To get the title label of the History panel
+	 * 
+	 * @return the title label of the history panel
+	 */
+	public JLabel getTitleLabel() {
+		return titleLabel;
+	}
+
+	/**
+	 * To get the history table of the history panel
+	 * 
+	 * @return the history table
+	 */
+	public JTable getHistoryTable() {
+		return historyTable;
+	}
+    
 	/**
 	 * To initialize the title label of the history panel.
 	 */
@@ -163,58 +216,7 @@ public class HistoryPanel extends JPanel {
 		}
 		sum_history = 0;
 	}
-
-	/**
-	 * To get the instance of the HistoryPanel.
-	 * 
-	 * @return an instance of the HistoryPanel
-	 */
-	public static HistoryPanel getHistoryPanel() {
-		if (historyPanel == null) {
-			synchronized (HistoryPanel.class) {
-				if (historyPanel == null) {
-					historyPanel = new HistoryPanel();
-				}
-			}
-		}
-		return historyPanel;
-	}
-
-	/**
-	 * Generate the singleton of the HistoryPanel.
-	 */
-	private HistoryPanel() {
-		super();
-		setBounds(500, 50, 400, 600);
-		setBackground(new Color(0, 0, 0, 0));
-		setOpaque(false);
-		setLayout(null);
-
-		initTitleLabel();
-		initHistoryScrollPanel();
-		initHistoryTable();
-
-		sum_history = 0;
-	}
-
-	/**
-	 * To get the title label of the History panel
-	 * 
-	 * @return the title label of the history panel
-	 */
-	public JLabel getTitleLabel() {
-		return titleLabel;
-	}
-
-	/**
-	 * To get the history table of the history panel
-	 * 
-	 * @return the history table
-	 */
-	public JTable getHistoryTable() {
-		return historyTable;
-	}
-
+	
 	public static void main(String args[]) {
 		MainFrame test = new MainFrame();
 		HistoryPanel p = new HistoryPanel();

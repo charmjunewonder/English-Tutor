@@ -1,5 +1,5 @@
 /*
- * ResultFrame.java 1.1 2012/10/18
+ * ResultFrame.java 1.2 2012/10/18
  *
  * Copyright (c) 2012 Northeastern University Software Engineering College
  * Software International 1001 Group Three
@@ -43,6 +43,47 @@ public class ResultFrame extends AbstractFrame {
 			suggestionTwoLabel;
 	private JButton finishButton;
 
+	
+
+	/**
+	 * To constructs an instance of the result frame
+	 * 
+	 * @param rowData
+	 *            the data of the result frame
+	 */
+	public ResultFrame(Object[][] rowData) {
+		super("resource/ResultFrame.png", 20, 20, 30, 12);
+		initTitleLabel();
+		initScoreLabel();
+		initResultTable(rowData);
+		initSuggestionOneLabel();
+		initSuggestionTwoLabel();
+		initFinishButton();
+		exitButton.setBounds(getWidth() - 35, 0, 30, 30);
+		shrinkButton.setBounds(getWidth() - 75, 5, 50, 20);
+	}
+
+	/**
+	 * @return the titleLabel
+	 */
+	public JLabel getTitleLabel() {
+		return titleLabel;
+	}
+
+	/**
+	 * @return the suggestionLabel
+	 */
+	public JLabel getSuggestionTwoLabel() {
+		return suggestionTwoLabel;
+	}
+
+	/**
+	 * @return the finishButton
+	 */
+	public JButton getFinishButton() {
+		return finishButton;
+	}
+	
 	/**
 	 * To initialize the title label of the result frame.
 	 */
@@ -148,45 +189,6 @@ public class ResultFrame extends AbstractFrame {
 		finishButton.setBackground(new Color(0, 0, 0, 0));
 		finishButton.setBounds(394, 478, 70, 35);
 		getContentPane().add(finishButton);
-	}
-
-	/**
-	 * To constructs an instance of the result frame
-	 * 
-	 * @param rowData
-	 *            the data of the result frame
-	 */
-	public ResultFrame(Object[][] rowData) {
-		super("resource/ResultFrame.png", 20, 20, 30, 12);
-		initTitleLabel();
-		initScoreLabel();
-		initResultTable(rowData);
-		initSuggestionOneLabel();
-		initSuggestionTwoLabel();
-		initFinishButton();
-		exitButton.setBounds(getWidth() - 35, 0, 30, 30);
-		shrinkButton.setBounds(getWidth() - 75, 5, 50, 20);
-	}
-
-	/**
-	 * @return the titleLabel
-	 */
-	public JLabel getTitleLabel() {
-		return titleLabel;
-	}
-
-	/**
-	 * @return the suggestionLabel
-	 */
-	public JLabel getSuggestionTwoLabel() {
-		return suggestionTwoLabel;
-	}
-
-	/**
-	 * @return the finishButton
-	 */
-	public JButton getFinishButton() {
-		return finishButton;
 	}
 
 	public static void main(String args[]) {
