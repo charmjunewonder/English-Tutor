@@ -269,7 +269,6 @@ public class TestController {
 			clearComponent();
 			showNextPhrase();
 			// it's time to finish the test
-			System.out.println(tenPhrases.size() + ":" +currentPhraseIndex);
 			if (currentPhraseIndex == tenPhrases.size() - 1) {
 				testState = TestState.FINISH_TEST;
 			}

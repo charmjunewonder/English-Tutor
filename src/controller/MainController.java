@@ -85,7 +85,8 @@ public class MainController {
 	 */
 	public void setAccount(Account account) {
 		this.account = account;
-		lessonController = new LessonController(account.getLesson(0));
+		lessonController = LessonController.getLessonController();
+		lessonController.setLesson(account.getLesson(0));
 		historyController = new HistoryController(account.getLesson(0));
 		account.getLesson(0).setEnable(true);
 		initAllLessons();
