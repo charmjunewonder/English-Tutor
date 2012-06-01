@@ -1,18 +1,18 @@
 
 package code;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -51,11 +51,11 @@ public class LearnFrame extends AbstractFrame {
 	finishButton.setBounds(489, 598, 50, 50);
 	getContentPane().add(finishButton);
     }
-    
+
     public JButton getFinishButton(){
-    	return finishButton;
+	return finishButton;
     }
-    
+
     private void initPhraseScrollPanel(){
 	phrasePanel = new JPanel();
 	dimensionY = 500;
@@ -95,7 +95,7 @@ public class LearnFrame extends AbstractFrame {
 	    super();
 	    setLayout(null);
 	    phrase = p;
-	    
+
 	    chineseLabel = new JLabel(p.getChinese());
 	    //chineseLabel.setHorizontalAlignment(JLabel.CENTER);
 	    //TODO
@@ -103,13 +103,18 @@ public class LearnFrame extends AbstractFrame {
 	    chineseLabel.setBounds(0, 0, 235, 25);
 	    chineseLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	    chineseLabel.addMouseListener(new ChineseLabelAdapter());
-    
+
 	    Image i = Toolkit.getDefaultToolkit().getImage("resource/VoiceButton.png").getScaledInstance(25, 25, Image.SCALE_DEFAULT); 
 	    voiceButton = new JButton(new ImageIcon(Toolkit.getDefaultToolkit().getImage("resource/VoiceButton.png")));
 	    voiceButton.setBounds(235, 0, 30, 25);
 	    //voiceButton = new JButton(new ImageIcon(FilenameUtils.separatorsToSystem("resource/VoiceButton.png")));
 	    voiceButton.setBorderPainted(false);
-	    
+	    voiceButton.addActionListener(new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+		    SoundEngine.playSound(phrase.getAudio());
+		}
+	    });
+
 	    englishLabel = new JLabel(p.getEnglish());
 	    englishLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	    englishLabel.setBounds(265, 0, 235, 25);
