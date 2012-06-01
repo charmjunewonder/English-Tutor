@@ -277,7 +277,7 @@ public class TestController {
 		case FINISH_TEST:
 			verifyAnswer();
 			// generate the result
-			DateFormat dateFormat = new SimpleDateFormat("/MM/dd/yy");
+			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
 			Date date = new Date();
 			String dateString = dateFormat.format(date);
 			int score = (int) ((totalCorrectPhraseNum * 1.0 / tenPhrases.size()) * 100);

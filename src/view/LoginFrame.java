@@ -103,7 +103,7 @@ public class LoginFrame extends AbstractFrame {
 	private void initSummaryLabel() {
 		ImageIcon icon = new ImageIcon(FilenameUtils.separatorsToSystem("resource/Summary.png"));
 		summaryLabel = new JLabel(icon);
-		summaryLabel.setBounds(100, 100, 200, 100);
+		summaryLabel.setBounds(0, 50, 450, 600);
 		getContentPane().add(summaryLabel);
 	}
 
