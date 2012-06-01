@@ -71,6 +71,25 @@ public abstract class AbstractFrame extends JFrame {
 		initialize(filePath);
 	}
 
+	
+	protected AbstractFrame(String filePath, ImageIcon exitImage, ImageIcon shrinkImage) {
+		super();
+
+		this.exitImage = exitImage;
+
+		// Initialize the exit enter image
+		exitEnteredImage = new ImageIcon(
+				FilenameUtils.separatorsToSystem("resource/x_red.png"));
+
+		this.shrinkImage = shrinkImage;
+
+		// Initialize the shrink enter image
+		shrinkEnteredImage = new ImageIcon(
+				FilenameUtils.separatorsToSystem("resource/shrink_green.png"));
+
+		initialize(filePath);
+	}
+	
 	/**
 	 * Constructs an instance of the frame.
 	 * 

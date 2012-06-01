@@ -124,7 +124,7 @@ public class LessonController {
 		// Test lesson listener
 		view.getTestButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new TestController(selectedLesson);
+				TestController.getTestController().setLesson(selectedLesson);
 				MainController.getMainController().setVisible(false);
 				selectedLesson.setNeededToRestore(true);
 			}

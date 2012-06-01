@@ -11,6 +11,7 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.text.DateFormat;
@@ -43,6 +44,8 @@ public class TestController {
 	public static final int CHINESE_QUESTION_TYPE = 230;
 	public static final int AUDIO_QUESTION_TYPE = 273;
 
+	private static TestController testController;
+	private static boolean isAddListener;
 	// enum to identify the type of the test
 	private enum TestType {
 		TEST_ONE_LESSON, TEST_ALL_LESSONS
@@ -70,13 +73,30 @@ public class TestController {
 	private ArrayList<Phrase> wrongPhrases;
 	private ArrayList<String> wrongAnswers;
 
+	
+	/**
+	 * get TestController singleton
+	 * 
+	 * @return TestController singleton
+	 */
+	public static TestController getTestController() {
+		if (testController == null) {
+			synchronized (TestController.class) {
+				if (testController == null) {
+					testController = new TestController();
+				}
+			}
+		}
+		return testController;
+	}
+	
 	/**
 	 * Create an instance of TestController to test one lesson. Initially the
 	 * view is visible
 	 * 
 	 * @param l the current lesson
 	 */
-	public TestController(Lesson l) {
+	private TestController(Lesson l) {
 		testType = TestType.TEST_ONE_LESSON;
 		selectedLesson = l;
 
@@ -89,18 +109,55 @@ public class TestController {
 	 * 
 	 * @param a the account to test
 	 */
-	public TestController(Account a) {
+	private TestController(Account a) {
 		testType = TestType.TEST_ALL_LESSONS;
 		account = a;
 
 		initialize();
+	}
+	
+	public TestController() {
+		//testType = TestType.TEST_ALL_LESSONS;
+		initialize();
+	}
+	
+	public void setLesson(Lesson l){
+		selectedLesson = l;
+		clearALl();
+		testType = TestType.TEST_ONE_LESSON;
+		view.setVisible(true);
+		showNextPhrase();
+
+	}
+	
+	public void setAccount(Account a){
+		account = a;
+		clearALl();
+		testType = TestType.TEST_ALL_LESSONS;
+		view.setVisible(true);
+		showNextPhrase();
+
+	}
+	
+	private void clearALl(){
+		view = TestFrame.getTestFrame();
+		clearComponent();
+		view.clearAll();
+		tenPhrases.clear();
+		questionTypes.clear();
+		wrongPhrases.clear();
+		wrongAnswers.clear();
+		currentPhraseIndex = -1;
+		testState = TestState.NEXT_PHRASE;
 	}
 
 	/**
 	 * Initialize the TestController
 	 */
 	private void initialize() {
-		view = new TestFrame();
+		view = TestFrame.getTestFrame();
+		clearComponent();
+		view.clearAll();
 		tenPhrases = new ArrayList<Phrase>();
 		questionTypes = new ArrayList<Integer>();
 		wrongPhrases = new ArrayList<Phrase>();
@@ -111,7 +168,7 @@ public class TestController {
 		addActionListener();
 
 		view.setVisible(true);
-		showNextPhrase();
+		//showNextPhrase();
 	}
 
 	/**
@@ -212,6 +269,7 @@ public class TestController {
 			clearComponent();
 			showNextPhrase();
 			// it's time to finish the test
+			System.out.println(tenPhrases.size() + ":" +currentPhraseIndex);
 			if (currentPhraseIndex == tenPhrases.size() - 1) {
 				testState = TestState.FINISH_TEST;
 			}
@@ -223,12 +281,15 @@ public class TestController {
 			Date date = new Date();
 			String dateString = dateFormat.format(date);
 			int score = (int) ((totalCorrectPhraseNum * 1.0 / tenPhrases.size()) * 100);
-			selectedLesson.addTestResult(dateString, score);
-			// next lesson can be learned and tested from now on
-			if (score >= 80) {
-				MainController.getMainController().increaseEnabeLessonIndex();
-				this.selectedLesson.setEnable(true);
+			if(testType ==TestType.TEST_ONE_LESSON){
+				selectedLesson.addTestResult(dateString, score);
+				// next lesson can be learned and tested from now on
+				if (score >= 80) {
+					MainController.getMainController().increaseEnabeLessonIndex();
+					this.selectedLesson.setEnable(true);
+				}
 			}
+
 			// create a result view to show the result
 			new ResultController(wrongPhrases, questionTypes, wrongAnswers,
 					score);
@@ -242,8 +303,16 @@ public class TestController {
 	 * Add some listeners to the view
 	 */
 	private void addActionListener() {
-
+		//if(isAddListener)	return;
+		//isAddListener = true;
 		// Next phrase listener
+		/*for( ActionListener al : view.getNextButton().getActionListeners() ) {
+			if(MouseAdapter.class.isInstance(al)){
+				continue;
+			}
+			view.getNextButton().removeActionListener( al );
+	    }
+		view.nextButtonAddMouseAdapter();*/
 		view.getNextButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pressNextButton();
@@ -258,7 +327,7 @@ public class TestController {
 		});
 
 		// when exiting, back to main frame
-		view.addExitingReturnToMainController();
+		//view.addExitingReturnToMainController();
 	}
 
 	public static void main(String[] args) throws Exception {

@@ -1,11 +1,10 @@
 /*
  * LearnFrame.java 1.2 2012/10/18
- *
+ * 
  * Copyright (c) 2012 Northeastern University Software Engineering College
  * Software International 1001 Group Three
- *
+ * 
  * All rights reserved.
- *
  */
 
 package view;
@@ -47,23 +46,38 @@ import org.apache.commons.io.FilenameUtils;
 import program.SoundEngine;
 
 public class LearnFrame extends AbstractFrame {
+	private static LearnFrame learnFrame;
+
 	private JLabel titleLabel;
 	private JPanel phrasePanel;
 	private JButton finishButton;
 	private JScrollPane phraseScrollPanel;
-	private int sum, currentPhraseIndex, dimensionX, dimensionY;
+	private int currentPhraseIndex, dimensionX, dimensionY;
 
-	
+	/**
+	 * get learn frame singleton
+	 * 
+	 * @return learn frame singleton
+	 */
+	public static LearnFrame getLearnFrame() {
+		if (learnFrame == null) {
+			synchronized (LearnFrame.class) {
+				if (learnFrame == null) {
+					learnFrame = new LearnFrame();
+				}
+			}
+		}
+		return learnFrame;
+	}
 
 	/**
 	 * Constructs an instance of the learn frame.
 	 */
-	public LearnFrame() {
+	private LearnFrame() {
 		super(FilenameUtils.separatorsToSystem("resource/Learn.png"));
 		initTitleLabel();
 		initPhraseScrollPanel();
 		initFinishButton();
-		sum = 0;
 	}
 
 	/**
@@ -74,7 +88,7 @@ public class LearnFrame extends AbstractFrame {
 	public JButton getFinishButton() {
 		return finishButton;
 	}
-    
+
 	/**
 	 * To initialize the phrase scroll panel of the learn frame.
 	 */
@@ -123,8 +137,7 @@ public class LearnFrame extends AbstractFrame {
 	/**
 	 * To add phrase item of the learn frame.
 	 * 
-	 * @param p
-	 *            the special phrase
+	 * @param p the special phrase
 	 */
 	public void addPhraseItem(Phrase p) {
 		PhraseItemPanel newPhrase = new PhraseItemPanel(p);
@@ -134,7 +147,7 @@ public class LearnFrame extends AbstractFrame {
 		dimensionX += 25;
 		phrasePanel.setPreferredSize(new Dimension(dimensionY, dimensionX));
 	}
-	
+
 	/**
 	 * Clear all the phrase items in the phrasePanel
 	 */
@@ -143,9 +156,8 @@ public class LearnFrame extends AbstractFrame {
 		currentPhraseIndex = 0;
 		dimensionY = 500;
 		dimensionX = 0;
-		sum = 0;
 	}
-	
+
 	/**
 	 * The inner class of the learnFrame
 	 * 
@@ -191,9 +203,7 @@ public class LearnFrame extends AbstractFrame {
 			add(voiceButton);
 			add(chineseLabel);
 		}
-        
-		
-		
+
 		/**
 		 * The inner class of the LearnFrame
 		 * 
@@ -201,7 +211,7 @@ public class LearnFrame extends AbstractFrame {
 		 * 
 		 */
 		private class ChineseLabelAdapter extends MouseAdapter {
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				englishLabel.setVisible(true);
 				DateFormat dateFormat = new SimpleDateFormat("/MM/dd/yy");
 				Date date = new Date();

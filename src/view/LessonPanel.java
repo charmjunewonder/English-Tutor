@@ -29,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import model.Phrase;
@@ -214,6 +215,10 @@ public class LessonPanel extends JPanel {
 		phraseTable.setShowVerticalLines(false);
 		phraseTable.setShowHorizontalLines(false);
 
+		ListSelectionModel listSelectionModel = phraseTable.getSelectionModel();
+		listSelectionModel
+				.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
 		phraseScrollPanel.setViewportView(phraseTable);
 	}
 

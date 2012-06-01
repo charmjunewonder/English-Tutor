@@ -1,11 +1,10 @@
 /*
  * LoginFrame.java 1.2 2012/10/18
- *
+ * 
  * Copyright (c) 2012 Northeastern University Software Engineering College
  * Software International 1001 Group Three
- *
+ * 
  * All rights reserved.
- *
  */
 
 package view;
@@ -21,7 +20,9 @@ package view;
  */
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Toolkit;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -35,17 +36,20 @@ public class LoginFrame extends AbstractFrame {
 	private JComboBox userComboBox;
 	private JButton loginButton, deleteButton;
 
-	
 	/**
 	 * To generate an instance of the login frame
 	 */
 	public LoginFrame() {
-		super(FilenameUtils.separatorsToSystem("resource/LoginFrame.png"));
+		super(FilenameUtils.separatorsToSystem("resource/LoginFrame.png"),
+				new ImageIcon(Toolkit.getDefaultToolkit().getImage(
+						"resource/x_white.png")), 
+				new ImageIcon(Toolkit.getDefaultToolkit().getImage(
+						"resource/shrink_white.png")));
 		initTitleLabel();
 		initDeleteButton();
 		initUserComboBox();
 		initLoginButton();
-		initSummaryPanel();
+		initSummaryLabel();
 		this.setVisible(true);
 		createBufferStrategy(2);
 	}
@@ -84,7 +88,7 @@ public class LoginFrame extends AbstractFrame {
 	public JButton getLoginButton() {
 		return loginButton;
 	}
-    
+
 	/**
 	 * Initialize the summary panel of the login frame
 	 */
@@ -97,8 +101,10 @@ public class LoginFrame extends AbstractFrame {
 	 * Initialize the summary label of the login frame
 	 */
 	private void initSummaryLabel() {
-		summaryLabel = new JLabel();
+		ImageIcon icon = new ImageIcon(FilenameUtils.separatorsToSystem("resource/Summary.png"));
+		summaryLabel = new JLabel(icon);
 		summaryLabel.setBounds(100, 100, 200, 100);
+		getContentPane().add(summaryLabel);
 	}
 
 	/**
@@ -157,14 +163,12 @@ public class LoginFrame extends AbstractFrame {
 	/**
 	 * To add an account into the comboBox
 	 * 
-	 * @param userName
-	 *            the name of the account
+	 * @param userName the name of the account
 	 */
 	public void addAccountName(String userName) {
 		userComboBox.addItem(userName);
 	}
 
-	
 	public static void main(String args[]) {
 		LoginFrame test = new LoginFrame();
 		test.addAccountName("Harry");

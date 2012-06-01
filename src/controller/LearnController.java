@@ -40,7 +40,8 @@ public class LearnController {
 	 */
 	public LearnController(Lesson lesson) {
 		selectedLesson = lesson;
-		view = new LearnFrame();
+		view = LearnFrame.getLearnFrame();
+		view.clearAllPhraseItem();
 
 		initAllPhrases();
 		addAllListener();

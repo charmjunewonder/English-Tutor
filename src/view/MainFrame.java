@@ -238,6 +238,9 @@ public class MainFrame extends AbstractFrame {
 			}
 		};
 
+		lessonTable.setColumnSelectionAllowed(false);
+		lessonTable.setRowSelectionAllowed(true);
+
 		lessonTable.setModel(tableModel);
 		lessonTable.setBounds(0, 0, 380, 500);
 		lessonTable.setOpaque(false);

@@ -130,6 +130,7 @@ public class MainController {
      */
 	private void initAllLessons() {
 		view.clearLessonTableContent();
+		view.getLessonTable().changeSelection(0, 0, false, false);
 		for (Lesson l : account.getAllLessons()) {
 			view.addLesson(l.getLessonName());
 		}
@@ -209,7 +210,7 @@ public class MainController {
 		// test all controller
 		view.getTestAllButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new TestController(account);
+				TestController.getTestController().setAccount(account);
 				setVisible(false);
 			}
 		});

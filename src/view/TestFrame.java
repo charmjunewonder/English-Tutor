@@ -37,18 +37,47 @@ public class TestFrame extends AbstractFrame {
 	private final int totalCountOfProgress = 10;
 	private final Font font = new Font("Adobe Caslon Pro Bold", Font.BOLD, 20);
 
+	private static TestFrame testFrame;
+	
 	private JLabel titleLabel, questionTitleLabel, questionLabel, answerLabel,
 			processLabel[], processFeather;
 	private JTextField answerTextField, questionTextField;
 	private JButton nextButton, soundButton;
 	private int now, progressTotalLength;
-
 	
+	private NextButtonMouseAdapter adapter = new NextButtonMouseAdapter();
+	
+	/**
+	 * get learn frame singleton
+	 * 
+	 * @return learn frame singleton
+	 */
+	public static TestFrame getTestFrame() {
+		if (testFrame == null) {
+			synchronized (TestFrame.class) {
+				if (testFrame == null) {
+					testFrame = new TestFrame();
+				}
+			}
+		}
+		return testFrame;
+	}
+	
+	public void clearAll(){
+		exitButton.setIcon(exitImage);
+		shrinkButton.setIcon(shrinkImage);
+		processFeather.setBounds(25, 390, 100, 90);
+		for(int i = 1; i < processLabel.length - 1; ++i){
+			processLabel[i].setVisible(false);
+		}
+		now = 0;
+		progressTotalLength = 0;
+	}
 
 	/**
 	 * To constructs an instance of the test frame
 	 */
-	public TestFrame() {
+	private TestFrame() {
 		super("resource/ResultFrame.png", 20, 20, 30, 12);
 		initTitleLabel();
 		initSoundButton();
@@ -64,6 +93,8 @@ public class TestFrame extends AbstractFrame {
 
 		exitButton.setBounds(getWidth() - 35, 0, 30, 30);
 		shrinkButton.setBounds(getWidth() - 75, 5, 50, 20);
+		
+		addExitingReturnToMainController();
 	}
 
 	/**
@@ -200,8 +231,12 @@ public class TestFrame extends AbstractFrame {
 		nextButton.setOpaque(false);
 		nextButton.setBorderPainted(false);
 		nextButton.setBounds(400, 478, 100, 100);
-		nextButton.addMouseListener(new NextButtonMouseAdapter());
+		nextButtonAddMouseAdapter();
 		getContentPane().add(nextButton);
+	}
+	
+	public void nextButtonAddMouseAdapter(){
+		nextButton.addMouseListener(adapter);
 	}
 
 	/**
@@ -249,7 +284,7 @@ public class TestFrame extends AbstractFrame {
 	 * @author Luo Yaoshen
 	 * 
 	 */
-	private class NextButtonMouseAdapter extends MouseAdapter {
+	public class NextButtonMouseAdapter extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
 			nextQuestionMotion();
 		}
