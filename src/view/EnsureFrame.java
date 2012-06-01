@@ -1,11 +1,29 @@
+/*
+ * EnsureFrame.java 1.1 2012/10/18
+ *
+ * Copyright (c) 2012 Northeastern University Software Engineering College
+ * Software International 1001 Group Three
+ *
+ * All rights reserved.
+ *
+ */
+
 package view;
 
-import java.awt.Color;
+/**
+ * EnsureFrame - The ensure frame of the learnEngilsh system.
+ * <p>
+ * General ensure frame of the system.
+ * 
+ * @author Luo Yaoshen
+ * @version 1.2
+ * @see view.AbstractFrame
+ */
+
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,12 +31,12 @@ import javax.swing.SwingConstants;
 
 import org.apache.commons.io.FilenameUtils;
 
-
 public class EnsureFrame extends AbstractFrame {
 	public static final int CANCEL_OPTION = 23947;
 	public static final int YES_OPTION = 79237;
 	public static final int NO_OPTION = 83874;
 
+	private static EnsureFrame frame;
 	private JButton firstButton, secondButton, thirdButton;
 	private JLabel statementLabel;
 	private JPanel buttonPanel;
@@ -26,30 +44,33 @@ public class EnsureFrame extends AbstractFrame {
 	private static int optionValue;
 	private static boolean isClicked;
 
-	private static EnsureFrame frame;
-
-	public EnsureFrame() {
-		super(FilenameUtils.separatorsToSystem("resource/EnsureFrame2.png"));
-		initTextLabel();
-		initButtonPanel();
-		removeExitAndShrinkButton();
-	}
-
+	/**
+	 * To get the ensure frame.
+	 * 
+	 * @return the ensure frame
+	 */
 	public static EnsureFrame getEnsureFrame() {
-		// TODO
 		if (frame == null) {
 			frame = new EnsureFrame();
 		}
 		return frame;
 	}
 
+	/**
+	 * To show the message dialog
+	 * 
+	 * @param message
+	 *            the message of the dialog
+	 */
 	public static void showMessageDialog(String message) {
 		final EnsureFrame ensure = EnsureFrame.getEnsureFrame();
+
 		ensure.getThirdButton().setText("OK");
 		ensure.getSecondButton().setText("");
 		ensure.getFirstButton().setText("");
 		ensure.getStatementLabel().setText(message);
 		ensure.setVisible(true);
+
 		ensure.getThirdButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ensure.setVisible(false);
@@ -58,17 +79,26 @@ public class EnsureFrame extends AbstractFrame {
 		});
 	}
 
+	/**
+	 * To show the confirm dialog
+	 * 
+	 * @param message
+	 *            the message of the confirm dialog
+	 * @return the number of the message of the confirm dialogs
+	 */
 	public static int showConfirmDialog(String message) {
 		final EnsureFrame ensure = EnsureFrame.getEnsureFrame();
 		ensure.getThirdButton().setText("Save");
 		ensure.getSecondButton().setText("Cancel");
 		ensure.getFirstButton().setText("Don't save");
 		ensure.getStatementLabel().setText(message);
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				ensure.setVisible(true);
 			}
 		});
+
 		ensure.setVisible(true);
 		ensure.getThirdButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -78,6 +108,7 @@ public class EnsureFrame extends AbstractFrame {
 				ensure.dispose();
 			}
 		});
+
 		ensure.getSecondButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				optionValue = CANCEL_OPTION;
@@ -86,6 +117,7 @@ public class EnsureFrame extends AbstractFrame {
 				ensure.dispose();
 			}
 		});
+
 		ensure.getFirstButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				optionValue = NO_OPTION;
@@ -94,6 +126,7 @@ public class EnsureFrame extends AbstractFrame {
 				ensure.dispose();
 			}
 		});
+
 		while (!isClicked) {
 			try {
 				Thread.sleep(100);
@@ -104,6 +137,9 @@ public class EnsureFrame extends AbstractFrame {
 		return optionValue;
 	}
 
+	/**
+	 * Initialize the text label of the ensure frame.
+	 */
 	private void initTextLabel() {
 		statementLabel = new JLabel();
 		statementLabel.setOpaque(false);
@@ -112,6 +148,9 @@ public class EnsureFrame extends AbstractFrame {
 		getContentPane().add(statementLabel);
 	}
 
+	/**
+	 * Initialize the button panel.
+	 */
 	private void initButtonPanel() {
 		buttonPanel = new JPanel();
 		buttonPanel.setOpaque(false);
@@ -135,18 +174,48 @@ public class EnsureFrame extends AbstractFrame {
 		getContentPane().add(buttonPanel);
 	}
 
+	/**
+	 * Constructs an instance of the ensure frame.
+	 */
+	public EnsureFrame() {
+		super(FilenameUtils.separatorsToSystem("resource/EnsureFrame2.png"));
+		initTextLabel();
+		initButtonPanel();
+		removeExitAndShrinkButton();
+	}
+
+	/**
+	 * To get the statement label.
+	 * 
+	 * @return the statement label of the frame
+	 */
 	private JLabel getStatementLabel() {
 		return statementLabel;
 	}
 
+	/**
+	 * To get the first button of the frame
+	 * 
+	 * @return the first button of the frame
+	 */
 	private JButton getFirstButton() {
 		return firstButton;
 	}
 
+	/**
+	 * To get the second button of the frame
+	 * 
+	 * @return the second button of the frame
+	 */
 	private JButton getSecondButton() {
 		return secondButton;
 	}
 
+	/**
+	 * To get the third button of the frame
+	 * 
+	 * @return the third button of the frame
+	 */
 	private JButton getThirdButton() {
 		return thirdButton;
 	}

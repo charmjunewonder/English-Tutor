@@ -1,5 +1,24 @@
+/*
+ * LearnPanel.java 1.1 2012/10/18
+ *
+ * Copyright (c) 2012 Northeastern University Software Engineering College
+ * Software International 1001 Group Three
+ *
+ * All rights reserved.
+ *
+ */
+
 package view;
 
+/**
+ * LearnPanel - The learn panel of the learnEnglish system.
+ * <p>
+ * Generate the learn panel.
+ * 
+ * @author Luo Yaoshen
+ * @version 1.2
+ * @see javax.swing.JPanel
+ */
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -16,7 +35,6 @@ import model.Phrase;
 
 import org.apache.commons.io.FilenameUtils;
 
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -25,6 +43,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class LessonPanel extends JPanel {
+
 	private JButton learnLessonButton, testLessonButton, deletePhraseButton,
 			addPhraseButton;
 	private JTextField chineseTextField, englishTextField;
@@ -36,44 +55,27 @@ public class LessonPanel extends JPanel {
 
 	private static LessonPanel lessonPanel;
 
-	public static LessonPanel getLessonPanel() {
-		if (lessonPanel == null) {
-			synchronized (LessonPanel.class) {
-				if (lessonPanel == null) {
-					lessonPanel = new LessonPanel();
-				}
-			}
-		}
-		return lessonPanel;
-	}
-
-	private LessonPanel() {
-		super();
-		setLayout(null);
-		setBackground(new Color(0, 0, 0, 0));
-		setOpaque(false);
-		setBounds(500, 40, 400, 600);
-		initLearnLessonButton();
-		initTestLessonButton();
-		initPhraseScrollPanel();
-		initPhraseTable();
-		initAddPhrase();
-		initDeletePhraseButton();
-		sum_phrase = 0;
-	}
-
+	/**
+	 * To initialize the learn lesson button of the lesson panel.
+	 */
 	private void initLearnLessonButton() {
 		learnLessonButton = new JButton("Learning");
 		learnLessonButton.setBounds(0, 0, 100, 30);
 		add(learnLessonButton);
 	}
 
+	/**
+	 * To initialize the test lesson button of the lesson panel.
+	 */
 	private void initTestLessonButton() {
 		testLessonButton = new JButton("Test");
 		testLessonButton.setBounds(110, 0, 70, 30);
 		add(testLessonButton);
 	}
 
+	/**
+	 * To initialize the phrase scroll panel of the lesson panel.
+	 */
 	private void initPhraseScrollPanel() {
 		phraseScrollPanel = new JScrollPane();
 
@@ -91,6 +93,9 @@ public class LessonPanel extends JPanel {
 		add(phraseScrollPanel);
 	}
 
+	/**
+	 * To initialize the phrase table of the lesson panel.
+	 */
 	private void initPhraseTable() {
 		String[] columnNames = new String[5];
 		columnNames[0] = "中文";
@@ -115,6 +120,9 @@ public class LessonPanel extends JPanel {
 		phraseScrollPanel.setViewportView(phraseTable);
 	}
 
+	/**
+	 * To initialize the add phrase of the lesson panel.
+	 */
 	private void initAddPhrase() {
 		chineseLabel = new JLabel("中文");
 		chineseLabel.setBounds(30, 530, 60, 30);
@@ -137,12 +145,21 @@ public class LessonPanel extends JPanel {
 		add(addPhraseButton);
 	}
 
+	/**
+	 * To initialize the delete phrase button of the lesson panel.
+	 */
 	private void initDeletePhraseButton() {
 		deletePhraseButton = new JButton("Delete");
 		deletePhraseButton.setBounds(0, 500, 70, 30);
 		add(deletePhraseButton);
 	}
 
+	/**
+	 * To add the phrase into the phrase table
+	 * 
+	 * @param p
+	 *            the special phrase
+	 */
 	public void addPhrase(Phrase p) {
 		String chinese = p.getChinese();
 		String english = p.getEnglish();
@@ -197,11 +214,20 @@ public class LessonPanel extends JPanel {
 
 	}
 
+	/**
+	 * To delete the phrase .
+	 * 
+	 * @param row
+	 *            the row of the delete phrase
+	 */
 	public void deletePhrase(int row) {
 		((DefaultTableModel) phraseTable.getModel()).removeRow(row);
 		sum_phrase--;
 	}
 
+	/**
+	 * To clear the phrase table content.
+	 */
 	public void clearPhraseTabelContent() {
 		DefaultTableModel mtl = (DefaultTableModel) phraseTable.getModel();
 		int row = mtl.getRowCount();
@@ -211,9 +237,48 @@ public class LessonPanel extends JPanel {
 		sum_phrase = 0;
 	}
 
+	/**
+	 * To clear the English and Chinese text field
+	 */
 	public void clearEnglishChineseTextField() {
 		chineseTextField.setText("");
 		englishTextField.setText("");
+	}
+
+	/**
+	 * To get the singleton of the lessonPanel
+	 * 
+	 * @return the singleton of the lessonPanel
+	 */
+	public static LessonPanel getLessonPanel() {
+		if (lessonPanel == null) {
+			synchronized (LessonPanel.class) {
+				if (lessonPanel == null) {
+					lessonPanel = new LessonPanel();
+				}
+			}
+		}
+		return lessonPanel;
+	}
+
+	/**
+	 * To generate the singleton of the lessonPanel.
+	 */
+	private LessonPanel() {
+		super();
+		setLayout(null);
+		setBackground(new Color(0, 0, 0, 0));
+		setOpaque(false);
+		setBounds(500, 40, 400, 600);
+
+		initLearnLessonButton();
+		initTestLessonButton();
+		initPhraseScrollPanel();
+		initPhraseTable();
+		initAddPhrase();
+		initDeletePhraseButton();
+
+		sum_phrase = 0;
 	}
 
 	/**
@@ -223,26 +288,56 @@ public class LessonPanel extends JPanel {
 		return phraseTable;
 	}
 
+	/**
+	 * To get the Chinese text field of the lesson panel
+	 * 
+	 * @return the ChineseTextField
+	 */
 	public JTextField getChineseTextField() {
 		return chineseTextField;
 	}
 
+	/**
+	 * To get the English text field
+	 * 
+	 * @return the englishTextField
+	 */
 	public JTextField getEnglishTextField() {
 		return englishTextField;
 	}
 
+	/**
+	 * To get the learn button of the lesson panel
+	 * 
+	 * @return the learn button
+	 */
 	public JButton getLearnButton() {
 		return learnLessonButton;
 	}
 
+	/**
+	 * To get the test button of the lesson panel
+	 * 
+	 * @return the test button of the lesson panel
+	 */
 	public JButton getTestButton() {
 		return testLessonButton;
 	}
 
+	/**
+	 * To get the add button of the lesson panel
+	 * 
+	 * @return the add button
+	 */
 	public JButton getAddButton() {
 		return addPhraseButton;
 	}
 
+	/**
+	 * To get the delete button
+	 * 
+	 * @return the delete button
+	 */
 	public JButton getDeleteButton() {
 		return deletePhraseButton;
 	}

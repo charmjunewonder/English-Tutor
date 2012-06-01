@@ -1,4 +1,24 @@
+/*
+ * HistoryPanel.java 1.1 2012/10/18
+ *
+ * Copyright (c) 2012 Northeastern University Software Engineering College
+ * Software International 1001 Group Three
+ *
+ * All rights reserved.
+ *
+ */
+
 package view;
+
+/**
+ * HistoryPanel - The history panel which is added into the main frame.
+ * <p>
+ * Generate the history panel of the main frame
+ * 
+ * @author Luo Yaoshen
+ * @version 1.2
+ * @see javax.swing.JPanel
+ */
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -14,7 +34,6 @@ import javax.swing.table.TableColumn;
 
 import org.apache.commons.io.FilenameUtils;
 
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -29,29 +48,9 @@ public class HistoryPanel extends JPanel {
 
 	private static HistoryPanel historyPanel;
 
-	public static HistoryPanel getHistoryPanel() {
-		if (historyPanel == null) {
-			synchronized (HistoryPanel.class) {
-				if (historyPanel == null) {
-					historyPanel = new HistoryPanel();
-				}
-			}
-		}
-		return historyPanel;
-	}
-
-	private HistoryPanel() {
-		super();
-		setBounds(500, 50, 400, 600);
-		setBackground(new Color(0, 0, 0, 0));
-		setOpaque(false);
-		setLayout(null);
-		initTitleLabel();
-		initHistoryScrollPanel();
-		initHistoryTable();
-		sum_history = 0;
-	}
-
+	/**
+	 * To initialize the title label of the history panel.
+	 */
 	private void initTitleLabel() {
 		titleLabel = new JLabel("History");
 		titleLabel.setBounds(170, 0, 80, 100);
@@ -59,6 +58,9 @@ public class HistoryPanel extends JPanel {
 		add(titleLabel);
 	}
 
+	/**
+	 * To initialize the history scroll panel.
+	 */
 	private void initHistoryScrollPanel() {
 		historyScrollPanel = new JScrollPane();
 
@@ -75,6 +77,9 @@ public class HistoryPanel extends JPanel {
 		add(historyScrollPanel);
 	}
 
+	/**
+	 * To initialize the history table.
+	 */
 	private void initHistoryTable() {
 		String[] columnNames = new String[3];
 		columnNames[0] = "Date";
@@ -83,6 +88,7 @@ public class HistoryPanel extends JPanel {
 
 		tableModel = new DefaultTableModel(0, 3);
 		tableModel.setColumnIdentifiers(columnNames);
+
 		historyTable = new JTable();
 		historyTable.setModel(tableModel);
 		historyTable.setOpaque(false);
@@ -101,6 +107,14 @@ public class HistoryPanel extends JPanel {
 		historyScrollPanel.setViewportView(historyTable);
 	}
 
+	/**
+	 * To add history into the history table
+	 * 
+	 * @param time
+	 *            the time of the test
+	 * @param mark
+	 *            the mark of the test
+	 */
 	public void addHistory(String time, int mark) {
 		sum_history++;
 
@@ -138,6 +152,9 @@ public class HistoryPanel extends JPanel {
 
 	}
 
+	/**
+	 * To clear the content of the history table.
+	 */
 	public void clearHistoryTableContent() {
 		DefaultTableModel mtl = (DefaultTableModel) historyTable.getModel();
 		int row = mtl.getRowCount();
@@ -147,10 +164,53 @@ public class HistoryPanel extends JPanel {
 		sum_history = 0;
 	}
 
+	/**
+	 * To get the instance of the HistoryPanel.
+	 * 
+	 * @return an instance of the HistoryPanel
+	 */
+	public static HistoryPanel getHistoryPanel() {
+		if (historyPanel == null) {
+			synchronized (HistoryPanel.class) {
+				if (historyPanel == null) {
+					historyPanel = new HistoryPanel();
+				}
+			}
+		}
+		return historyPanel;
+	}
+
+	/**
+	 * Generate the singleton of the HistoryPanel.
+	 */
+	private HistoryPanel() {
+		super();
+		setBounds(500, 50, 400, 600);
+		setBackground(new Color(0, 0, 0, 0));
+		setOpaque(false);
+		setLayout(null);
+
+		initTitleLabel();
+		initHistoryScrollPanel();
+		initHistoryTable();
+
+		sum_history = 0;
+	}
+
+	/**
+	 * To get the title label of the History panel
+	 * 
+	 * @return the title label of the history panel
+	 */
 	public JLabel getTitleLabel() {
 		return titleLabel;
 	}
 
+	/**
+	 * To get the history table of the history panel
+	 * 
+	 * @return the history table
+	 */
 	public JTable getHistoryTable() {
 		return historyTable;
 	}
