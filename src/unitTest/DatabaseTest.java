@@ -11,14 +11,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import model.Database;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import code.Database;
-import code.InvalidFileNameException;
+import program.InvalidFileNameException;
+
 /**
  * @author charmjunewonder
  *
@@ -60,7 +62,7 @@ public class DatabaseTest {
     }
 
     /**
-     * Test method for {@link code.Database#createAccount(java.lang.String)}.
+     * Test method for {@link model.Database#createAccount(java.lang.String)}.
      */
     @Test
     public void testCreateAccount()throws InvalidFileNameException{
@@ -74,7 +76,7 @@ public class DatabaseTest {
     }
 
     /**
-     * Test method for {@link code.Database#deleteAccount(int)}.
+     * Test method for {@link model.Database#deleteAccount(int)}.
      */
     @Test
     public void testDeleteAccount() {
@@ -82,7 +84,7 @@ public class DatabaseTest {
     }
 
     /**
-     * Test method for {@link code.Database#getAllAccountNames()}.
+     * Test method for {@link model.Database#getAllAccountNames()}.
      */
     @Test
     public void testGetAllAccountNames() {

@@ -9,15 +9,17 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 
+import model.Account;
+import model.Lesson;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import code.Account;
-import code.InvalidFileNameException;
-import code.Lesson;
+import program.InvalidFileNameException;
+
 
 /**
  * @author Eric
@@ -59,7 +61,7 @@ public class AccountTest {
     }
 
     /**
-     * Test method for {@link code.Account#Account(java.lang.String)}.
+     * Test method for {@link model.Account#Account(java.lang.String)}.
      */
     @Test
     public void testAccount() throws InvalidFileNameException{
@@ -79,7 +81,7 @@ public class AccountTest {
     }
 
     /**
-     * Test method for {@link code.Account#createNewLesson(java.lang.String)}.
+     * Test method for {@link model.Account#createNewLesson(java.lang.String)}.
      */
     @Test
     public void testCreateNewLesson() {
@@ -87,7 +89,7 @@ public class AccountTest {
     }
 
     /**
-     * Test method for {@link code.Account#getRandomTenPhrase()}.
+     * Test method for {@link model.Account#getRandomTenPhrase()}.
      */
     @Test
     public void testGetRandomTenPhrase() {

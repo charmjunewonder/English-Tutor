@@ -5,10 +5,11 @@ package unitTest;
 import java.io.File;
 import java.sql.*;
 
-import code.Lesson;
-import code.Phrase;
 
 import static org.junit.Assert.*;
+
+import model.Lesson;
+import model.Phrase;
 
 import org.junit.After;
 import org.junit.AfterClass;
