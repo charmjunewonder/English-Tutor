@@ -20,7 +20,7 @@ import org.apache.commons.io.FilenameUtils;
 
 public class Database {
 
-    private Account selectedAccount;
+    //private Account selectedAccount;
     private Connection connection;
     private ArrayList<String> accountNames;
 

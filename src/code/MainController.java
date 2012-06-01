@@ -86,6 +86,7 @@ public class MainController {
 
 
     private void initAllLessons(){
+	view.clearLessonTableContent();
 	for(Lesson l : account.getAllLesson()){
 	    view.addLesson(l.getLessonName());
 	}

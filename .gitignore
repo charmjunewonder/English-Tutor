@@ -3,6 +3,6 @@
 # Package Files #
 *.war
 *.ear
-
+*.db
 *.swp
 .DS_Store

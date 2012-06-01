@@ -258,6 +258,15 @@ public class MainFrame extends AbstractFrame{
 	public void mousePressed(MouseEvent e){
 	}
     }
+    
+    public void clearLessonTableContent(){
+	DefaultTableModel mtl = (DefaultTableModel)lessonTable.getModel();
+	int row = mtl.getRowCount();
+	while(--row >= 0){
+	    mtl.removeRow(row);
+	}
+	sum_lesson = 0;
+    }
 
     public void setLearnedStatue(String lessonName){
 	for(int i=0; i<sum_lesson; i++){
