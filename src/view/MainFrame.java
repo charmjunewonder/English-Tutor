@@ -1,5 +1,5 @@
 /*
- * MainFrame.java 1.1 2012/10/18
+ * MainFrame.java 1.2 2012/10/18
  *
  * Copyright (c) 2012 Northeastern University Software Engineering College
  * Software International 1001 Group Three
@@ -50,6 +50,129 @@ public class MainFrame extends AbstractFrame {
 	private LessonPanel lessonPanel;
 	private DefaultTableModel tableModel;
 	private int sum_lesson;
+
+	/**
+	 * To constructs an instance of the main frame
+	 */
+	public MainFrame() {
+		super(FilenameUtils.separatorsToSystem("resource/MainFrame.png"));
+		sum_lesson = 0;
+		getExitButton().setBounds(getWidth() - 90, 17, 30, 30);
+		getShrinkButton().setBounds(getWidth() - 140, 22, 50, 20);
+		initTitleLabel();
+		initLogoutButton();
+		initLessonScrollPanel();
+
+		initLessonTable();
+		initLessonButton();
+		initHistoryPanel();
+		initLessonPanel();
+		initTestAllButton();
+		initDefaultLabel();
+	}
+
+	/**
+	 * @return the historyPanel
+	 */
+	public HistoryPanel getHistoryPanel() {
+		return historyPanel;
+	}
+
+	/**
+	 * @return the lessonPanel
+	 */
+	public LessonPanel getLessonPanel() {
+		return lessonPanel;
+	}
+
+	/**
+	 * @return the lessonTable
+	 */
+	public JTable getLessonTable() {
+		return lessonTable;
+	}
+
+	/**
+	 * @return the logoutButton
+	 */
+	public JButton getLogoutButton() {
+		return logoutButton;
+	}
+
+	/**
+	 * @return the testAllButton
+	 */
+	public JButton getTestAllButton() {
+		return testAllButton;
+	}
+
+	/**
+	 * @return the addLessonButton
+	 */
+	public JButton getAddLessonButton() {
+		return addLessonButton;
+	}
+
+	/**
+	 * @return the deleteLessonButton
+	 */
+	public JButton getDeleteLessonButton() {
+		return deleteLessonButton;
+	}
+
+	/**
+	 * The inner class of the MainFrame
+	 * 
+	 * @author Luo Yaoshen
+	 * 
+	 */
+	private class HistoryLabelAdapter extends MouseAdapter {
+
+		public void mouseClicked(MouseEvent e) {
+		}
+
+		public void mousePressed(MouseEvent e) {
+			buildHistoryPanel();
+		}
+	}
+
+	/**
+	 * The inner class of the main frame
+	 * 
+	 * @author Luo Yaoshen
+	 * 
+	 */
+	private class ListLabelAdapter extends MouseAdapter {
+		public void mouseClicked(MouseEvent e) {
+		}
+
+		public void mousePressed(MouseEvent e) {
+			buildLessonPanel();
+		}
+	}
+
+	/**
+	 * To build the history panel
+	 */
+	private void buildHistoryPanel() {
+
+		historyPanel = HistoryPanel.getHistoryPanel();
+		if (lessonPanel != null)
+			getContentPane().remove(lessonPanel);
+		repaint();
+		getContentPane().add(historyPanel);
+	}
+
+	/**
+	 * To build the lesson panel
+	 */
+	private void buildLessonPanel() {
+		lessonPanel = LessonPanel.getLessonPanel();
+		if (historyPanel != null)
+			getContentPane().remove(historyPanel);
+		repaint();
+		getContentPane().add(lessonPanel);
+	}
 
 	/**
 	 * To initialize the logout button of the main frame
@@ -266,129 +389,6 @@ public class MainFrame extends AbstractFrame {
 			mtl.removeRow(row);
 		}
 		sum_lesson = 0;
-	}
-
-	/**
-	 * To constructs an instance of the main frame
-	 */
-	public MainFrame() {
-		super(FilenameUtils.separatorsToSystem("resource/MainFrame.png"));
-		sum_lesson = 0;
-		getExitButton().setBounds(getWidth() - 90, 17, 30, 30);
-		getShrinkButton().setBounds(getWidth() - 140, 22, 50, 20);
-		initTitleLabel();
-		initLogoutButton();
-		initLessonScrollPanel();
-
-		initLessonTable();
-		initLessonButton();
-		initHistoryPanel();
-		initLessonPanel();
-		initTestAllButton();
-		initDefaultLabel();
-	}
-
-	/**
-	 * @return the historyPanel
-	 */
-	public HistoryPanel getHistoryPanel() {
-		return historyPanel;
-	}
-
-	/**
-	 * @return the lessonPanel
-	 */
-	public LessonPanel getLessonPanel() {
-		return lessonPanel;
-	}
-
-	/**
-	 * @return the lessonTable
-	 */
-	public JTable getLessonTable() {
-		return lessonTable;
-	}
-
-	/**
-	 * @return the logoutButton
-	 */
-	public JButton getLogoutButton() {
-		return logoutButton;
-	}
-
-	/**
-	 * @return the testAllButton
-	 */
-	public JButton getTestAllButton() {
-		return testAllButton;
-	}
-
-	/**
-	 * @return the addLessonButton
-	 */
-	public JButton getAddLessonButton() {
-		return addLessonButton;
-	}
-
-	/**
-	 * @return the deleteLessonButton
-	 */
-	public JButton getDeleteLessonButton() {
-		return deleteLessonButton;
-	}
-
-	/**
-	 * The inner class of the MainFrame
-	 * 
-	 * @author Luo Yaoshen
-	 * 
-	 */
-	private class HistoryLabelAdapter extends MouseAdapter {
-
-		public void mouseClicked(MouseEvent e) {
-		}
-
-		public void mousePressed(MouseEvent e) {
-			buildHistoryPanel();
-		}
-	}
-
-	/**
-	 * The inner class of the main frame
-	 * 
-	 * @author Luo Yaoshen
-	 * 
-	 */
-	private class ListLabelAdapter extends MouseAdapter {
-		public void mouseClicked(MouseEvent e) {
-		}
-
-		public void mousePressed(MouseEvent e) {
-			buildLessonPanel();
-		}
-	}
-
-	/**
-	 * To build the history panel
-	 */
-	private void buildHistoryPanel() {
-
-		historyPanel = HistoryPanel.getHistoryPanel();
-		if (lessonPanel != null)
-			getContentPane().remove(lessonPanel);
-		repaint();
-		getContentPane().add(historyPanel);
-	}
-
-	/**
-	 * To build the lesson panel
-	 */
-	private void buildLessonPanel() {
-		lessonPanel = LessonPanel.getLessonPanel();
-		if (historyPanel != null)
-			getContentPane().remove(historyPanel);
-		repaint();
-		getContentPane().add(lessonPanel);
 	}
 
 	public static void main(String args[]) {

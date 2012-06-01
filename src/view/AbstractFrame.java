@@ -1,5 +1,5 @@
 /*
- * AbstarctFrame.java 1.1 2012/10/18
+ * AbstarctFrame.java 1.2 2012/10/18
  *
  * Copyright (c) 2012 Northeastern University Software Engineering College
  * Software International 1001 Group Three
@@ -51,6 +51,136 @@ public abstract class AbstractFrame extends JFrame {
 	protected JButton exitButton, shrinkButton;
 	protected ImageIcon exitImage, exitEnteredImage, shrinkImage,
 			shrinkEnteredImage;
+
+	/**
+	 * Constructs an instance of frame.
+	 * 
+	 * @param filePath
+	 *            - the file path of the backgroundIamgeIcon.
+	 */
+	protected AbstractFrame(String filePath) {
+		super();
+		exitImage = new ImageIcon(
+				FilenameUtils.separatorsToSystem("resource/x_black.png"));
+		exitEnteredImage = new ImageIcon(
+				FilenameUtils.separatorsToSystem("resource/x_red.png"));
+		shrinkImage = new ImageIcon(
+				FilenameUtils.separatorsToSystem("resource/shrink_black.png"));
+		shrinkEnteredImage = new ImageIcon(
+				FilenameUtils.separatorsToSystem("resource/shrink_green.png"));
+		initialize(filePath);
+	}
+
+	/**
+	 * Constructs an instance of the frame.
+	 * 
+	 * @param filePath
+	 *            - the file path of the backgroundImage
+	 * @param exitWidth
+	 *            - the exit width of the frame
+	 * @param exitHeight
+	 *            - the exit height of the frame
+	 * @param shrinkWidth
+	 *            - the shrink width of the frame
+	 * @param shrinkHeight
+	 *            - the shrink height of the frame
+	 */
+	protected AbstractFrame(String filePath, int exitWidth, int exitHeight,
+			int shrinkWidth, int shrinkHeight) {
+		super();
+
+		// Initialize the exit image
+		exitImage = new ImageIcon(Toolkit.getDefaultToolkit()
+				.getImage("resource/x_black.png")
+				.getScaledInstance(exitWidth, exitHeight, Image.SCALE_DEFAULT));
+
+		// Initialize the exit enter image
+		exitEnteredImage = new ImageIcon(Toolkit.getDefaultToolkit()
+				.getImage("resource/x_red.png")
+				.getScaledInstance(exitWidth, exitHeight, Image.SCALE_DEFAULT));
+
+		// Initialize the shrink image
+		shrinkImage = new ImageIcon(Toolkit
+				.getDefaultToolkit()
+				.getImage("resource/shrink_black.png")
+				.getScaledInstance(shrinkWidth, shrinkHeight,
+						Image.SCALE_DEFAULT));
+
+		// Initialize the shrink enter image
+		shrinkEnteredImage = new ImageIcon(Toolkit
+				.getDefaultToolkit()
+				.getImage("resource/shrink_green.png")
+				.getScaledInstance(shrinkWidth, shrinkHeight,
+						Image.SCALE_DEFAULT));
+
+		initialize(filePath);
+	}
+
+	/**
+	 * Return the exitButton of the frame.
+	 * 
+	 * @return the exitButton
+	 */
+	public JButton getExitButton() {
+		return exitButton;
+	}
+
+	/**
+	 * Return the shrinkButton of the frame.
+	 * 
+	 * @return the shrinkButton
+	 */
+	public JButton getShrinkButton() {
+		return shrinkButton;
+	}
+
+	/**
+	 * Set the size of the button.
+	 * 
+	 * @param exitWidth
+	 *            the width of the exit button
+	 * @param exitHeight
+	 *            the height of the exit button
+	 * @param shrinkWidth
+	 *            the width of the shrink button
+	 * @param shrinkHeight
+	 *            the height of the shrink button
+	 */
+	protected void setButtonSize(int exitWidth, int exitHeight,
+			int shrinkWidth, int shrinkHeight) {
+	}
+
+	/**
+	 * @param exitImage
+	 *            the exitImage to set
+	 */
+	public void setExitImage(ImageIcon exitImage) {
+		this.exitImage = exitImage;
+	}
+
+	/**
+	 * @param exitEnteredImage
+	 *            the exitEnteredImage to set
+	 */
+	public void setExitEnteredImage(ImageIcon exitEnteredImage) {
+		this.exitEnteredImage = exitEnteredImage;
+	}
+
+	/**
+	 * @param shrinkImage
+	 *            the shrinkImage to set
+	 */
+	public void setShrinkImage(ImageIcon shrinkImage) {
+		this.shrinkImage = shrinkImage;
+	}
+
+	/**
+	 * @param shrinkEnteredImage
+	 *            the shrinkEnteredImage to set
+	 */
+	public void setShrinkEnteredImage(ImageIcon shrinkEnteredImage) {
+		this.shrinkEnteredImage = shrinkEnteredImage;
+	}
 
 	/**
 	 * Initialize the background image of the frame.
@@ -157,136 +287,6 @@ public abstract class AbstractFrame extends JFrame {
 	protected void removeExitAndShrinkButton() {
 		contentPane.remove(exitButton);
 		contentPane.remove(shrinkButton);
-	}
-
-	/**
-	 * Constructs an instance of frame.
-	 * 
-	 * @param filePath
-	 *            - the file path of the backgroundIamgeIcon.
-	 */
-	protected AbstractFrame(String filePath) {
-		super();
-		exitImage = new ImageIcon(
-				FilenameUtils.separatorsToSystem("resource/x_black.png"));
-		exitEnteredImage = new ImageIcon(
-				FilenameUtils.separatorsToSystem("resource/x_red.png"));
-		shrinkImage = new ImageIcon(
-				FilenameUtils.separatorsToSystem("resource/shrink_black.png"));
-		shrinkEnteredImage = new ImageIcon(
-				FilenameUtils.separatorsToSystem("resource/shrink_green.png"));
-		initialize(filePath);
-	}
-
-	/**
-	 * Constructs an instance of the frame.
-	 * 
-	 * @param filePath
-	 *            - the file path of the backgroundImage
-	 * @param exitWidth
-	 *            - the exit width of the frame
-	 * @param exitHeight
-	 *            - the exit height of the frame
-	 * @param shrinkWidth
-	 *            - the shrink width of the frame
-	 * @param shrinkHeight
-	 *            - the shrink height of the frame
-	 */
-	protected AbstractFrame(String filePath, int exitWidth, int exitHeight,
-			int shrinkWidth, int shrinkHeight) {
-		super();
-
-		// Initialize the exit image
-		exitImage = new ImageIcon(Toolkit.getDefaultToolkit()
-				.getImage("resource/x_black.png")
-				.getScaledInstance(exitWidth, exitHeight, Image.SCALE_DEFAULT));
-
-		// Initialize the exit enter image
-		exitEnteredImage = new ImageIcon(Toolkit.getDefaultToolkit()
-				.getImage("resource/x_red.png")
-				.getScaledInstance(exitWidth, exitHeight, Image.SCALE_DEFAULT));
-
-		// Initialize the shrink image
-		shrinkImage = new ImageIcon(Toolkit
-				.getDefaultToolkit()
-				.getImage("resource/shrink_black.png")
-				.getScaledInstance(shrinkWidth, shrinkHeight,
-						Image.SCALE_DEFAULT));
-
-		// Initialize the shrink enter image
-		shrinkEnteredImage = new ImageIcon(Toolkit
-				.getDefaultToolkit()
-				.getImage("resource/shrink_green.png")
-				.getScaledInstance(shrinkWidth, shrinkHeight,
-						Image.SCALE_DEFAULT));
-
-		initialize(filePath);
-	}
-
-	/**
-	 * Set the size of the button.
-	 * 
-	 * @param exitWidth
-	 *            the width of the exit button
-	 * @param exitHeight
-	 *            the height of the exit button
-	 * @param shrinkWidth
-	 *            the width of the shrink button
-	 * @param shrinkHeight
-	 *            the height of the shrink button
-	 */
-	protected void setButtonSize(int exitWidth, int exitHeight,
-			int shrinkWidth, int shrinkHeight) {
-	}
-
-	/**
-	 * @param exitImage
-	 *            the exitImage to set
-	 */
-	public void setExitImage(ImageIcon exitImage) {
-		this.exitImage = exitImage;
-	}
-
-	/**
-	 * @param exitEnteredImage
-	 *            the exitEnteredImage to set
-	 */
-	public void setExitEnteredImage(ImageIcon exitEnteredImage) {
-		this.exitEnteredImage = exitEnteredImage;
-	}
-
-	/**
-	 * @param shrinkImage
-	 *            the shrinkImage to set
-	 */
-	public void setShrinkImage(ImageIcon shrinkImage) {
-		this.shrinkImage = shrinkImage;
-	}
-
-	/**
-	 * @param shrinkEnteredImage
-	 *            the shrinkEnteredImage to set
-	 */
-	public void setShrinkEnteredImage(ImageIcon shrinkEnteredImage) {
-		this.shrinkEnteredImage = shrinkEnteredImage;
-	}
-
-	/**
-	 * Return the exitButton of the frame.
-	 * 
-	 * @return the exitButton
-	 */
-	public JButton getExitButton() {
-		return exitButton;
-	}
-
-	/**
-	 * Return the shrinkButton of the frame.
-	 * 
-	 * @return the shrinkButton
-	 */
-	public JButton getShrinkButton() {
-		return shrinkButton;
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*
- * LoginFrame.java 1.1 2012/10/18
+ * LoginFrame.java 1.2 2012/10/18
  *
  * Copyright (c) 2012 Northeastern University Software Engineering College
  * Software International 1001 Group Three
@@ -35,6 +35,56 @@ public class LoginFrame extends AbstractFrame {
 	private JComboBox userComboBox;
 	private JButton loginButton, deleteButton;
 
+	
+	/**
+	 * To generate an instance of the login frame
+	 */
+	public LoginFrame() {
+		super(FilenameUtils.separatorsToSystem("resource/LoginFrame.png"));
+		initTitleLabel();
+		initDeleteButton();
+		initUserComboBox();
+		initLoginButton();
+		initSummaryPanel();
+		this.setVisible(true);
+		createBufferStrategy(2);
+	}
+
+	/**
+	 * @return the deleteButton
+	 */
+	public JButton getDeleteButton() {
+		return deleteButton;
+	}
+
+	/**
+	 * @return the titleLabel
+	 */
+	public JLabel getTitleLabel() {
+		return titleLabel;
+	}
+
+	/**
+	 * @return the userComboBox
+	 */
+	public JComboBox getUserComboBox() {
+		return userComboBox;
+	}
+
+	/**
+	 * @return the summaryPanel
+	 */
+	public JPanel getSummaryPanel() {
+		return summaryPanel;
+	}
+
+	/**
+	 * @return the loginButton
+	 */
+	public JButton getLoginButton() {
+		return loginButton;
+	}
+    
 	/**
 	 * Initialize the summary panel of the login frame
 	 */
@@ -114,55 +164,7 @@ public class LoginFrame extends AbstractFrame {
 		userComboBox.addItem(userName);
 	}
 
-	/**
-	 * To generate an instance of the login frame
-	 */
-	public LoginFrame() {
-		super(FilenameUtils.separatorsToSystem("resource/LoginFrame.png"));
-		initTitleLabel();
-		initDeleteButton();
-		initUserComboBox();
-		initLoginButton();
-		initSummaryPanel();
-		this.setVisible(true);
-		createBufferStrategy(2);
-	}
-
-	/**
-	 * @return the deleteButton
-	 */
-	public JButton getDeleteButton() {
-		return deleteButton;
-	}
-
-	/**
-	 * @return the titleLabel
-	 */
-	public JLabel getTitleLabel() {
-		return titleLabel;
-	}
-
-	/**
-	 * @return the userComboBox
-	 */
-	public JComboBox getUserComboBox() {
-		return userComboBox;
-	}
-
-	/**
-	 * @return the summaryPanel
-	 */
-	public JPanel getSummaryPanel() {
-		return summaryPanel;
-	}
-
-	/**
-	 * @return the loginButton
-	 */
-	public JButton getLoginButton() {
-		return loginButton;
-	}
-
+	
 	public static void main(String args[]) {
 		LoginFrame test = new LoginFrame();
 		test.addAccountName("Harry");

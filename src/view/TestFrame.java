@@ -1,5 +1,5 @@
 /*
- * TestFrame.java 1.1 2012/10/18
+ * TestFrame.java 1.2 2012/10/18
  *
  * Copyright (c) 2012 Northeastern University Software Engineering College
  * Software International 1001 Group Three
@@ -43,6 +43,79 @@ public class TestFrame extends AbstractFrame {
 	private JButton nextButton, soundButton;
 	private int now, progressTotalLength;
 
+	
+
+	/**
+	 * To constructs an instance of the test frame
+	 */
+	public TestFrame() {
+		super("resource/ResultFrame.png", 20, 20, 30, 12);
+		initTitleLabel();
+		initSoundButton();
+		initQuestionLabel();
+		initQuestionTitleLabel();
+		initAnswerLabel();
+		initAnswerTextField();
+		initNextButton();
+		initProcessLabel();
+		initProcessFeather();
+		now = 0;
+		progressTotalLength = romanNumberals[0].length();
+
+		exitButton.setBounds(getWidth() - 35, 0, 30, 30);
+		shrinkButton.setBounds(getWidth() - 75, 5, 50, 20);
+	}
+
+	/**
+	 * @param answerLabel
+	 *            the answerLabel to set
+	 */
+	public void setAnswerLabel(JLabel answerLabel) {
+		this.answerLabel = answerLabel;
+	}
+
+	/**
+	 * @return the titleLabel
+	 */
+	public JLabel getTitleLabel() {
+		return titleLabel;
+	}
+
+	/**
+	 * @return the questionLabel
+	 */
+	public JLabel getQuestionLabel() {
+		return questionLabel;
+	}
+
+	/**
+	 * @return the answerLabel
+	 */
+	public JLabel getAnswerLabel() {
+		return answerLabel;
+	}
+
+	/**
+	 * @return the answerTextField
+	 */
+	public JTextField getAnswerTextField() {
+		return answerTextField;
+	}
+
+	/**
+	 * @return the nextButton
+	 */
+	public JButton getNextButton() {
+		return nextButton;
+	}
+
+	/**
+	 * @return the soundButton
+	 */
+	public JButton getSoundButton() {
+		return soundButton;
+	}
+    
 	/**
 	 * To initialize the title label of the test frame
 	 */
@@ -169,78 +242,7 @@ public class TestFrame extends AbstractFrame {
 			processLabel[++now].setVisible(true);
 		}
 	}
-
-	/**
-	 * To constructs an instance of the test frame
-	 */
-	public TestFrame() {
-		super("resource/ResultFrame.png", 20, 20, 30, 12);
-		initTitleLabel();
-		initSoundButton();
-		initQuestionLabel();
-		initQuestionTitleLabel();
-		initAnswerLabel();
-		initAnswerTextField();
-		initNextButton();
-		initProcessLabel();
-		initProcessFeather();
-		now = 0;
-		progressTotalLength = romanNumberals[0].length();
-
-		exitButton.setBounds(getWidth() - 35, 0, 30, 30);
-		shrinkButton.setBounds(getWidth() - 75, 5, 50, 20);
-	}
-
-	/**
-	 * @param answerLabel
-	 *            the answerLabel to set
-	 */
-	public void setAnswerLabel(JLabel answerLabel) {
-		this.answerLabel = answerLabel;
-	}
-
-	/**
-	 * @return the titleLabel
-	 */
-	public JLabel getTitleLabel() {
-		return titleLabel;
-	}
-
-	/**
-	 * @return the questionLabel
-	 */
-	public JLabel getQuestionLabel() {
-		return questionLabel;
-	}
-
-	/**
-	 * @return the answerLabel
-	 */
-	public JLabel getAnswerLabel() {
-		return answerLabel;
-	}
-
-	/**
-	 * @return the answerTextField
-	 */
-	public JTextField getAnswerTextField() {
-		return answerTextField;
-	}
-
-	/**
-	 * @return the nextButton
-	 */
-	public JButton getNextButton() {
-		return nextButton;
-	}
-
-	/**
-	 * @return the soundButton
-	 */
-	public JButton getSoundButton() {
-		return soundButton;
-	}
-
+	
 	/**
 	 * The inner class of the TestFrame
 	 * 
@@ -252,7 +254,7 @@ public class TestFrame extends AbstractFrame {
 			nextQuestionMotion();
 		}
 	}
-
+    
 	public static void main(String args[]) {
 		TestFrame test = new TestFrame();
 		test.setVisible(true);
