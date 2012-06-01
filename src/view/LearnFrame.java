@@ -136,6 +136,17 @@ public class LearnFrame extends AbstractFrame {
 	}
 	
 	/**
+	 * Clear all the phrase items in the phrasePanel
+	 */
+	public void clearAllPhraseItem() {
+		phrasePanel.removeAll();
+		currentPhraseIndex = 0;
+		dimensionY = 500;
+		dimensionX = 0;
+		sum = 0;
+	}
+	
+	/**
 	 * The inner class of the learnFrame
 	 * 
 	 * @author Luo Yaoshen
