@@ -125,7 +125,7 @@ public class Account {
 	    connection.createStatement().executeUpdate("drop table lesson_names;");
 	    connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS lesson_names (Name UNIQUE, Enable);");
 	    int count = lessons.size();
-	PreparedStatement prep = connection.prepareStatement("INSERT INTO lesson_names VALUES (?, ?);");
+	    PreparedStatement prep = connection.prepareStatement("INSERT INTO lesson_names VALUES (?, ?);");
 	    int index = 0;
 	    for(int i = 0; i < count; ++i){
 		prep.setString(1, lessons.get(index).getLessonName());

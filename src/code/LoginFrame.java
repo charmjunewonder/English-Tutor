@@ -44,6 +44,13 @@ public class LoginFrame extends AbstractFrame{
     }
 
     /**
+     * @return the deleteButton
+     */
+    public JButton getDeleteButton() {
+        return deleteButton;
+    }
+
+    /**
      * @return the summaryPanel
      */
     public JPanel getSummaryPanel() {

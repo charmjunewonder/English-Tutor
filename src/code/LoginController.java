@@ -7,10 +7,14 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
+import java.io.File;
 import java.sql.SQLException;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.text.JTextComponent;
+
+import org.apache.commons.io.FilenameUtils;
 
 public class LoginController {
 
@@ -135,6 +139,29 @@ public class LoginController {
 		System.exit(0);
 	    }
 	});
+
+	view.getDeleteButton().addActionListener(new ActionListener(){
+	    public void actionPerformed(ActionEvent e){
+		if(view.getUserComboBox().getSelectedIndex() == -1){
+		    return;
+		} else{
+		    String name = (String) view.getUserComboBox().getSelectedItem();
+		    int value = JOptionPane.showConfirmDialog(null,
+			    "Do you want to delete "+name+" ?",
+			    "Delete",
+			    JOptionPane.YES_NO_OPTION);
+		    if(value == JOptionPane.NO_OPTION ){
+			return;
+		    }
+		    int index = view.getUserComboBox().getSelectedIndex();
+		    database.deleteAccount(index);
+		    File file = new File(FilenameUtils.separatorsToSystem("data/" + name + ".db"));
+		    file.delete();
+		    view.getUserComboBox().removeItemAt(index);
+		}
+	    }
+	});
+
     }
 
 }
