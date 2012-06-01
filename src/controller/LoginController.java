@@ -42,190 +42,190 @@ import view.LoginFrame;
  */
 public class LoginController {
 
-    private Database database;
-    private LoginFrame view;
+	private Database database;
+	private LoginFrame view;
 
-    /**
-     * Create a new instance of LoginController, show the existing user name,
-     * add some ActionListener to the view. Initially, the view is visible.
-     */
-    public LoginController() {
-	database = new Database();
-	view = new LoginFrame();
+	/**
+	 * Create a new instance of LoginController, show the existing user name,
+	 * add some ActionListener to the view. Initially, the view is visible.
+	 */
+	public LoginController() {
+		database = new Database();
+		view = new LoginFrame();
 
-	initAllExistingAccount();
-	addListener();
-	initLabels();
+		initAllExistingAccount();
+		addListener();
+		initLabels();
 
-	view.setVisible(true);
-    }
-
-    /**
-     * Set the visibility of the view
-     * 
-     * @param visibility of the view
-     */
-    public void setVisible(boolean visible) {
-	view.setVisible(visible);
-    }
-
-    /**
-     * Show all the user name.
-     */
-    private void initAllExistingAccount() {
-	for (String name : database.getAllAccountNames()) {
-	    view.addAccountName(name);
+		view.setVisible(true);
 	}
-    }
 
-    /**
-     * Initialize the title label and summary lable
-     */
-    private void initLabels() {
-	try {
-
-	    // TODO
-	    // InputStream in =
-	    // LoginController.class.getResourceAsStream("abaddon_0.TTF");
-	    /*
-	     * File file = new
-	     * File(FilenameUtils.separatorsToSystem("resource/Jaggard Two.ttf"
-	     * )); FileInputStream in = new FileInputStream(file);
-	     * 
-	     * Font dynamicFont = Font.createFont(Font.TRUETYPE_FONT, in); Font
-	     * dynamicFontPt = dynamicFont.deriveFont(30f);
-	     * GraphicsEnvironment.getLocalGraphicsEnvironment
-	     * ().registerFont(dynamicFontPt); in.close();
-	     */
-	    // Font font = Font.createFont(Font.TRUETYPE_FONT, );
-
-	    // Font.deriveFont(font, 30);
-	    JLabel titleLabel = view.getTitleLabel();
-	    titleLabel
-		    .setText("<html><Center> <p>English</p> <p>Tutor</p> </Center></html>");
-	    titleLabel.setFont(new Font("Blackmoor LET", Font.BOLD, 72));
-	    titleLabel.setForeground(Color.YELLOW);
-	} catch (Exception e) {
-	    e.printStackTrace();
+	/**
+	 * Set the visibility of the view
+	 * 
+	 * @param visibility of the view
+	 */
+	public void setVisible(boolean visible) {
+		view.setVisible(visible);
 	}
-    }
 
-    /**
-     * Add some listeners to the view
-     */
-    private void addListener() {
+	/**
+	 * Show all the user name.
+	 */
+	private void initAllExistingAccount() {
+		for (String name : database.getAllAccountNames()) {
+			view.addAccountName(name);
+		}
+	}
 
-	// Login listener
-	view.getLoginButton().addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		String name = null;
-		Account account = null;
+	/**
+	 * Initialize the title label and summary lable
+	 */
+	private void initLabels() {
 		try {
-		    // TODO
-		    // no selection
-		    if (view.getUserComboBox().getSelectedIndex() == -1) {
-			JTextComponent tc = (JTextComponent) view
-				.getUserComboBox().getEditor()
-				.getEditorComponent();
-			name = tc.getText();
-			account = database.createAccount(name);
-			account.loadDefaultLessons();
 
-			// user have selected
-		    } else {
-			name = (String) view.getUserComboBox()
-				.getSelectedItem();
+			// TODO
+			// InputStream in =
+			// LoginController.class.getResourceAsStream("abaddon_0.TTF");
+			/*
+			 * File file = new
+			 * File(FilenameUtils.separatorsToSystem("resource/Jaggard Two.ttf"
+			 * )); FileInputStream in = new FileInputStream(file);
+			 * 
+			 * Font dynamicFont = Font.createFont(Font.TRUETYPE_FONT, in); Font
+			 * dynamicFontPt = dynamicFont.deriveFont(30f);
+			 * GraphicsEnvironment.getLocalGraphicsEnvironment
+			 * ().registerFont(dynamicFontPt); in.close();
+			 */
+			// Font font = Font.createFont(Font.TRUETYPE_FONT, );
 
-			account = new Account(name);
-			account.loadLessonsFromDatabase();
-		    }
-		    // Account accountFinal = account;
-		    MainController main = MainController.getMainController();
-		    main.setAccount(account);
-		    main.setVisible(true);
-		    view.setVisible(false);
-		    view.dispose();
-		    /*
-		     * MainController main = new MainController(account); //TODO
-		     * 
-		     * view.setVisible(false); view.dispose();
-		     * main.setVisible(true);
-		     * 
-		     * EventQueue.invokeLater(new Runnable() { public void run()
-		     * { try { MainController main = MainController
-		     * .getMainController(); main.setAccount(accountFinal);
-		     * 
-		     * // view.createBufferStrategy(2); BufferStrategy
-		     * myStrategy = view .getBufferStrategy(); Graphics g =
-		     * myStrategy.getDrawGraphics(); // acquire // the //
-		     * graphics
-		     * 
-		     * // TODO what is the magic here? // draw stuff here
-		     * main.setVisible(true); main.view.paint(g);
-		     * myStrategy.show(); view.setVisible(false);
-		     * view.dispose(); g.dispose(); } catch (Exception e) {
-		     * e.printStackTrace(); } } });
-		     */
-
-		} catch (InvalidFileNameException ifne) {
-		    EnsureFrame
-			    .showMessageDialog("<html><Center>"
-				    + "<p>A filename cannot contain following characters:</p>"
-				    + "<p> \\ / : * ? \" < > |</p>"
-				    + "</Center></html>");
-		} catch (SQLException sqle) {
-		    // JOptionPane.showMessageDialog(null,
-		    // "Please use another name.", name + " exists",
-		    // JOptionPane.ERROR_MESSAGE);
-		    EnsureFrame.showMessageDialog(name
-			    + " has already existed. Please use another name.");
-		} catch (Exception exception) {
-		    exception.printStackTrace();
+			// Font.deriveFont(font, 30);
+			JLabel titleLabel = view.getTitleLabel();
+			titleLabel
+					.setText("<html><Center> <p>English</p> <p>Tutor</p> </Center></html>");
+			titleLabel.setFont(new Font("Blackmoor LET", Font.BOLD, 72));
+			titleLabel.setForeground(Color.YELLOW);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
 
-	    }
-	});
+	/**
+	 * Add some listeners to the view
+	 */
+	private void addListener() {
 
-	// Exit listener
-	view.getExitButton().addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		System.exit(0);
-	    }
-	});
+		// Login listener
+		view.getLoginButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String name = null;
+				Account account = null;
+				try {
+					// TODO
+					// no selection
+					if (view.getUserComboBox().getSelectedIndex() == -1) {
+						JTextComponent tc = (JTextComponent) view
+								.getUserComboBox().getEditor()
+								.getEditorComponent();
+						name = tc.getText();
+						account = database.createAccount(name);
+						account.loadDefaultLessons();
 
-	// Delete listener
-	view.getDeleteButton().addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		// no selection
-		if (view.getUserComboBox().getSelectedIndex() == -1) {
-		    return;
+						// user have selected
+					} else {
+						name = (String) view.getUserComboBox()
+								.getSelectedItem();
 
-		    // have selection
-		} else {
-		    String name = (String) view.getUserComboBox()
-			    .getSelectedItem();
-		    int value = JOptionPane.showConfirmDialog(null,
-			    "Do you want to delete " + name + " ?", "Delete",
-			    JOptionPane.YES_NO_OPTION);
+						account = new Account(name);
+						account.loadLessonsFromDatabase();
+					}
+					// Account accountFinal = account;
+					MainController main = MainController.getMainController();
+					main.setAccount(account);
+					main.setVisible(true);
+					view.setVisible(false);
+					view.dispose();
+					/*
+					 * MainController main = new MainController(account); //TODO
+					 * 
+					 * view.setVisible(false); view.dispose();
+					 * main.setVisible(true);
+					 * 
+					 * EventQueue.invokeLater(new Runnable() { public void run()
+					 * { try { MainController main = MainController
+					 * .getMainController(); main.setAccount(accountFinal);
+					 * 
+					 * // view.createBufferStrategy(2); BufferStrategy
+					 * myStrategy = view .getBufferStrategy(); Graphics g =
+					 * myStrategy.getDrawGraphics(); // acquire // the //
+					 * graphics
+					 * 
+					 * // TODO what is the magic here? // draw stuff here
+					 * main.setVisible(true); main.view.paint(g);
+					 * myStrategy.show(); view.setVisible(false);
+					 * view.dispose(); g.dispose(); } catch (Exception e) {
+					 * e.printStackTrace(); } } });
+					 */
 
-		    // don't delete
-		    if (value == JOptionPane.NO_OPTION) {
-			return;
-		    }
-		    // deleting
-		    int index = view.getUserComboBox().getSelectedIndex();
-		    // delete the account name in database
-		    database.deleteAccount(index);
-		    // delete database file
-		    File file = new File(FilenameUtils
-			    .separatorsToSystem("data/" + name + ".db"));
-		    file.delete();
-		    // remove the item in comnobox
-		    view.getUserComboBox().removeItemAt(index);
-		}
-	    }
-	});
+				} catch (InvalidFileNameException ifne) {
+					EnsureFrame
+							.showMessageDialog("<html><Center>"
+									+ "<p>A filename cannot contain following characters:</p>"
+									+ "<p> \\ / : * ? \" < > |</p>"
+									+ "</Center></html>");
+				} catch (SQLException sqle) {
+					// JOptionPane.showMessageDialog(null,
+					// "Please use another name.", name + " exists",
+					// JOptionPane.ERROR_MESSAGE);
+					EnsureFrame.showMessageDialog(name
+							+ " has already existed. Please use another name.");
+				} catch (Exception exception) {
+					exception.printStackTrace();
+				}
 
-    }
+			}
+		});
+
+		// Exit listener
+		view.getExitButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+
+		// Delete listener
+		view.getDeleteButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// no selection
+				if (view.getUserComboBox().getSelectedIndex() == -1) {
+					return;
+
+					// have selection
+				} else {
+					String name = (String) view.getUserComboBox()
+							.getSelectedItem();
+					int value = JOptionPane.showConfirmDialog(null,
+							"Do you want to delete " + name + " ?", "Delete",
+							JOptionPane.YES_NO_OPTION);
+
+					// don't delete
+					if (value == JOptionPane.NO_OPTION) {
+						return;
+					}
+					// deleting
+					int index = view.getUserComboBox().getSelectedIndex();
+					// delete the account name in database
+					database.deleteAccount(index);
+					// delete database file
+					File file = new File(FilenameUtils
+							.separatorsToSystem("data/" + name + ".db"));
+					file.delete();
+					// remove the item in comnobox
+					view.getUserComboBox().removeItemAt(index);
+				}
+			}
+		});
+
+	}
 
 }

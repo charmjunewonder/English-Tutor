@@ -29,70 +29,70 @@ import view.LearnFrame;
  */
 public class LearnController {
 
-    private Lesson selectedLesson;
-    private LearnFrame view;
+	private Lesson selectedLesson;
+	private LearnFrame view;
 
-    /**
-     * Create a new instance of LearnController, let the view set up the data,
-     * show all the phrases. Initially the view is visible.
-     * 
-     * @param lesson
-     */
-    public LearnController(Lesson lesson) {
-	selectedLesson = lesson;
-	view = new LearnFrame();
+	/**
+	 * Create a new instance of LearnController, let the view set up the data,
+	 * show all the phrases. Initially the view is visible.
+	 * 
+	 * @param lesson
+	 */
+	public LearnController(Lesson lesson) {
+		selectedLesson = lesson;
+		view = new LearnFrame();
 
-	initAllPhrases();
-	addAllListener();
+		initAllPhrases();
+		addAllListener();
 
-	view.setVisible(true);
-    }
-
-    /**
-     * @param lesson
-     */
-    public void setLesson(Lesson lesson) {
-	selectedLesson = lesson;
-	initAllPhrases(); // TODO
-    }
-
-    /**
-     * show all the phrase in the view
-     */
-    private void initAllPhrases() {
-	for (Phrase p : selectedLesson.getAllPhrases()) {
-	    view.addPhraseItem(p);
+		view.setVisible(true);
 	}
-    }
 
-    /**
-     * Add some listeners to the view
-     */
-    private void addAllListener() {
+	/**
+	 * @param lesson
+	 */
+	public void setLesson(Lesson lesson) {
+		selectedLesson = lesson;
+		initAllPhrases(); // TODO
+	}
 
-	// finish listener
-	view.getFinishButton().addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		MainController main = MainController.getMainController();
-		main.getLessonController().initAllPhrases();
-		main.setVisible(true);
+	/**
+	 * show all the phrase in the view
+	 */
+	private void initAllPhrases() {
+		for (Phrase p : selectedLesson.getAllPhrases()) {
+			view.addPhraseItem(p);
+		}
+	}
 
-		view.setVisible(false);
-		view.dispose();
-		selectedLesson = null;
-	    }
-	});
+	/**
+	 * Add some listeners to the view
+	 */
+	private void addAllListener() {
 
-	// when exiting, back to main frame
-	view.addExitingReturnToMainController();
-    }
+		// finish listener
+		view.getFinishButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainController main = MainController.getMainController();
+				main.getLessonController().initAllPhrases();
+				main.setVisible(true);
 
-    public static void main(String[] args) throws Exception {
-	Class.forName("org.sqlite.JDBC");
-	Connection conn = DriverManager
-		.getConnection("jdbc:sqlite:data/lesson_test.db");
-	Lesson l = new Lesson(conn, 1);
+				view.setVisible(false);
+				view.dispose();
+				selectedLesson = null;
+			}
+		});
 
-	new LearnController(l);
-    }
+		// when exiting, back to main frame
+		view.addExitingReturnToMainController();
+	}
+
+	public static void main(String[] args) throws Exception {
+		Class.forName("org.sqlite.JDBC");
+		Connection conn = DriverManager
+				.getConnection("jdbc:sqlite:data/lesson_test.db");
+		Lesson l = new Lesson(conn, 1);
+
+		new LearnController(l);
+	}
 }

@@ -36,143 +36,143 @@ import view.LessonPanel;
  */
 public class LessonController {
 
-    private Lesson selectedLesson;
-    private LessonPanel view;
+	private Lesson selectedLesson;
+	private LessonPanel view;
 
-    /**
-     * Create a new instance of LessonController and let the view set up the
-     * data. , and add some AcitonListeners to the component of the view.
-     * Initially the view is visible.
-     * 
-     * @param lesson the lesson to show and modify.
-     */
-    public LessonController(Lesson lesson) {
-	selectedLesson = lesson;
-	view = LessonPanel.getLessonPanel();
+	/**
+	 * Create a new instance of LessonController and let the view set up the
+	 * data. , and add some AcitonListeners to the component of the view.
+	 * Initially the view is visible.
+	 * 
+	 * @param lesson the lesson to show and modify.
+	 */
+	public LessonController(Lesson lesson) {
+		selectedLesson = lesson;
+		view = LessonPanel.getLessonPanel();
 
-	initAllPhrases();
-	addALlListeners();
+		initAllPhrases();
+		addALlListeners();
 
-	view.setVisible(true);
-    }
-
-    /**
-     * Set the selectedLesson and then let view set up the data. It also tell
-     * the view to check the button is enable.
-     * 
-     * @param l lesson to set
-     * */
-    public void setSelectedLesson(Lesson l) {
-	selectedLesson = l;
-	initAllPhrases();
-	resetButtons();
-    }
-
-    /**
-     * Let the view set up the data.
-     */
-    public void initAllPhrases() {
-	// firstly tell the view clear its history content.
-	view.clearPhraseTabelContent();
-
-	for (Phrase p : selectedLesson.getAllPhrases()) {
-	    view.addPhrase(p);
+		view.setVisible(true);
 	}
 
-    }
+	/**
+	 * Set the selectedLesson and then let view set up the data. It also tell
+	 * the view to check the button is enable.
+	 * 
+	 * @param l lesson to set
+	 * */
+	public void setSelectedLesson(Lesson l) {
+		selectedLesson = l;
+		initAllPhrases();
+		resetButtons();
+	}
 
-    /**
-     * Tell the view to check the button is enable.
-     */
-    public void resetButtons() {
-	boolean bool = selectedLesson.isEnable();
-	view.getTestButton().setEnabled(bool);
-	view.getLearnButton().setEnabled(bool);
-    }
+	/**
+	 * Let the view set up the data.
+	 */
+	public void initAllPhrases() {
+		// firstly tell the view clear its history content.
+		view.clearPhraseTabelContent();
 
-    /**
-     * Add some listeners to the view
-     */
-    private void addALlListeners() {
-
-	// Add phrase listener
-	view.getAddButton().addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		String english = view.getEnglishTextField().getText();
-		String chinese = view.getChineseTextField().getText();
-		if (english.equals("") && chinese.equals(""))
-		    return;
-		Phrase p = new Phrase(english, chinese, null);
-		selectedLesson.addPhrase(p);
-		view.addPhrase(p);
-		view.clearEnglishChineseTextField();
-	    }
-	});
-
-	// Delete phrase listener
-	view.getDeleteButton().addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		int index = view.getPhraseTable().getSelectedRow();
-		if (index == -1)
-		    return;
-		Phrase p = selectedLesson.getPhrase(index);
-		selectedLesson.deletePhrase(p);
-		view.deletePhrase(index);
-	    }
-	});
-
-	// Test lesson listener
-	view.getTestButton().addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		new TestController(selectedLesson);
-		MainController.getMainController().setVisible(false);
-		selectedLesson.setNeededToRestore(true);
-	    }
-	});
-
-	// Learn lesson listener
-	view.getLearnButton().addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		new LearnController(selectedLesson);
-		MainController.getMainController().setVisible(false);
-		selectedLesson.setNeededToRestore(true);
-	    }
-	});
-
-	// Sound listener
-	view.getPhraseTable().addMouseListener(new SoundAdapter());
-
-    }
-
-    /**
-     * A class to sound when the user press the sound column in the table
-     * 
-     * @author Luo Yaoshen
-     * @author Eric
-     * @see program.SoundEngine
-     */
-    private class SoundAdapter extends MouseAdapter {
-	public void mousePressed(MouseEvent e) {
-	    JTable phraseTable = view.getPhraseTable();
-	    int count = phraseTable.getRowCount();
-	    for (int i = 0; i < count; i++) {
-		if (phraseTable.isCellSelected(i, 2)
-			&& phraseTable.isColumnSelected(2)
-			&& phraseTable.getValueAt(i, 2).toString().charAt(0) != 'j') {
-		    SoundEngine.playSound(selectedLesson.getPhrase(i)
-			    .getAudio());
+		for (Phrase p : selectedLesson.getAllPhrases()) {
+			view.addPhrase(p);
 		}
-	    }
+
 	}
-    }
 
-    public static void main(String[] args) throws Exception {
-	Class.forName("org.sqlite.JDBC");
-	Connection conn = DriverManager
-		.getConnection("jdbc:sqlite:data/lesson_test.db");
-	Lesson l = new Lesson(conn, 1);
+	/**
+	 * Tell the view to check the button is enable.
+	 */
+	public void resetButtons() {
+		boolean bool = selectedLesson.isEnable();
+		view.getTestButton().setEnabled(bool);
+		view.getLearnButton().setEnabled(bool);
+	}
 
-	new LessonController(l);
-    }
+	/**
+	 * Add some listeners to the view
+	 */
+	private void addALlListeners() {
+
+		// Add phrase listener
+		view.getAddButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String english = view.getEnglishTextField().getText();
+				String chinese = view.getChineseTextField().getText();
+				if (english.equals("") && chinese.equals(""))
+					return;
+				Phrase p = new Phrase(english, chinese, null);
+				selectedLesson.addPhrase(p);
+				view.addPhrase(p);
+				view.clearEnglishChineseTextField();
+			}
+		});
+
+		// Delete phrase listener
+		view.getDeleteButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int index = view.getPhraseTable().getSelectedRow();
+				if (index == -1)
+					return;
+				Phrase p = selectedLesson.getPhrase(index);
+				selectedLesson.deletePhrase(p);
+				view.deletePhrase(index);
+			}
+		});
+
+		// Test lesson listener
+		view.getTestButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new TestController(selectedLesson);
+				MainController.getMainController().setVisible(false);
+				selectedLesson.setNeededToRestore(true);
+			}
+		});
+
+		// Learn lesson listener
+		view.getLearnButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new LearnController(selectedLesson);
+				MainController.getMainController().setVisible(false);
+				selectedLesson.setNeededToRestore(true);
+			}
+		});
+
+		// Sound listener
+		view.getPhraseTable().addMouseListener(new SoundAdapter());
+
+	}
+
+	/**
+	 * A class to sound when the user press the sound column in the table
+	 * 
+	 * @author Luo Yaoshen
+	 * @author Eric
+	 * @see program.SoundEngine
+	 */
+	private class SoundAdapter extends MouseAdapter {
+		public void mousePressed(MouseEvent e) {
+			JTable phraseTable = view.getPhraseTable();
+			int count = phraseTable.getRowCount();
+			for (int i = 0; i < count; i++) {
+				if (phraseTable.isCellSelected(i, 2)
+						&& phraseTable.isColumnSelected(2)
+						&& phraseTable.getValueAt(i, 2).toString().charAt(0) != 'j') {
+					SoundEngine.playSound(selectedLesson.getPhrase(i)
+							.getAudio());
+				}
+			}
+		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		Class.forName("org.sqlite.JDBC");
+		Connection conn = DriverManager
+				.getConnection("jdbc:sqlite:data/lesson_test.db");
+		Lesson l = new Lesson(conn, 1);
+
+		new LessonController(l);
+	}
 
 }

@@ -22,33 +22,33 @@ import javazoom.jl.player.Player;
 
 public class SoundEngine {
 
-    /**
-     * lay sound according to the audio file name
-     * 
-     * @param filename the audio file name.
-     */
-    public static void playSound(String filename) {
-	Player player = null;
-	try {
-	    FileInputStream fis = new FileInputStream("sounds/" + filename
-		    + ".mp3");
-	    BufferedInputStream bis = new BufferedInputStream(fis);
-	    player = new Player(bis);
-	} catch (Exception e) {
-	    System.out.println("Problem playing file " + filename);
-	    System.out.println(e);
-	}
-	final Player soundPlayer = player;
-
-	// run in new thread to play in background
-	new Thread() {
-	    public void run() {
+	/**
+	 * lay sound according to the audio file name
+	 * 
+	 * @param filename the audio file name.
+	 */
+	public static void playSound(String filename) {
+		Player player = null;
 		try {
-		    soundPlayer.play();
+			FileInputStream fis = new FileInputStream("sounds/" + filename
+					+ ".mp3");
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			player = new Player(bis);
 		} catch (Exception e) {
-		    System.out.println(e);
+			System.out.println("Problem playing file " + filename);
+			System.out.println(e);
 		}
-	    }
-	}.start();
-    }
+		final Player soundPlayer = player;
+
+		// run in new thread to play in background
+		new Thread() {
+			public void run() {
+				try {
+					soundPlayer.play();
+				} catch (Exception e) {
+					System.out.println(e);
+				}
+			}
+		}.start();
+	}
 }

@@ -20,12 +20,12 @@ import controller.LoginController;
  */
 public class LearnEnglishSystem {
 
-    /**
-     * start the program
-     * 
-     * @param args
-     */
-    public static void main(String[] args) {
-	new LoginController();
-    }
+	/**
+	 * start the program
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		new LoginController();
+	}
 }

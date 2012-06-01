@@ -16,13 +16,13 @@ package program;
  */
 public class InvalidFileNameException extends Exception {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Create a new instance of InvalidFileNameException
-     */
-    public InvalidFileNameException() {
-	super(
-		"A filename cannot contain any of the following characters: \\ / : * ? \" < > |");
-    }
+	/**
+	 * Create a new instance of InvalidFileNameException
+	 */
+	public InvalidFileNameException() {
+		super(
+				"A filename cannot contain any of the following characters: \\ / : * ? \" < > |");
+	}
 }

@@ -35,215 +35,216 @@ import view.MainFrame;
  * @see view.MainFrame;
  */
 public class MainController {
-    private static MainController mainController;
+	private static MainController mainController;
 
-    private Account account;
-    public MainFrame view;
-    private LessonController lessonController;
-    private HistoryController historyController;
+	private Account account;
+	private MainFrame view;
+	private LessonController lessonController;
+	private HistoryController historyController;
 
-    private int currentEnableLessonIndex;
+	private int currentEnableLessonIndex;
 
-    /**
-     * get the singleton of MainController. It is thread-safe
-     * 
-     * @return singleton of MainController
-     */
-    public static MainController getMainController() {
-	if (mainController == null) {
-	    synchronized (MainController.class) {
+	/**
+	 * get the singleton of MainController. It is thread-safe
+	 * 
+	 * @return singleton of MainController
+	 */
+	public static MainController getMainController() {
 		if (mainController == null) {
-		    mainController = new MainController();
+			synchronized (MainController.class) {
+				if (mainController == null) {
+					mainController = new MainController();
+				}
+			}
 		}
-	    }
+		return mainController;
 	}
-	return mainController;
-    }
 
-    /**
-     * create a new instance of MainController. Initially the view is invisible
-     */
-    private MainController() {
-	view = new MainFrame();
-	addListener();
-	addJtableListener();
-    }
-
-    /**
-     * set the visibility of the view
-     * 
-     * @param visible the visibility of the view
-     */
-    public void setVisible(boolean visible) {
-	view.setVisible(visible);
-    }
-
-    /**
-     * set the account of the controller, and then refresh the view
-     * 
-     * @param account the account to set
-     */
-    public void setAccount(Account account) {
-	this.account = account;
-	lessonController = new LessonController(account.getLesson(0));
-	historyController = new HistoryController(account.getLesson(0));
-	account.getLesson(0).setEnable(true);
-	initAllLessons();
-    }
-
-    /**
-     * get the history controller
-     * 
-     * @return historyController
-     */
-    public HistoryController getHistoryController() {
-	return historyController;
-    }
-
-    /**
-     * get the lesson controller
-     * 
-     * @return lessonController
-     */
-    public LessonController getLessonController() {
-	return lessonController;
-    }
-
-    /**
-     * set next lesson ability to be tested and learned.
-     */
-    public void increaseEnabeLessonIndex() {
-	currentEnableLessonIndex++;
-	account.getLesson(currentEnableLessonIndex).setEnable(true);
-    }
-
-    /**
-     * 
-     * @param g
-     */
-    public void update(Graphics g) {
-	view.update(g);// TODO
-    }
-
-    /**
-     * 
-     */
-    private void initAllLessons() {
-	view.clearLessonTableContent();
-	for (Lesson l : account.getAllLessons()) {
-	    view.addLesson(l.getLessonName());
+	/**
+	 * create a new instance of MainController. Initially the view is invisible
+	 */
+	private MainController() {
+		view = new MainFrame();
+		addListener();
+		addJtableListener();
 	}
-    }
 
-    /**
-     * Add some listeners to the view
-     */
-    private void addListener() {
-	
-	// exit listener
-	view.getExitButton().addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		if (account.isModify()) {
-		    int value = JOptionPane.showConfirmDialog(null,
-			    "Do you want to save you changes ?", "Log out",
-			    JOptionPane.YES_NO_CANCEL_OPTION);
-		    if (value == JOptionPane.CANCEL_OPTION) {
-			return;
-		    } else if (value == JOptionPane.YES_OPTION) {
-			account.writeToDatabase();
-		    }
+	/**
+	 * set the visibility of the view
+	 * 
+	 * @param visible the visibility of the view
+	 */
+	public void setVisible(boolean visible) {
+		view.setVisible(visible);
+	}
 
-		}
-		view.setVisible(false);
-		view.dispose();
-		System.exit(0);
-	    }
-	});
+	/**
+	 * set the account of the controller, and then refresh the view
+	 * 
+	 * @param account the account to set
+	 */
+	public void setAccount(Account account) {
+		this.account = account;
+		lessonController = new LessonController(account.getLesson(0));
+		historyController = new HistoryController(account.getLesson(0));
+		account.getLesson(0).setEnable(true);
+		initAllLessons();
+	}
 
-	// log out listener
-	view.getLogoutButton().addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		if (account.isModify()) {
-		    int value = JOptionPane.showConfirmDialog(null,
-			    "Do you want to save you changes ?", "Log out",
-			    JOptionPane.YES_NO_CANCEL_OPTION);
-		    if (value == JOptionPane.CANCEL_OPTION) {
-			return;
-		    } else if (value == JOptionPane.YES_OPTION) {
-			account.writeToDatabase();
-		    }
-		}
-		view.setVisible(false);
-		view.dispose();
-		new LoginController();
-	    }
-	});
+	/**
+	 * get the history controller
+	 * 
+	 * @return historyController
+	 */
+	public HistoryController getHistoryController() {
+		return historyController;
+	}
 
-	// add lesson listener
-	view.getAddLessonButton().addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ae) {
-		String name = JOptionPane
-			.showInputDialog("Please input a name");
-		try {
-		    if (name == null || name.equals(""))
-			throw new Exception("not valid lesson name");
-		    account.createNewLesson(name);
-		    view.addLesson(name);
-		} catch (Exception e) {
-		    EnsureFrame.showMessageDialog(e.getMessage());
-		}
-	    }
-	});
+	/**
+	 * get the lesson controller
+	 * 
+	 * @return lessonController
+	 */
+	public LessonController getLessonController() {
+		return lessonController;
+	}
 
-	// delete lesson controller
-	view.getDeleteLessonButton().addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		int row = view.getLessonTable().getSelectedRow();
-		if (row == -1)
-		    return;
-		account.deleteLesson(row);
-		view.deleteLesson(row);
-	    }
-	});
+	/**
+	 * set next lesson ability to be tested and learned.
+	 */
+	public void increaseEnabeLessonIndex() {
+		currentEnableLessonIndex++;
+		account.getLesson(currentEnableLessonIndex).setEnable(true);
+	}
 
-	// test all controller
-	view.getTestAllButton().addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		new TestController(account);
-		setVisible(false);
-	    }
-	});
+	/**
+	 * 
+	 * @param g
+	 */
+	public void update(Graphics g) {
+		view.update(g);// TODO
+	}
 
-    }
-
-    /**
-     * add listener to the table of the view
-     */
-    private void addJtableListener() {
-	ListSelectionModel listSelectionModel = view.getLessonTable()
-		.getSelectionModel();
-	listSelectionModel.addListSelectionListener(new ListSelectionHandler());
-    }
-
-    /**
-     * An inner class to handle the row selecting action
-     * @author Eric
+	/**
      * 
      */
-    class ListSelectionHandler implements ListSelectionListener {
-	public void valueChanged(ListSelectionEvent e) {
-	    ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-
-	    boolean isAdjusting = e.getValueIsAdjusting();
-
-	    // System.out.println("("+isAdjusting+","+firstIndex+","+lastIndex+","+minIndex+","+maxIndex+")");
-	    if (!lsm.isSelectionEmpty() && !isAdjusting) {
-		int index = lsm.getMinSelectionIndex();
-		Lesson l = account.getLesson(index);
-		lessonController.setSelectedLesson(l);
-		historyController.setSelectedLesson(l);
-	    }
+	private void initAllLessons() {
+		view.clearLessonTableContent();
+		for (Lesson l : account.getAllLessons()) {
+			view.addLesson(l.getLessonName());
+		}
 	}
-    }
+
+	/**
+	 * Add some listeners to the view
+	 */
+	private void addListener() {
+
+		// exit listener
+		view.getExitButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (account.isModify()) {
+					int value = JOptionPane.showConfirmDialog(null,
+							"Do you want to save you changes ?", "Log out",
+							JOptionPane.YES_NO_CANCEL_OPTION);
+					if (value == JOptionPane.CANCEL_OPTION) {
+						return;
+					} else if (value == JOptionPane.YES_OPTION) {
+						account.writeToDatabase();
+					}
+
+				}
+				view.setVisible(false);
+				view.dispose();
+				System.exit(0);
+			}
+		});
+
+		// log out listener
+		view.getLogoutButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (account.isModify()) {
+					int value = JOptionPane.showConfirmDialog(null,
+							"Do you want to save you changes ?", "Log out",
+							JOptionPane.YES_NO_CANCEL_OPTION);
+					if (value == JOptionPane.CANCEL_OPTION) {
+						return;
+					} else if (value == JOptionPane.YES_OPTION) {
+						account.writeToDatabase();
+					}
+				}
+				view.setVisible(false);
+				view.dispose();
+				new LoginController();
+			}
+		});
+
+		// add lesson listener
+		view.getAddLessonButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				String name = JOptionPane
+						.showInputDialog("Please input a name");
+				try {
+					if (name == null || name.equals(""))
+						throw new Exception("not valid lesson name");
+					account.createNewLesson(name);
+					view.addLesson(name);
+				} catch (Exception e) {
+					EnsureFrame.showMessageDialog(e.getMessage());
+				}
+			}
+		});
+
+		// delete lesson controller
+		view.getDeleteLessonButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = view.getLessonTable().getSelectedRow();
+				if (row == -1)
+					return;
+				account.deleteLesson(row);
+				view.deleteLesson(row);
+			}
+		});
+
+		// test all controller
+		view.getTestAllButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new TestController(account);
+				setVisible(false);
+			}
+		});
+
+	}
+
+	/**
+	 * add listener to the table of the view
+	 */
+	private void addJtableListener() {
+		ListSelectionModel listSelectionModel = view.getLessonTable()
+				.getSelectionModel();
+		listSelectionModel.addListSelectionListener(new ListSelectionHandler());
+	}
+
+	/**
+	 * An inner class to handle the row selecting action
+	 * 
+	 * @author Eric
+	 * 
+	 */
+	class ListSelectionHandler implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent e) {
+			ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+
+			boolean isAdjusting = e.getValueIsAdjusting();
+
+			// System.out.println("("+isAdjusting+","+firstIndex+","+lastIndex+","+minIndex+","+maxIndex+")");
+			if (!lsm.isSelectionEmpty() && !isAdjusting) {
+				int index = lsm.getMinSelectionIndex();
+				Lesson l = account.getLesson(index);
+				lessonController.setSelectedLesson(l);
+				historyController.setSelectedLesson(l);
+			}
+		}
+	}
 
 }
