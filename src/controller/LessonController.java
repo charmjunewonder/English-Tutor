@@ -36,9 +36,20 @@ import view.LessonPanel;
  */
 public class LessonController {
 
+	private static LessonController lessonController;
 	private Lesson selectedLesson;
 	private LessonPanel view;
 
+	public static LessonController getLessonController(){
+		if (lessonController == null) {
+			synchronized (LessonController.class) {
+				if (lessonController == null) {
+					lessonController = new LessonController();
+				}
+			}
+		}
+		return lessonController;
+	}
 	/**
 	 * Create a new instance of LessonController and let the view set up the
 	 * data. , and add some AcitonListeners to the component of the view.
@@ -46,12 +57,20 @@ public class LessonController {
 	 * 
 	 * @param lesson the lesson to show and modify.
 	 */
-	public LessonController(Lesson lesson) {
+	private LessonController() {
+		view = LessonPanel.getLessonPanel();
+		view.clearPhraseTabelContent();
+		//initAllPhrases();
+		addALlListeners();
+
+		//view.setVisible(true);
+	}
+	
+	public void setLesson(Lesson lesson){
 		selectedLesson = lesson;
 		view = LessonPanel.getLessonPanel();
-
+		view.clearPhraseTabelContent();
 		initAllPhrases();
-		addALlListeners();
 
 		view.setVisible(true);
 	}
@@ -172,7 +191,7 @@ public class LessonController {
 				.getConnection("jdbc:sqlite:data/lesson_test.db");
 		Lesson l = new Lesson(conn, 1);
 
-		new LessonController(l);
+		//new LessonController(l);
 	}
 
 }

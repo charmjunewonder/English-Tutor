@@ -38,6 +38,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
@@ -157,8 +158,12 @@ public class LessonPanel extends JPanel {
 	 * To initialize the learn lesson button of the lesson panel.
 	 */
 	private void initLearnLessonButton() {
-		learnLessonButton = new JButton("Learning");
-		learnLessonButton.setBounds(0, 0, 100, 30);
+		learnLessonButton = new JButton("Learn");
+		learnLessonButton.setFont(new Font("Arial", Font.BOLD, 16));
+		learnLessonButton.setBounds(15, 0, 80, 30);
+		learnLessonButton.setOpaque(false);
+		learnLessonButton.setBackground(new Color(0,0,0,0));
+		learnLessonButton.setToolTipText("Learn this lesson");
 		add(learnLessonButton);
 	}
 
@@ -167,7 +172,11 @@ public class LessonPanel extends JPanel {
 	 */
 	private void initTestLessonButton() {
 		testLessonButton = new JButton("Test");
-		testLessonButton.setBounds(110, 0, 70, 30);
+		testLessonButton.setFont(new Font("Arial", Font.BOLD, 16));
+		testLessonButton.setBounds(100, 0, 70, 30);
+		testLessonButton.setOpaque(false);
+		testLessonButton.setBackground(new Color(0,0,0,0));
+		testLessonButton.setToolTipText("Test this lesson");
 		add(testLessonButton);
 	}
 
@@ -187,7 +196,7 @@ public class LessonPanel extends JPanel {
 		phraseScrollPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1,
 				Color.white));
 
-		phraseScrollPanel.setBounds(15, 50, 400, 450);
+		phraseScrollPanel.setBounds(15, 39, 400, 461);
 		add(phraseScrollPanel);
 	}
 
@@ -214,7 +223,9 @@ public class LessonPanel extends JPanel {
 		phraseTable.setIntercellSpacing(new Dimension(0, 0));
 		phraseTable.setShowVerticalLines(false);
 		phraseTable.setShowHorizontalLines(false);
-
+        
+        System.out.println(phraseTable.getFont());
+		
 		ListSelectionModel listSelectionModel = phraseTable.getSelectionModel();
 		listSelectionModel
 				.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -242,8 +253,12 @@ public class LessonPanel extends JPanel {
 		englishTextField.setBounds(90, 560, 250, 30);
 		add(englishTextField);
 
-		addPhraseButton = new JButton("Add");
-		addPhraseButton.setBounds(340, 560, 60, 30);
+		addPhraseButton = new JButton(new ImageIcon("resource/Add.png"));
+		addPhraseButton.setOpaque(false);
+		addPhraseButton.setBackground(new Color(0,0,0,0));
+		addPhraseButton.setBorderPainted(false);
+		addPhraseButton.setBounds(340, 530, 60, 60);
+		addPhraseButton.setToolTipText("Add a phrase");
 		add(addPhraseButton);
 	}
 
@@ -251,8 +266,12 @@ public class LessonPanel extends JPanel {
 	 * To initialize the delete phrase button of the lesson panel.
 	 */
 	private void initDeletePhraseButton() {
-		deletePhraseButton = new JButton("Delete");
-		deletePhraseButton.setBounds(0, 500, 70, 30);
+		deletePhraseButton = new JButton(new ImageIcon("resource/delete.png"));
+		deletePhraseButton.setBounds(352, 498, 37, 37);
+		deletePhraseButton.setOpaque(false);
+		deletePhraseButton.setBackground(new Color(0,0,0,0));
+		deletePhraseButton.setBorderPainted(false);
+		deletePhraseButton.setToolTipText("Delete a phrase");
 		add(deletePhraseButton);
 	}
 

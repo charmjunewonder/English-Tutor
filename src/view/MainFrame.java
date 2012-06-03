@@ -22,16 +22,15 @@ package view;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -181,7 +180,7 @@ public class MainFrame extends AbstractFrame {
 		logoutButton = new JButton(new ImageIcon("resource/LogoutButton.png"));
 		logoutButton.setBounds(20, 20, 73, 32);
 		logoutButton.setBorderPainted(false);
-		logoutButton.setToolTipText("logout");
+		logoutButton.setToolTipText("Logout");
 		logoutButton.setOpaque(false);
 		logoutButton.setBackground(new Color(0, 0, 0, 0));
 		getContentPane().add(logoutButton);
@@ -192,7 +191,8 @@ public class MainFrame extends AbstractFrame {
 	 */
 	private void initTitleLabel() {
 		titleLabel = new JLabel("English Tutor");
-		titleLabel.setBounds(200, 10, 80, 100);
+		titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+		titleLabel.setBounds(170, 5, 150, 100);
 		getContentPane().add(titleLabel);
 	}
 
@@ -263,13 +263,21 @@ public class MainFrame extends AbstractFrame {
 	 * To initialize the lesson button of the main frame
 	 */
 	private void initLessonButton() {
-		addLessonButton = new JButton("add");
-		addLessonButton.setBounds(40, 580, 60, 30);
+		addLessonButton = new JButton(new ImageIcon("resource/Add.png"));
+		addLessonButton.setBounds(34, 580, 37, 37);
+		addLessonButton.setOpaque(false);
+		addLessonButton.setBackground(new Color(0,0,0,0));
+		addLessonButton.setBorderPainted(false);
 		addLessonButton.addMouseListener(new AddLessonButtonAdapter());
+		addLessonButton.setToolTipText("Add a lesson");
 
-		deleteLessonButton = new JButton("delete");
-		deleteLessonButton.setBounds(100, 580, 80, 30);
-
+		deleteLessonButton = new JButton(new ImageIcon("resource/Delete.png"));
+		deleteLessonButton.setBounds(79, 580, 37, 37);
+        deleteLessonButton.setOpaque(false);
+        deleteLessonButton.setBorderPainted(false);
+        deleteLessonButton.setBackground(new Color(0,0,0,0));
+        deleteLessonButton.setToolTipText("Delete a lesson");
+		
 		getContentPane().add(addLessonButton);
 		getContentPane().add(deleteLessonButton);
 	}
@@ -279,7 +287,11 @@ public class MainFrame extends AbstractFrame {
 	 */
 	private void initTestAllButton() {
 		testAllButton = new JButton("Test All");
-		testAllButton.setBounds(185, 600, 80, 40);
+		testAllButton.setFont(new Font("Arial", Font.BOLD, 16));
+		testAllButton.setBounds(121, 580, 95, 36);
+		testAllButton.setOpaque(false);
+		testAllButton.setBackground(new Color(0,0,0,0));
+		testAllButton.setToolTipText("Test all lessons");
 		getContentPane().add(testAllButton);
 	}
 
@@ -290,11 +302,13 @@ public class MainFrame extends AbstractFrame {
 		historyLabel = new JLabel(new ImageIcon(
 				FilenameUtils.separatorsToSystem("resource/History.png")));
 		historyLabel.setBounds(938, 60, 40, 80);
+		historyLabel.setToolTipText("Open the history list");
 		historyLabel.addMouseListener(new HistoryLabelAdapter());
 		getContentPane().add(historyLabel);
 
 		listLabel = new JLabel(new ImageIcon(
 				FilenameUtils.separatorsToSystem("resource/Phrases.png")));
+		listLabel.setToolTipText("Open the phrase list");
 		listLabel.setBounds(938, 210, 40, 80);
 		listLabel.addMouseListener(new ListLabelAdapter());
 		getContentPane().add(listLabel);

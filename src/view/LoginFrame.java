@@ -103,7 +103,7 @@ public class LoginFrame extends AbstractFrame {
 	private void initSummaryLabel() {
 		ImageIcon icon = new ImageIcon(FilenameUtils.separatorsToSystem("resource/Summary.png"));
 		summaryLabel = new JLabel(icon);
-		summaryLabel.setBounds(100, 100, 200, 100);
+		summaryLabel.setBounds(0, 50, 450, 600);
 		getContentPane().add(summaryLabel);
 	}
 
@@ -121,7 +121,11 @@ public class LoginFrame extends AbstractFrame {
 	 */
 	private void initDeleteButton() {
 		deleteButton = new JButton("Delete");
-		deleteButton.setBounds(850, 330, 70, 40);
+		deleteButton.setBounds(820, 330, 105, 40);
+		deleteButton.setOpaque(false);
+		deleteButton.setBackground(new Color(0,0,0,0));
+		deleteButton.setFont(new Font("Arial", Font.BOLD, 20));
+		deleteButton.setForeground(Color.YELLOW);
 		deleteButton.setToolTipText("Delete the selected account.");
 		getContentPane().add(deleteButton);
 	}

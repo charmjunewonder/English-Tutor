@@ -101,7 +101,7 @@ public class LearnFrame extends AbstractFrame {
 
 		phraseScrollPanel = new JScrollPane();
 		phraseScrollPanel
-				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		phraseScrollPanel
 				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		phraseScrollPanel.setVisible(true);
@@ -129,8 +129,10 @@ public class LearnFrame extends AbstractFrame {
 	 * To initialize the finish button.
 	 */
 	private void initFinishButton() {
-		finishButton = new JButton("Finish");
-		finishButton.setBounds(489, 598, 80, 40);
+		finishButton = new JButton(new ImageIcon("resource/Finish.png"));
+		finishButton.setOpaque(false);
+		finishButton.setBackground(new Color(0,0,0,0));
+		finishButton.setBounds(489, 598, 60, 60);
 		getContentPane().add(finishButton);
 	}
 
@@ -213,7 +215,7 @@ public class LearnFrame extends AbstractFrame {
 		private class ChineseLabelAdapter extends MouseAdapter {
 			public void mousePressed(MouseEvent e) {
 				englishLabel.setVisible(true);
-				DateFormat dateFormat = new SimpleDateFormat("/MM/dd/yy");
+				DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
 				Date date = new Date();
 				String dateString = dateFormat.format(date);
 				phrase.setLastReviewTime(dateString);
