@@ -162,7 +162,7 @@ public class ResultFrame extends AbstractFrame {
 		suggestionOneLabel = new JLabel();
 		suggestionOneLabel.setOpaque(false);
 		suggestionOneLabel.setText("Suggestion:");
-		suggestionOneLabel.setBounds(43, 434, 120, 25);
+		suggestionOneLabel.setBounds(43, 450, 120, 25);
 		suggestionOneLabel.setFont(new Font("Adobe Caslon Pro Bold", Font.BOLD,
 				20));
 		getContentPane().add(suggestionOneLabel);
@@ -174,8 +174,8 @@ public class ResultFrame extends AbstractFrame {
 	private void initSuggestionTwoLabel() {
 		suggestionTwoLabel = new JLabel();
 		suggestionTwoLabel.setOpaque(false);
-		suggestionTwoLabel.setText("Congraduation: XXX.Fuck you.");
-		suggestionTwoLabel.setBounds(53, 481, 326, 45);
+		suggestionTwoLabel.setText("Congraduation: XXX.");
+		suggestionTwoLabel.setBounds(53, 481, 370, 45);
 		suggestionTwoLabel.setFont(new Font("Adobe Caslon Pro Bold", Font.BOLD,
 				15));
 		getContentPane().add(suggestionTwoLabel);
@@ -185,9 +185,9 @@ public class ResultFrame extends AbstractFrame {
 	 * To initialize the finish button of the resultFrame
 	 */
 	private void initFinishButton() {
-		finishButton = new JButton("Finish");
+		finishButton = new JButton(new ImageIcon("resource/Finish.png"));
 		finishButton.setBackground(new Color(0, 0, 0, 0));
-		finishButton.setBounds(394, 478, 70, 35);
+		finishButton.setBounds(420, 500, 60, 60);
 		getContentPane().add(finishButton);
 	}
 

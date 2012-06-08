@@ -160,11 +160,23 @@ public class LessonPanel extends JPanel {
 	private void initLearnLessonButton() {
 		learnLessonButton = new JButton("Learn");
 		learnLessonButton.setFont(new Font("Arial", Font.BOLD, 16));
-		learnLessonButton.setBounds(15, 0, 80, 30);
+		learnLessonButton.setBounds(15, 0, 100, 30);
 		learnLessonButton.setOpaque(false);
 		learnLessonButton.setBackground(new Color(0,0,0,0));
+		learnLessonButton.setBorderPainted(false);
 		learnLessonButton.setToolTipText("Learn this lesson");
 		add(learnLessonButton);
+		learnLessonButton.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				learnLessonButton.setForeground(new Color(133, 249, 80));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				learnLessonButton.setForeground(Color.black);
+			}
+		});
 	}
 
 	/**
@@ -173,11 +185,23 @@ public class LessonPanel extends JPanel {
 	private void initTestLessonButton() {
 		testLessonButton = new JButton("Test");
 		testLessonButton.setFont(new Font("Arial", Font.BOLD, 16));
-		testLessonButton.setBounds(100, 0, 70, 30);
+		testLessonButton.setBounds(100, 0, 90, 30);
 		testLessonButton.setOpaque(false);
+		testLessonButton.setBorderPainted(false);
 		testLessonButton.setBackground(new Color(0,0,0,0));
 		testLessonButton.setToolTipText("Test this lesson");
 		add(testLessonButton);
+		testLessonButton.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				testLessonButton.setForeground(new Color(133, 249, 80));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				testLessonButton.setForeground(Color.black);
+			}
+		});
 	}
 
 	/**
@@ -205,7 +229,7 @@ public class LessonPanel extends JPanel {
 	 */
 	private void initPhraseTable() {
 		String[] columnNames = new String[5];
-		columnNames[0] = "中文";
+		columnNames[0] = "Chinese";
 		columnNames[1] = "English";
 		columnNames[2] = "Sound";
 		columnNames[3] = "Date";
@@ -223,8 +247,9 @@ public class LessonPanel extends JPanel {
 		phraseTable.setIntercellSpacing(new Dimension(0, 0));
 		phraseTable.setShowVerticalLines(false);
 		phraseTable.setShowHorizontalLines(false);
+		phraseTable.setFont(new Font("Arial", Font.PLAIN, 15));
         
-        System.out.println(phraseTable.getFont());
+        //System.out.println(phraseTable.getFont());
 		
 		ListSelectionModel listSelectionModel = phraseTable.getSelectionModel();
 		listSelectionModel
@@ -237,7 +262,7 @@ public class LessonPanel extends JPanel {
 	 * To initialize the add phrase of the lesson panel.
 	 */
 	private void initAddPhrase() {
-		chineseLabel = new JLabel("中文");
+		chineseLabel = new JLabel("Chinese");
 		chineseLabel.setBounds(30, 530, 60, 30);
 		add(chineseLabel);
 
@@ -289,7 +314,7 @@ public class LessonPanel extends JPanel {
 		sum_phrase++;
 
 		String[] columnNames = new String[5];
-		columnNames[0] = "中文";
+		columnNames[0] = "Chinese";
 		columnNames[1] = "English";
 		columnNames[2] = "Sound";
 		columnNames[3] = "Date";

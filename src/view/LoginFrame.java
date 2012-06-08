@@ -21,6 +21,8 @@ package view;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -121,13 +123,28 @@ public class LoginFrame extends AbstractFrame {
 	 */
 	private void initDeleteButton() {
 		deleteButton = new JButton("Delete");
-		deleteButton.setBounds(820, 330, 105, 40);
+		deleteButton.setBounds(820, 335, 105, 40);
 		deleteButton.setOpaque(false);
-		deleteButton.setBackground(new Color(0,0,0,0));
+		deleteButton.setBackground(new Color(0, true));
 		deleteButton.setFont(new Font("Arial", Font.BOLD, 20));
-		deleteButton.setForeground(Color.YELLOW);
+		deleteButton.setForeground(new Color(255, 251, 140));
+		deleteButton.setContentAreaFilled(false);
+		deleteButton.setBorderPainted(false);
 		deleteButton.setToolTipText("Delete the selected account.");
 		getContentPane().add(deleteButton);
+		deleteButton.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				//deleteButton.setFont(new Font("Arial", Font.BOLD, 22));
+				deleteButton.setForeground(Color.red);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				//deleteButton.setFont(new Font("Arial", Font.BOLD, 20));
+				deleteButton.setForeground(new Color(255, 251, 140));
+			}
+		});
 	}
 
 	/**
@@ -143,8 +160,9 @@ public class LoginFrame extends AbstractFrame {
 
 		userComboBox = new JComboBox();
 		userComboBox.setEditable(true);
-		userComboBox.setBounds(609, 330, 197, 40);
+		userComboBox.setBounds(609, 345, 197, 20);
 		getContentPane().add(userComboBox);
+		
 	}
 
 	/**
@@ -157,11 +175,22 @@ public class LoginFrame extends AbstractFrame {
 		Font newButtonFont = new Font("Arial", Font.BOLD, 30);
 		loginButton.setFont(newButtonFont);
 		loginButton.setOpaque(false);
-		loginButton.setBackground(new Color(0, 0, 0, 0));
-		loginButton.setForeground(Color.yellow);
+		loginButton.setForeground(new Color(255, 251, 140));
 		loginButton.setBounds(730, 438, 200, 46);
 		loginButton.setToolTipText("Login the English Tutor");
+		loginButton.setBackground(new Color(0, true));
 		getContentPane().add(loginButton);
+		loginButton.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				loginButton.setForeground(Color.yellow);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				loginButton.setForeground(new Color(255, 251, 140));
+			}
+		});
 	}
 
 	/**

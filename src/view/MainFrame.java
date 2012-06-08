@@ -177,13 +177,24 @@ public class MainFrame extends AbstractFrame {
 	 * To initialize the logout button of the main frame
 	 */
 	private void initLogoutButton() {
-		logoutButton = new JButton(new ImageIcon("resource/LogoutButton.png"));
-		logoutButton.setBounds(20, 20, 73, 32);
+		logoutButton = new JButton(new ImageIcon("resource/LogoutButton_1.png"));
+		logoutButton.setBounds(20, 20, 100, 60);
 		logoutButton.setBorderPainted(false);
 		logoutButton.setToolTipText("Logout");
 		logoutButton.setOpaque(false);
 		logoutButton.setBackground(new Color(0, 0, 0, 0));
 		getContentPane().add(logoutButton);
+		logoutButton.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				logoutButton.setIcon(new ImageIcon("resource/LogoutButton.png"));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				logoutButton.setIcon(new ImageIcon("resource/LogoutButton_1.png"));
+			}
+		});
 	}
 
 	/**
@@ -288,11 +299,23 @@ public class MainFrame extends AbstractFrame {
 	private void initTestAllButton() {
 		testAllButton = new JButton("Test All");
 		testAllButton.setFont(new Font("Arial", Font.BOLD, 16));
-		testAllButton.setBounds(121, 580, 95, 36);
+		testAllButton.setBounds(121, 580, 110, 36);
 		testAllButton.setOpaque(false);
 		testAllButton.setBackground(new Color(0,0,0,0));
+		testAllButton.setBorderPainted(false);
 		testAllButton.setToolTipText("Test all lessons");
 		getContentPane().add(testAllButton);
+		testAllButton.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				testAllButton.setForeground(new Color(133, 249, 80));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				testAllButton.setForeground(Color.black);
+			}
+		});
 	}
 
 	/**

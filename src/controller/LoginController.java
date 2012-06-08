@@ -56,7 +56,7 @@ public class LoginController {
 		initAllExistingAccount();
 		addListener();
 		initLabels();
-
+		view.repaint();
 		view.setVisible(true);
 	}
 

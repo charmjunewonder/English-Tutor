@@ -20,9 +20,12 @@ package view;
  * @see view.AbstractFrame
  */
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -75,6 +78,18 @@ public class EnsureFrame extends AbstractFrame {
 			public void actionPerformed(ActionEvent e) {
 				ensure.setVisible(false);
 				ensure.dispose();
+			}
+		});
+		
+		ensure.getThirdButton().addMouseListener(new MouseAdapter(){
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				ensure.getThirdButton().setForeground(new Color(73, 143, 42));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				ensure.getThirdButton().setForeground(Color.black);
 			}
 		});
 	}
