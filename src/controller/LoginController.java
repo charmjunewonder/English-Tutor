@@ -84,22 +84,6 @@ public class LoginController {
 	private void initLabels() {
 		try {
 
-			// TODO
-			// InputStream in =
-			// LoginController.class.getResourceAsStream("abaddon_0.TTF");
-			/*
-			 * File file = new
-			 * File(FilenameUtils.separatorsToSystem("resource/Jaggard Two.ttf"
-			 * )); FileInputStream in = new FileInputStream(file);
-			 * 
-			 * Font dynamicFont = Font.createFont(Font.TRUETYPE_FONT, in); Font
-			 * dynamicFontPt = dynamicFont.deriveFont(30f);
-			 * GraphicsEnvironment.getLocalGraphicsEnvironment
-			 * ().registerFont(dynamicFontPt); in.close();
-			 */
-			// Font font = Font.createFont(Font.TRUETYPE_FONT, );
-
-			// Font.deriveFont(font, 30);
 			JLabel titleLabel = view.getTitleLabel();
 			titleLabel
 					.setText("<html><Center> <p>English</p> <p>Tutor</p> </Center></html>");
@@ -128,6 +112,7 @@ public class LoginController {
 								.getUserComboBox().getEditor()
 								.getEditorComponent();
 						name = tc.getText();
+						if(name == null || name.equals("")) return;
 						account = database.createAccount(name);
 						account.loadDefaultLessons();
 
@@ -139,34 +124,11 @@ public class LoginController {
 						account = new Account(name);
 						account.loadLessonsFromDatabase();
 					}
-					// Account accountFinal = account;
 					MainController main = MainController.getMainController();
 					main.setAccount(account);
 					main.setVisible(true);
 					view.setVisible(false);
 					view.dispose();
-					/*
-					 * MainController main = new MainController(account); //TODO
-					 * 
-					 * view.setVisible(false); view.dispose();
-					 * main.setVisible(true);
-					 * 
-					 * EventQueue.invokeLater(new Runnable() { public void run()
-					 * { try { MainController main = MainController
-					 * .getMainController(); main.setAccount(accountFinal);
-					 * 
-					 * // view.createBufferStrategy(2); BufferStrategy
-					 * myStrategy = view .getBufferStrategy(); Graphics g =
-					 * myStrategy.getDrawGraphics(); // acquire // the //
-					 * graphics
-					 * 
-					 * // TODO what is the magic here? // draw stuff here
-					 * main.setVisible(true); main.view.paint(g);
-					 * myStrategy.show(); view.setVisible(false);
-					 * view.dispose(); g.dispose(); } catch (Exception e) {
-					 * e.printStackTrace(); } } });
-					 */
-
 				} catch (InvalidFileNameException ifne) {
 					EnsureFrame
 							.showMessageDialog("<html><Center>"
@@ -174,9 +136,6 @@ public class LoginController {
 									+ "<p> \\ / : * ? \" < > |</p>"
 									+ "</Center></html>");
 				} catch (SQLException sqle) {
-					// JOptionPane.showMessageDialog(null,
-					// "Please use another name.", name + " exists",
-					// JOptionPane.ERROR_MESSAGE);
 					EnsureFrame.showMessageDialog(name
 							+ " has already existed. Please use another name.");
 				} catch (Exception exception) {

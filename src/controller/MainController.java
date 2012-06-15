@@ -119,16 +119,8 @@ public class MainController {
 	}
 
 	/**
-	 * 
-	 * @param g
+	 * initialize all the lesson 
 	 */
-	public void update(Graphics g) {
-		view.update(g);// TODO
-	}
-
-	/**
-     * 
-     */
 	private void initAllLessons() {
 		view.clearLessonTableContent();
 		view.getLessonTable().changeSelection(0, 0, false, false);

@@ -66,6 +66,9 @@ public class LessonController {
 		//view.setVisible(true);
 	}
 	
+	/**
+	  * set the lesson and update the controller
+	  */
 	public void setLesson(Lesson lesson){
 		selectedLesson = lesson;
 		view = LessonPanel.getLessonPanel();

@@ -116,11 +116,9 @@ public class TestController {
 		initialize();
 	}
 	
-	public TestController() {
-		//testType = TestType.TEST_ALL_LESSONS;
-		initialize();
-	}
-	
+	/**
+	 *  set the lesson and show the next phrase
+	 */	 
 	public void setLesson(Lesson l){
 		selectedLesson = l;
 		clearALl();
@@ -130,6 +128,9 @@ public class TestController {
 
 	}
 	
+	/**
+	 *  set the account and show the next phrase
+	 */
 	public void setAccount(Account a){
 		account = a;
 		clearALl();
@@ -139,6 +140,9 @@ public class TestController {
 
 	}
 	
+	/**
+	 * clear almost all the thing in this controller
+	 */
 	private void clearALl(){
 		view = TestFrame.getTestFrame();
 		clearComponent();
